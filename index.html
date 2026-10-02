@@ -56,5 +56,17 @@ footer a.site{color:var(--teal-d);text-decoration:none;font-weight:500}
 <figure class="slide"><img src="slides/slide-7.png" alt="Слайд 7 — Подключение, условия и контакты" loading="lazy"></figure>
 </main>
 <footer><a class="btn" href="VERNIOM-v2.pdf" download>Скачать PDF</a><div>ВЕРНЁМ · от команды HotApart · <a class="site" href="https://hotapart.ru">hotapart.ru</a></div></footer>
+<script>
+/* Hidden visitor counter (abacus.jasoncameron.dev, namespace "verniom"). Host-independent: works on any domain.
+   visits: every page load; uniques: once per browser (localStorage); pdf: each "Скачать PDF" click. Nothing is shown on the page. */
+(function(){try{
+  var A='https://abacus.jasoncameron.dev/hit/verniom/';
+  function hit(k){try{fetch(A+k,{mode:'cors',keepalive:true,cache:'no-store'}).catch(function(){});}catch(e){}}
+  hit('visits');
+  try{if(!localStorage.getItem('verniom_u')){localStorage.setItem('verniom_u','1');hit('uniques');}}catch(e){}
+  var b=document.querySelectorAll('a[href$=".pdf"]');
+  for(var i=0;i<b.length;i++){b[i].addEventListener('click',function(){hit('pdf');});}
+}catch(e){}})();
+</script>
 </body>
 </html>
