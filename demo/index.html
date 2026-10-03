@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>ВЕРНЁМ — интерактивное демо</title>
+<meta name="description" content="Виртуальное демо кэшбэк-платформы ВЕРНЁМ: регистрация партнёра, сайт, покупка, кэшбэк, ЛК клиента, терминал.">
+<meta property="og:title" content="ВЕРНЁМ — интерактивное демо">
+<meta property="og:image" content="https://verniom.github.io/og.jpg">
+<meta property="og:url" content="https://verniom.github.io/demo/">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F5F7;--card:#fff;--ink:#1D1D1F;--text:#1B2430;--grey:#6E6E73;--grey2:#86868B;--border:#E4E7EC;--brand:#0FAE9E;--brand-d:#0A8A7D;--tint:#E6F7F5;--dark:#123B52;--dark2:#0c2a3d;--acc:#7CE0C9;--amber:#B8830A;--amber-t:#FBF2E0;--green:#1E9E6B;--red:#DC4C3E;--r:18px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.45}
+button,input,select{font-family:inherit;font-size:inherit}
+a{color:var(--brand-d)}
+.top{position:sticky;top:0;z-index:30;background:rgba(245,245,247,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
+.top .in{max-width:1240px;margin:0 auto;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--brand);display:inline-block}
+.badge{font-size:11px;font-weight:600;color:var(--brand-d);background:var(--tint);padding:3px 8px;border-radius:20px}
+.sp{flex:1}
+.pill{font-size:13px;font-weight:500;background:#fff;border:1px solid var(--border);border-radius:980px;padding:7px 12px;white-space:nowrap}
+.pill b{font-weight:600}
+.ghost{background:none;border:1px solid var(--border);border-radius:980px;padding:7px 12px;font-size:13px;font-weight:500;color:var(--grey);cursor:pointer;white-space:nowrap}
+.ghost:hover{color:var(--ink)}
+.layout{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:28px;padding:24px 16px 80px}
+.steps{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:4px}
+.st{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:none;background:none;text-align:left;cursor:pointer;color:var(--grey);font-weight:500;font-size:15px;min-height:48px}
+.st .n{width:28px;height:28px;border-radius:50%;border:1.5px solid #D2D2D7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;background:#fff}
+.st.done .n{background:var(--brand);border-color:var(--brand);color:#fff}
+.st.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px -10px rgba(0,0,0,.15)}
+.st.on .n{border-color:var(--brand);color:var(--brand-d)}
+.st.done.on .n{color:#fff}
+.st:disabled{opacity:.45;cursor:not-allowed}
+main{min-width:0}
+h1{font-weight:500;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;margin:0 0 6px;line-height:1.1}
+.lead{color:var(--grey);font-size:17px;margin:0 0 22px;letter-spacing:-.01em}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--brand-d);text-transform:uppercase;margin-bottom:8px}
+.card{background:var(--card);border-radius:var(--r);padding:22px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 10px 30px -18px rgba(0,0,0,.18)}
+.card+.card{margin-top:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label.f{display:block;margin-bottom:14px}
+label.f span{display:block;font-size:13px;color:var(--grey);margin-bottom:6px;font-weight:500}
+input.i{width:100%;height:50px;border:1px solid var(--border);border-radius:12px;padding:0 14px;font-size:17px;background:#fff;color:var(--ink);outline:none;transition:border .15s,box-shadow .15s}
+input.i:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--tint)}
+input.i[readonly]{background:#FAFAFB;color:var(--grey)}
+.hint{font-size:12.5px;color:var(--grey2);margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:980px;border:none;background:var(--brand);color:#fff;font-weight:600;font-size:16px;cursor:pointer;transition:background .15s,transform .1s;text-decoration:none}
+.btn:hover{background:var(--brand-d)}.btn:active{transform:scale(.98)}
+.btn.sec{background:#fff;color:var(--ink);border:1px solid var(--border)}
+.btn.sec:hover{background:#FAFAFB}
+.btn.wide{width:100%}
+.btn:disabled{background:#C7C7CC;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{min-height:44px;padding:0 18px;border-radius:980px;border:1px solid var(--border);background:#fff;font-weight:500;cursor:pointer;font-size:15px}
+.chip.on{background:var(--tint);border-color:var(--brand);color:var(--brand-d);font-weight:600}
+.demo-banner{display:flex;gap:10px;align-items:center;background:var(--amber-t);color:#7a5806;border-radius:12px;padding:10px 14px;font-size:13.5px;font-weight:500;margin-bottom:16px}
+.ok-banner{display:flex;gap:10px;align-items:center;background:var(--tint);color:var(--brand-d);border-radius:12px;padding:12px 14px;font-size:14.5px;font-weight:500;margin:14px 0}
+.bankcard{border-radius:18px;padding:20px;color:#fff;background:linear-gradient(135deg,#123B52 0%,#0c2a3d 55%,#0FAE9E 140%);aspect-ratio:1.6/1;max-width:360px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 20px 40px -20px rgba(18,59,82,.6);margin-bottom:18px}
+.bankcard .chipi{width:42px;height:30px;border-radius:6px;background:linear-gradient(135deg,#e9d8a6,#c9a95c)}
+.bankcard .num{font-size:20px;letter-spacing:.12em;font-weight:500}
+.bankcard .meta{display:flex;justify-content:space-between;font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+.opt{border:1.5px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;background:#fff;text-align:left;width:100%;transition:border .15s,box-shadow .15s}
+.opt:hover,.opt.on{border-color:var(--brand);box-shadow:0 0 0 4px var(--tint)}
+.opt h3{margin:0 0 4px;font-weight:600;font-size:17px}
+.opt p{margin:0;color:var(--grey);font-size:14px}
+pre.code{background:#0d1117;color:#c9d1d9;border-radius:12px;padding:14px;font-size:12.5px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin:10px 0}
+.log{background:#0d1117;color:#9fe8d8;border-radius:12px;padding:14px;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;min-height:150px}
+.log div{opacity:0;animation:fi .3s forwards}
+@keyframes fi{to{opacity:1}}
+/* browser + landing */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.browser{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 20px 50px -24px rgba(0,0,0,.3)}
+.bbar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#F2F2F4;border-bottom:1px solid var(--border)}
+.bbar i{width:10px;height:10px;border-radius:50%;background:#D2D2D7;display:inline-block}
+.url{flex:1;background:#fff;border-radius:8px;padding:5px 10px;font-size:12.5px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.land{font-family:Inter,sans-serif;color:#2b1d14;background:#FBF7F2}
+.land .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;font-weight:600}
+.land .nav small{font-weight:500;color:#8a6f5a;font-size:12px}
+.land .hero{padding:26px 20px 30px;background:radial-gradient(600px 300px at 80% 0%,#f1dfc9,transparent),#FBF7F2}
+.land .hero h2{font-size:clamp(26px,4.5vw,38px);letter-spacing:-.03em;font-weight:600;margin:0 0 6px;line-height:1.1}
+.land .hero p{margin:0;color:#7b6252}
+.land .cbk{display:inline-flex;gap:6px;align-items:center;margin-top:14px;background:#fff;border-radius:980px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--brand-d);box-shadow:0 4px 14px -8px rgba(0,0,0,.25)}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:6px 20px 24px}
+.mi{background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.mi .em{width:100%;aspect-ratio:1.4/1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:34px;background:linear-gradient(135deg,#f3e6d6,#ead2b8)}
+.mi b{font-weight:600;font-size:15px}
+.mi .pr{color:#7b6252;font-size:14px}
+.mi button{margin-top:6px;min-height:42px;border:none;border-radius:980px;background:#2b1d14;color:#fff;font-weight:600;cursor:pointer}
+.land .foot{padding:14px 20px;font-size:11.5px;color:#8a6f5a;border-top:1px solid #efe4d6;display:flex;justify-content:space-between}
+/* phone */
+.phone{width:300px;max-width:100%;margin:0 auto;border-radius:48px;padding:11px;background:linear-gradient(135deg,#8f98a2,#2a2f36 40%,#4b535c 80%,#a3acb6);box-shadow:0 30px 60px -25px rgba(16,24,40,.45)}
+.screen{border-radius:38px;overflow:hidden;background:#fff;height:600px;position:relative;display:flex;flex-direction:column}
+.isl{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:26px;border-radius:16px;background:#05070a;z-index:3}
+.sbar{height:44px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 24px 6px;font-size:13px;font-weight:600;flex-shrink:0}
+.lock{flex:1;background:linear-gradient(160deg,#1c4a63,#0b2333 60%,#0a1a26);color:#fff;padding:20px 12px;display:flex;flex-direction:column}
+.lock .time{text-align:center;font-size:58px;font-weight:300;letter-spacing:-.03em;line-height:1;margin-top:8px}
+.lock .date{text-align:center;font-size:14px;opacity:.8;margin-bottom:20px}
+.sms{background:rgba(255,255,255,.88);color:#111;border-radius:18px;padding:12px 14px;font-size:13.5px;backdrop-filter:blur(10px);transform:translateY(-30px) scale(.96);opacity:0;transition:all .5s cubic-bezier(.2,.9,.3,1.2);margin-bottom:8px}
+.sms.show{transform:none;opacity:1}
+.sms .h{display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:3px}
+.sms .h b{color:#111;font-weight:600}
+.sms a{font-weight:600;color:#0a6cff;text-decoration:underline;cursor:pointer}
+.empty{opacity:.6;text-align:center;font-size:13px;margin-top:30px}
+/* client lk */
+.lk{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg);padding:12px}
+.lk .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600}
+.bal{background:linear-gradient(160deg,var(--dark),var(--dark2));color:#fff;border-radius:16px;padding:16px;margin-bottom:10px}
+.bal .t{font-size:11px;font-weight:600;color:var(--acc);letter-spacing:.04em}
+.bal .s{font-size:30px;font-weight:700;margin:2px 0}
+.bal p{margin:0;font-size:12px;color:#B9C6CE}
+.lkc{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px}
+.lkc h4{margin:0 0 6px;font-size:13.5px;font-weight:600}
+.hr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F1F3;font-size:12.5px}
+.hr:last-child{border:none}
+.hr small{display:block;color:var(--grey2);font-size:11px}
+.plus{color:var(--green);font-weight:600}.minus{color:var(--amber);font-weight:600}
+.pinrow{display:flex;gap:8px}
+.pinrow input{flex:1;min-width:0;width:100%;height:44px;border:1px solid var(--border);border-radius:10px;text-align:center;font-size:18px;letter-spacing:.4em}
+.pinrow button{height:44px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-weight:600;padding:0 12px;cursor:pointer}
+/* breakdown */
+.kv{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F1F3;font-size:15px}
+.kv:last-child{border:none}
+.kv span{color:var(--grey)}
+/* terminal */
+.term{width:320px;max-width:100%;margin:0 auto;background:linear-gradient(180deg,#2a2f36,#14171b);border-radius:34px;padding:18px 18px 22px;box-shadow:0 30px 60px -25px rgba(16,24,40,.5)}
+.tscr{background:#EAF7F4;border-radius:16px;min-height:200px;padding:16px;color:#0d2b27;display:flex;flex-direction:column}
+.tscr .lbl{font-size:12px;font-weight:600;color:var(--brand-d);letter-spacing:.06em;text-transform:uppercase}
+.tscr .val{font-size:26px;font-weight:600;letter-spacing:.02em;margin:8px 0;min-height:36px;word-break:break-all}
+.tscr .sub{font-size:13px;color:#3d5c57}
+.tscr .kv{font-size:14px;padding:6px 0;border-color:#cfe9e3}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.key{height:56px;border-radius:14px;border:none;background:#3a4048;color:#fff;font-size:22px;font-weight:500;cursor:pointer}
+.key:active{background:#4b525b}
+.key.ok{background:var(--brand)}.key.del{background:#5a3a3a;font-size:18px}
+.tlogo{display:flex;justify-content:space-between;color:#9aa3ad;font-size:12px;margin-bottom:12px;font-weight:500}
+/* admin */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:#fff;border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.kpi .k{font-size:12.5px;color:var(--grey)}
+.kpi .v{font-size:22px;font-weight:600;margin-top:4px;letter-spacing:-.02em}
+.kpi.dk{background:linear-gradient(160deg,var(--dark),var(--dark2));color:#fff}.kpi.dk .k{color:#B9C6CE}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #F0F1F3}
+th{font-size:12px;color:var(--grey);font-weight:500;background:#FAFBFC}
+td.n,th.n{text-align:right}
+/* overlay */
+.ov{position:fixed;inset:0;background:rgba(20,20,22,.45);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:#fff;border-radius:22px;padding:24px;width:100%;max-width:420px;box-shadow:0 30px 80px -20px rgba(0,0,0,.4)}
+.modal h3{margin:0 0 4px;font-weight:600;font-size:20px;letter-spacing:-.02em}
+.spin{width:44px;height:44px;border-radius:50%;border:4px solid var(--tint);border-top-color:var(--brand);animation:sp 1s linear infinite;margin:6px auto 14px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ptxt{text-align:center;color:var(--grey);font-size:15px;min-height:22px}
+.toast{position:fixed;left:50%;bottom:calc(64px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1D1D1F;color:#fff;border-radius:980px;padding:11px 18px;font-size:14px;font-weight:500;opacity:0;transition:all .3s;z-index:60;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.vnote{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;font-size:11.5px;color:var(--grey);background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:980px;padding:5px 10px;backdrop-filter:blur(8px)}
+.next{margin-top:18px}
+.pill.low{border-color:#F3C7C1;color:var(--red)}
+.warn{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#FDEDEB;color:#9b2f24;border-radius:14px;padding:12px 14px;font-size:14.5px;font-weight:500;margin-bottom:16px}
+.minisms{margin-top:14px;background:linear-gradient(160deg,#1c4a63,#0b2333 60%,#0a1a26);border-radius:16px;padding:12px;min-height:90px;color:#fff}
+.minisms .sms{margin-bottom:8px}.minisms .empty{margin-top:22px}
+.chart{width:100%;height:180px;display:block;margin-top:6px}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--grey);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid var(--border)}td.lowc{color:var(--red)}
+.lkc.exp{border:1px solid #F3E2BD;background:#FFFBF2}
+.bal .s{font-weight:600}
+
+.stage.s5{grid-template-columns:300px minmax(0,1fr)}.stage.s6{grid-template-columns:320px minmax(0,1fr)}
+@media (max-width:980px){.stage.s5,.stage.s6{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.stage{grid-template-columns:1fr}}
+@media (max-width:820px){
+ .layout{grid-template-columns:1fr;gap:14px;padding:12px 12px 90px}
+ .steps{position:sticky;top:57px;z-index:20;flex-direction:row;overflow-x:auto;gap:6px;padding:8px 0;margin:0 -12px;padding-left:12px;padding-right:12px;background:var(--bg);scrollbar-width:none}
+ .steps::-webkit-scrollbar{display:none}
+ .st{flex-shrink:0;padding:8px 12px 8px 8px;min-height:44px;font-size:14px;gap:8px}
+ .st .n{width:26px;height:26px}
+ .grid2{grid-template-columns:1fr}
+ .card{padding:18px}
+ .pill .lbl{display:none}
+}
+@media (max-width:820px){.vnote{position:static;display:table;margin:-70px auto 24px}}
+@media (max-width:420px){.brand .badge{display:none}.top .in{gap:8px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="../"><span class="dot"></span>ВЕРНЁМ <span class="badge">демо</span></a>
+  <span class="sp"></span>
+  <span class="pill" id="pbal" hidden><span class="lbl">Баланс партнёра: </span><b id="pbalv">0 ₽</b></span>
+  <button class="ghost" id="reset" data-t="reset">Начать заново</button>
+</div></header>
+<div class="layout">
+  <nav class="steps" id="steps" aria-label="Шаги демо"></nav>
+  <main id="view"></main>
+</div>
+<div class="vnote">Демо: всё виртуально, деньги и СМС ненастоящие</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+'use strict';
+var KEY='verniom_demo_v2',DAY=864e5,LOW=1000;
+var STEPS=[[1,'Регистрация'],[2,'Пополнение'],[3,'Сайт'],[4,'Покупка'],[5,'ЛК клиента'],[6,'Терминал'],[7,'Кабинет партнёра'],[8,'Платформа']];
+var MENU=[['☕','Капучино',290],['🥛','Латте',320],['☕','Флэт уайт',340],['🥐','Круассан',250],['🍰','Чизкейк',380],['🎁','Сертификат',3000]];
+var SEED=[
+ {name:'Кофейня «Бариста»',cb:5,clients:214,turn:486300,cbs:24315,used:9870,comm:4863,balance:18400},
+ {name:'Автомойка «Блеск»',cb:7,clients:139,turn:612800,cbs:42896,used:21050,comm:6128,balance:9600},
+ {name:'Фитнес «Пульс»',cb:10,clients:87,turn:934500,cbs:93450,used:38200,comm:9345,balance:640}
+];
+function blank(){return {partner:null,site:null,clients:{},tx:[],last:null,step:1,sms:[],off:0};}
+var S;
+try{S=JSON.parse(localStorage.getItem(KEY))||blank();}catch(e){S=blank();}
+if(!S.sms)S.sms=[];if(!S.off)S.off=0;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+function r2(n){return Math.round(n*100)/100;}
+function fmt(n){return r2(n).toLocaleString('ru-RU',{maximumFractionDigits:2})+' ₽';}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function digits(s){return String(s||'').replace(/\D/g,'');}
+function normPhone(s){var d=digits(s);if(d.length===10)d='7'+d;if(d.length===11&&d[0]==='8')d='7'+d.slice(1);return d;}
+function fmtPhone(d){d=normPhone(d);if(d.length!==11)return d;return '+7 ('+d.slice(1,4)+') '+d.slice(4,7)+'-'+d.slice(7,9)+'-'+d.slice(9,11);}
+function maskPhone(d){d=normPhone(d);return d.length===11?'+7 ••• •••-'+d.slice(7,9)+'-'+d.slice(9,11):d;}
+function vnow(){return Date.now()+S.off*DAY;}
+function now(){return new Date(vnow()).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function dstr(ts){return new Date(ts).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function dshort(ts){return new Date(ts).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});}
+function dayKey(ts){var d=new Date(ts);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+var TR={а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya'};
+function slug(s){var o=String(s).toLowerCase().split('').map(function(c){return TR[c]!==undefined?TR[c]:c;}).join('');o=o.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,30);return o||'partner';}
+function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove('show');},2600);}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function processing(lines,title){
+  var ov=document.createElement('div');ov.className='ov';ov.innerHTML='<div class="modal" style="text-align:center"><div class="spin"></div><h3>'+esc(title||'Обработка')+'</h3><div class="ptxt"></div><div class="hint" style="margin-top:10px">Демо — деньги не списываются</div></div>';
+  document.body.appendChild(ov);var p=$('.ptxt',ov),i=0;
+  return new Promise(function(res){(function nx(){if(i<lines.length){p.textContent=lines[i++];setTimeout(nx,600);}else{ov.remove();res();}})();});
+}
+function client(ph){if(!S.clients[ph])S.clients[ph]={phone:ph,balance:0,pin:'1234',accrued:0,spent:0,burned:0,hist:[],last:'',lots:[]};var c=S.clients[ph];if(!c.lots)c.lots=[];if(!c.burned)c.burned=0;return c;}
+function tx(o){o.t=now();o.ts=vnow();S.tx.unshift(o);}
+/* ---------- bonus lots / expiry ---------- */
+function addLot(c,amt){if(amt>0)c.lots.push({left:amt,exp:vnow()+S.partner.expDays*DAY});}
+function spendLots(c,u){c.lots.sort(function(a,b){return a.exp-b.exp;});var r=u;c.lots.forEach(function(l){var d=Math.min(l.left,r);l.left=r2(l.left-d);r=r2(r-d);});c.lots=c.lots.filter(function(l){return l.left>0;});}
+function nextExp(c){var l=c.lots.filter(function(l){return l.left>0;}).sort(function(a,b){return a.exp-b.exp;});if(!l.length)return null;var e=l[0].exp,s=0;l.forEach(function(x){if(dayKey(x.exp)===dayKey(e))s+=x.left;});return {amt:r2(s),exp:e};}
+function lkLink(ph){return 'verniom.github.io/c/'+ph.slice(-4);}
+function runExpiry(from){
+  if(!S.partner)return 0;var t=vnow(),p=S.partner,burnedTotal=0;
+  Object.keys(S.clients).forEach(function(k){var c=client(k);
+    // reminder 3 days before expiry (simulated as already sent when time jumps)
+    var rem=0,remExp=0;c.lots.forEach(function(l){if(!l.rem&&l.left>0&&l.exp-3*DAY<=t){l.rem=1;rem+=l.left;remExp=l.exp;}});
+    if(rem>0)S.sms.unshift({k:'rem',amt:r2(rem),exp:remExp,partner:p.name,phone:c.phone});
+    var b=0;c.lots.forEach(function(l){if(l.exp<=t){b+=l.left;l.left=0;}});c.lots=c.lots.filter(function(l){return l.left>0;});b=r2(b);
+    if(b>0){c.balance=r2(c.balance-b);c.burned=r2(c.burned+b);c.hist.unshift({t:now(),txt:'Сгорание бонусов',amount:b,d:-b});
+      p.balance=r2(p.balance+b);tx({type:'expire',phone:c.phone,amount:b,ret:b});
+      S.sms.unshift({k:'exp',amt:b,partner:p.name,phone:c.phone,days:p.expDays});burnedTotal+=b;}
+  });
+  return r2(burnedTotal);
+}
+function avail(n){if(n===1)return true;if(!S.partner)return false;if(n===2||n===3||n===7||n===8)return true;if(n===4)return !!S.site;if(n===5||n===6)return !!S.last;return false;}
+function has(type){return S.tx.some(function(t){return t.type===type;});}
+function done(n){return n===1?!!S.partner:n===2?has('topup'):n===3?!!S.site:n===4?has('purchase'):n===5?!!S.last:n===6?has('terminal'):false;}
+function go(n){if(!avail(n)){toast('Сначала пройдите предыдущие шаги');return;}S.step=n;save();render();window.scrollTo({top:0,behavior:'smooth'});}
+function renderSteps(){
+  $('#steps').innerHTML=STEPS.map(function(s){var n=s[0];return '<button class="st'+(S.step===n?' on':'')+(done(n)?' done':'')+'" data-step="'+n+'"'+(avail(n)?'':' disabled')+'><span class="n">'+(done(n)?'✓':(n===7?'◆':n===8?'★':n))+'</span>'+s[1]+'</button>';}).join('');
+  $$('#steps .st').forEach(function(b){b.onclick=function(){go(+b.dataset.step);};});
+  var on=$('#steps .st.on');if(on&&window.innerWidth<=820){try{var st=$('#steps');st.scrollLeft=on.offsetLeft-st.clientWidth/2+on.offsetWidth/2;}catch(e){}}
+  if(S.partner){$('#pbal').hidden=false;$('#pbalv').textContent=fmt(S.partner.balance);$('#pbal').classList.toggle('low',S.partner.balance<LOW);}else $('#pbal').hidden=true;
+}
+function head(eb,t,l){return '<div class="eyebrow">'+eb+'</div><h1>'+t+'</h1><p class="lead">'+l+'</p>';}
+function siteUrl(){return S.site?(S.site.mode==='own'?S.site.url:S.partner.slug+'.verniom.github.io'):'';}
+/* ---------- STEP 1 ---------- */
+function v1(){
+  var p=S.partner;
+  return head('Шаг 1','Регистрация партнёра','Подключите любой бизнес за минуту: кофейню, автомойку, салон, магазин.')+
+  '<div class="card"><form id="f1" autocomplete="off">'+
+  '<label class="f"><span>Название бизнеса</span><input class="i" name="name" required maxlength="40" value="'+esc(p?p.name:'Кофейня Зерно')+'"></label>'+
+  '<label class="f"><span>Телефон</span><input class="i" name="phone" type="tel" inputmode="tel" required value="'+esc(p?fmtPhone(p.phone):'+7 (900) 123-45-67')+'"></label>'+
+  '<div class="grid2"><label class="f"><span>Кэшбэк клиентам, %</span><input class="i" name="cb" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="'+(p?p.cb:5)+'"></label>'+
+  '<label class="f"><span>Комиссия платформы, %</span><input class="i" name="comm" type="number" inputmode="decimal" min="0" max="20" step="0.1" placeholder="1" value="'+(p?p.comm:1)+'"><div class="hint">Значение для примера — можно изменить</div></label></div>'+
+  '<button class="btn wide" data-t="create">'+(p?'Сохранить':'Создать кабинет партнёра')+'</button></form>'+
+  (p?'<div class="ok-banner">✓ Кабинет «'+esc(p.name)+'» создан</div><button class="btn sec wide" data-t="to2">Дальше: пополнить баланс →</button>':'')+'</div>';
+}
+function b1(){
+  $('#f1').onsubmit=function(e){e.preventDefault();var f=e.target;var ph=normPhone(f.phone.value);
+    if(ph.length!==11){toast('Введите телефон в формате +7…');return;}
+    var cb=parseFloat(String(f.cb.value).replace(',','.'));if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}
+    var cm=f.comm.value===''?1:parseFloat(String(f.comm.value).replace(',','.'));if(!(cm>=0&&cm<=20)){toast('Комиссия: от 0 до 20%');return;}
+    var name=f.name.value.trim()||'Кофейня Зерно';
+    if(S.partner){S.partner.name=name;S.partner.phone=ph;S.partner.cb=cb;S.partner.comm=cm;}
+    else S.partner={name:name,phone:ph,cb:cb,comm:cm,balance:0,maxShare:30,expDays:30,created:vnow()};
+    S.partner.slug=slug(name);save();toast('Кабинет партнёра создан');go(2);};
+  var t=$('[data-t=to2]');if(t)t.onclick=function(){go(2);};
+}
+/* ---------- STEP 2 ---------- */
+var amt=3000;
+function v2(){
+  return head('Шаг 2','Пополнение баланса','Из баланса платформа начисляет кэшбэк клиентам и удерживает комиссию.')+
+  '<div class="card"><div class="demo-banner">⚠︎ Демо: деньги не списываются, данные карты не нужны</div>'+
+  '<div class="chips">'+[1000,3000,5000,10000].map(function(a){return '<button class="chip'+(a===amt?' on':'')+'" data-amt="'+a+'">'+fmt(a)+'</button>';}).join('')+'</div>'+
+  '<div class="bankcard"><div class="row" style="justify-content:space-between"><span class="chipi"></span><span style="font-weight:600;letter-spacing:.04em">DEMO PAY</span></div><div class="num">4242 4242 4242 4242</div><div class="meta"><span>'+esc(S.partner.name)+'</span><span>12/29</span></div></div>'+
+  '<div class="grid2"><label class="f"><span>Номер карты</span><input class="i" value="4242 4242 4242 4242" readonly></label><div class="grid2" style="gap:10px"><label class="f"><span>Срок</span><input class="i" value="12/29" readonly></label><label class="f"><span>CVC</span><input class="i" value="•••" readonly></label></div></div>'+
+  '<button class="btn wide" data-t="pay">Оплатить '+fmt(amt)+' (демо)</button>'+
+  '<div class="hint" style="text-align:center;margin-top:10px">Текущий баланс: <b>'+fmt(S.partner.balance)+'</b></div>'+
+  (done(2)?'<button class="btn sec wide next" data-t="to3">Дальше: сайт →</button>':'')+'</div>';
+}
+function b2(){
+  $$('[data-amt]').forEach(function(b){b.onclick=function(){amt=+b.dataset.amt;render();};});
+  $('[data-t=pay]').onclick=function(){processing(['Связываемся с банком…','Подтверждение 3-D Secure…','Зачисляем на баланс…'],'Оплата '+fmt(amt)).then(function(){
+    S.partner.balance=r2(S.partner.balance+amt);tx({type:'topup',amount:amt});save();toast('Баланс пополнен на '+fmt(amt));render();});};
+  var t=$('[data-t=to3]');if(t)t.onclick=function(){go(3);};
+}
+/* ---------- STEP 3 ---------- */
+var siteMode=null;
+function v3(){
+  var s=S.site;var m=siteMode||(s&&s.mode)||null;
+  var h=head('Шаг 3','Сайт с кэшбэком','Подключите виджет к своему сайту или создайте сайт за секунды.')+
+  '<div class="grid2"><button class="opt'+(m==='own'?' on':'')+'" data-mode="own"><h3>У меня есть сайт</h3><p>Вставим виджет кэшбэка одной строкой кода</p></button>'+
+  '<button class="opt'+(m==='new'?' on':'')+'" data-mode="new"><h3>Создать сайт</h3><p>Готовая страница с меню и кнопками «Купить»</p></button></div>';
+  if(m==='own'){
+    h+='<div class="card" style="margin-top:16px"><form id="f3"><label class="f"><span>Адрес вашего сайта</span><input class="i" name="url" required value="'+esc(s&&s.mode==='own'?s.url:'www.'+S.partner.slug+'.ru')+'"></label><button class="btn wide" data-t="widget">Подключить виджет</button></form>';
+    if(s&&s.mode==='own')h+='<pre class="code">&lt;script src="https://verniom.github.io/widget.js"\n        data-partner="'+esc(S.partner.slug)+'" async&gt;&lt;/script&gt;</pre><div class="ok-banner">✓ Виджет установлен на '+esc(s.url)+' (демо)</div><button class="btn wide" data-t="to4">Открыть витрину и купить →</button>';
+    h+='</div>';
+  } else if(m==='new'){
+    h+='<div class="card" style="margin-top:16px">';
+    if(s&&s.mode==='new')h+='<div class="ok-banner">✓ Сайт опубликован: '+esc(siteUrl())+'</div><button class="btn wide" data-t="to4">Открыть сайт и купить →</button>';
+    else h+='<p style="margin:0 0 14px;color:var(--grey)">Адрес: <b style="color:var(--ink);font-weight:600">'+esc(S.partner.slug)+'.verniom.github.io</b></p><div class="log" id="log" hidden></div><button class="btn wide" data-t="publish">Создать и опубликовать</button>';
+    h+='</div>';
+  }
+  return h;
+}
+function b3(){
+  $$('[data-mode]').forEach(function(b){b.onclick=function(){siteMode=b.dataset.mode;render();};});
+  var f=$('#f3');if(f)f.onsubmit=function(e){e.preventDefault();var u=e.target.url.value.trim().replace(/^https?:\/\//,'');if(!u){toast('Введите адрес');return;}S.site={mode:'own',url:u};save();toast('Виджет установлен');render();};
+  var p=$('[data-t=publish]');if(p)p.onclick=async function(){p.disabled=true;var log=$('#log');log.hidden=false;
+    var L=['$ verniom init «'+S.partner.name+'»','→ Генерируем страницу и меню…','→ Подключаем кэшбэк '+S.partner.cb+'%…','→ Выпускаем SSL-сертификат…','→ Публикуем на '+S.partner.slug+'.verniom.github.io…','✓ Готово! Сайт опубликован'];
+    for(var i=0;i<L.length;i++){await sleep(450);var d=document.createElement('div');d.textContent=L[i];log.appendChild(d);}
+    await sleep(400);S.site={mode:'new'};save();toast('Сайт опубликован');go(4);};
+  var t=$('[data-t=to4]');if(t)t.onclick=function(){go(4);};
+}
+/* ---------- STEP 4 ---------- */
+function landing(){
+  var p=S.partner;
+  return '<div class="browser"><div class="bbar"><i></i><i></i><i></i><div class="url">🔒 '+esc(siteUrl())+'</div></div><div class="land">'+
+  '<div class="nav"><span>☕ '+esc(p.name)+'</span><small>Меню · Контакты</small></div>'+
+  '<div class="hero"><h2>Кофе, который хочется повторить</h2><p>Свежая обжарка и выпечка каждый день.</p><div class="cbk"><span class="dot"></span>Кэшбэк '+p.cb+'% с каждой покупки</div></div>'+
+  '<div class="menu">'+MENU.map(function(m,i){return '<div class="mi"><div class="em">'+m[0]+'</div><b>'+m[1]+'</b><span class="pr">'+fmt(m[2])+'</span><button data-buy="'+i+'">Купить</button></div>';}).join('')+'</div>'+
+  '<div class="foot"><span>© '+esc(p.name)+'</span><span>Кэшбэк — ВЕРНЁМ</span></div></div></div>';
+}
+function phoneLock(list,id){
+  var d=new Date(vnow());
+  return '<div class="phone"><div class="screen"><div class="isl"></div><div class="lock"><div class="time">'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+'</div><div class="date">'+d.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})+'</div><div id="'+(id||'smsbox')+'">'+
+  (list.length?list.slice(0,4).map(smsHtml).join(''):'<div class="empty">Здесь появится SMS клиенту</div>')+'</div></div></div></div>';
+}
+function smsHtml(m){
+  var b;if(m.k==='rem')b='Напоминание: '+fmt(m.amt)+' бонусов в «'+esc(m.partner)+'» сгорят '+dshort(m.exp)+'. Успейте потратить! Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
+  else if(m.k==='exp')b='Сгорели '+fmt(m.amt)+' бонусов в «'+esc(m.partner)+'» — срок действия '+m.days+' дн. истёк. Новые покупки — новый кэшбэк!';
+  else b='Вам начислен кэшбэк '+fmt(m.cb)+' в «'+esc(m.partner)+'». Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
+  return '<div class="sms show"><div class="h"><b>ВЕРНЁМ</b><span>SMS · сейчас</span></div>'+b+'</div>';}
+var lastBreak=null;
+function v4(){
+  return head('Шаг 4','Покупка на сайте','Выберите позицию и оплатите. Клиент получит SMS о кэшбэке.')+
+  '<div class="stage"><div>'+landing()+(lastBreak?breakHtml(lastBreak):'')+'</div><div id="phonecol">'+phoneLock(S.sms)+'<p class="hint" style="text-align:center">Телефон клиента (макет) · нажмите ссылку в SMS</p></div></div>';
+}
+function breakHtml(b){return '<div class="card" style="margin-top:16px"><div class="eyebrow">Расчёт по покупке</div>'+
+  '<div class="kv"><span>Покупка «'+esc(b.item)+'»</span><b>'+fmt(b.amount)+'</b></div>'+
+  '<div class="kv"><span>Кэшбэк клиенту ('+b.cbp+'%)</span><b class="plus">+'+fmt(b.cb)+'</b></div>'+
+  '<div class="kv"><span>Комиссия платформы ('+b.cp+'%)</span><b>'+fmt(b.comm)+'</b></div>'+
+  '<div class="kv"><span>Списано с баланса партнёра</span><b class="minus">−'+fmt(b.cb+b.comm)+'</b></div>'+
+  '<div class="kv"><span>Баланс партнёра</span><b>'+fmt(S.partner.balance)+'</b></div>'+
+  '<button class="btn wide next" data-t="to5">Открыть ЛК клиента →</button></div>';}
+function buyModal(i){
+  var m=MENU[i];var ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML='<div class="modal"><h3>'+m[1]+' — '+fmt(m[2])+'</h3><p class="lead" style="font-size:14.5px;margin-bottom:16px">Кэшбэк '+S.partner.cb+'% = '+fmt(m[2]*S.partner.cb/100)+' придёт на номер телефона</p>'+
+  '<form id="fb"><label class="f"><span>Телефон клиента</span><input class="i" name="phone" type="tel" inputmode="tel" required value="'+(S.last?fmtPhone(S.last):'+7 (916) 555-12-34')+'"></label>'+
+  '<button class="btn wide" data-t="buyok">Оплатить '+fmt(m[2])+' (демо)</button><button type="button" class="btn sec wide" style="margin-top:8px" data-x>Отмена</button></form></div>';
+  document.body.appendChild(ov);
+  $('[data-x]',ov).onclick=function(){ov.remove();};
+  $('#fb',ov).onsubmit=function(e){e.preventDefault();var ph=normPhone(e.target.phone.value);if(ph.length!==11){toast('Введите телефон +7…');return;}
+    var p=S.partner,cb=r2(m[2]*p.cb/100),comm=r2(m[2]*p.comm/100);
+    if(p.balance<cb+comm){ov.remove();toast('Недостаточно средств на балансе партнёра — пополните');go(2);return;}
+    ov.remove();
+    processing(['Оплата картой…','Начисляем кэшбэк…','Отправляем SMS…'],'Покупка').then(function(){
+      p.balance=r2(p.balance-cb-comm);var c=client(ph);c.balance=r2(c.balance+cb);c.accrued=r2(c.accrued+cb);c.last=now();addLot(c,cb);
+      c.hist.unshift({t:now(),txt:m[1]+' (сайт)',amount:m[2],d:cb});
+      tx({type:'purchase',phone:ph,amount:m[2],cb:cb,comm:comm,item:m[1]});
+      S.last=ph;S.sms.unshift({k:'cb',cb:cb,partner:p.name,phone:ph});
+      lastBreak={item:m[1],amount:m[2],cb:cb,comm:comm,cbp:p.cb,cp:p.comm};save();render();
+      var box=$('#smsbox');if(box){var f=box.firstElementChild;if(f){f.classList.remove('show');requestAnimationFrame(function(){requestAnimationFrame(function(){f.classList.add('show');});});}}
+      var pc=$('#phonecol');if(pc&&window.innerWidth<=980)pc.scrollIntoView({behavior:'smooth',block:'center'});
+      toast('SMS отправлено клиенту');});};
+}
+function b4(){
+  $$('[data-buy]').forEach(function(b){b.onclick=function(){buyModal(+b.dataset.buy);};});
+  bindLk();var t=$('[data-t=to5]');if(t)t.onclick=function(){go(5);};
+}
+function bindLk(){$$('[data-lk]').forEach(function(a){a.onclick=function(e){e.preventDefault();S.last=a.dataset.lk;save();go(5);};});}
+/* ---------- STEP 5 ---------- */
+function v5(){
+  var c=client(S.last),p=S.partner,ne=nextExp(c);
+  return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс, история, срок бонусов и PIN для терминала.')+
+  '<div class="stage s5"><div><div class="phone"><div class="screen"><div class="isl"></div><div class="sbar"><span>9:41</span><span>●●● ▮</span></div><div class="lk">'+
+  '<div class="hd"><span><span class="dot"></span> '+esc(p.name)+'</span><span style="font-size:12px;color:var(--grey)">'+esc(maskPhone(c.phone))+'</span></div>'+
+  '<div class="bal"><div class="t">БОНУСНЫЙ СЧЁТ</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · 1 бонус = 1 ₽</p></div>'+
+  '<div class="lkc exp"><h4>Срок действия</h4>'+(ne?'<div class="hr"><div>Сгорят '+dstr(ne.exp)+'<small>Бонусы действуют '+p.expDays+' дн.</small></div><div class="minus">'+fmt(ne.amt)+'</div></div>':'<div class="hint">Нет бонусов со сроком · действуют '+p.expDays+' дн.</div>')+'</div>'+
+  '<div class="lkc"><h4>История</h4>'+(c.hist.length?c.hist.slice(0,6).map(function(h){return '<div class="hr"><div>'+esc(h.txt)+'<small>'+h.t+' · '+fmt(h.amount)+'</small></div><div class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</div></div>';}).join(''):'<div class="hint">Пока пусто</div>')+'</div>'+
+  '<div class="lkc"><h4>PIN для оплаты в терминале</h4><div class="pinrow"><input id="pin" inputmode="numeric" maxlength="4" value="'+esc(c.pin)+'" aria-label="PIN"><button data-t="pin">Сохранить</button></div><div class="hint">По умолчанию 1234</div></div>'+
+  '</div></div></div></div>'+
+  '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div><div class="kv"><span>Сгорело</span><b>'+fmt(c.burned)+'</b></div>'+
+  '<p class="hint">Вход по ссылке из SMS, без пароля. Бонусами можно оплатить до '+p.maxShare+'% чека в терминале по телефону и PIN.</p>'+
+  '<button class="btn wide next" data-t="to6">Оплатить бонусами в терминале →</button><button class="btn sec wide" style="margin-top:8px" data-t="back4">Купить ещё на сайте</button></div></div>';
+}
+function b5(){
+  $('[data-t=pin]').onclick=function(){var v=digits($('#pin').value);if(v.length!==4){toast('PIN — 4 цифры');return;}client(S.last).pin=v;save();toast('PIN сохранён');};
+  $('[data-t=to6]').onclick=function(){go(6);};$('[data-t=back4]').onclick=function(){go(4);};
+}
+/* ---------- STEP 6 ---------- */
+var T={st:'phone',ph:'',pin:'',amt:'',res:null};
+function calcT(c,a){var p=S.partner,cap=r2(a*p.maxShare/100),u=r2(Math.min(c.balance,cap)),pay=r2(a-u);return {cap:cap,u:u,pay:pay,cb:r2(pay*p.cb/100),comm:r2(pay*p.comm/100)};}
+function tscreen(){
+  var c=S.clients[normPhone(T.ph)];
+  if(T.st==='phone')return '<div class="lbl">Телефон клиента</div><div class="val">'+(T.ph?esc(T.ph):'<span style="opacity:.35">+7…</span>')+'</div><div class="sub">'+(S.last?'OK без ввода — клиент '+esc(maskPhone(S.last)):'Введите номер')+'</div>';
+  if(T.st==='pin')return '<div class="lbl">PIN клиента</div><div class="val">'+'•'.repeat(T.pin.length)+'<span style="opacity:.25">'+'•'.repeat(4-T.pin.length)+'</span></div><div class="sub">'+esc(maskPhone(T.ph))+'</div>';
+  if(T.st==='amt')return '<div class="lbl">Сумма покупки</div><div class="val">'+(T.amt||'0')+' ₽</div><div class="sub">Бонусов у клиента: '+fmt(c?c.balance:0)+' · до '+S.partner.maxShare+'% чека</div>';
+  if(T.st==='confirm'){var a=+T.amt,k=calcT(c,a);
+    return '<div class="lbl">Подтверждение</div><div class="kv"><span>Сумма</span><b>'+fmt(a)+'</b></div><div class="kv"><span>Бонусами (макс. '+S.partner.maxShare+'% = '+fmt(k.cap)+')</span><b>−'+fmt(k.u)+'</b></div><div class="kv"><span>Картой к оплате</span><b>'+fmt(k.pay)+'</b></div><div class="kv"><span>Новый кэшбэк</span><b>+'+fmt(k.cb)+'</b></div><div class="sub" style="margin-top:6px">OK — оплатить</div>';}
+  if(T.st==='done'){var r=T.res;return '<div class="lbl">Готово</div><div class="val" style="color:var(--green)">✓ Оплачено</div><div class="sub">Списано бонусов: '+fmt(r.used)+'<br>Картой: '+fmt(r.pay)+'<br>Начислено: +'+fmt(r.cb)+'<br>Баланс клиента: '+fmt(r.bal)+'</div><div class="sub" style="margin-top:8px">OK — новая операция</div>';}
+  return '';
+}
+function v6(){
+  var c=S.clients[S.last],p=S.partner;
+  return head('Шаг 6','Оплата бонусами в терминале','Клиент называет телефон и PIN — бонусы списываются прямо на кассе (до '+p.maxShare+'% чека).')+
+  '<div class="stage s6"><div><div class="term"><div class="tlogo"><span>● ВЕРНЁМ POS</span><span>'+esc(p.name)+'</span></div><div class="tscr" id="tscr">'+tscreen()+'</div>'+
+  '<div class="keys">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="key'+(k==='ok'?' ok':k==='del'?' del':'')+'" data-k="'+k+'">'+(k==='ok'?'OK':k==='del'?'⌫':k)+'</button>';}).join('')+'</div></div><p class="hint" style="text-align:center">Терминал (макет) · можно печатать с клавиатуры</p></div>'+
+  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Партнёр «'+esc(p.name)+'»</span><b>'+fmt(p.balance)+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека</div></div>'+
+  '<div class="card"><div class="eyebrow">История операций</div>'+(S.tx.filter(function(t){return t.type==='purchase'||t.type==='terminal';}).slice(0,5).map(function(t){return '<div class="kv"><span>'+(t.type==='terminal'?'Терминал'+(t.used?' · бонусами −'+fmt(t.used):''):'Сайт: '+esc(t.item))+' · '+esc(maskPhone(t.phone))+'</span><b>'+fmt(t.amount)+'</b></div>';}).join('')||'<div class="hint">Пока нет</div>')+
+  (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div></div>';
+}
+function tkey(k){
+  if(T.st==='done'){if(k==='ok'){T={st:'phone',ph:'',pin:'',amt:'',res:null};}refreshT();return;}
+  if(k==='del'){if(T.st==='phone')T.ph=T.ph.slice(0,-1);else if(T.st==='pin')T.pin=T.pin.slice(0,-1);else if(T.st==='amt')T.amt=T.amt.slice(0,-1);else if(T.st==='confirm')T.st='amt';refreshT();return;}
+  if(k==='ok'){
+    if(T.st==='phone'){var ph=normPhone(T.ph||S.last||'');if(!S.clients[ph]){toast('Клиент не найден — сначала покупка на сайте');return;}T.ph=fmtPhone(ph);T.st='pin';}
+    else if(T.st==='pin'){var c=S.clients[normPhone(T.ph)];if(T.pin!==c.pin){toast('Неверный PIN');T.pin='';refreshT();return;}T.st='amt';}
+    else if(T.st==='amt'){if(!(+T.amt>0)){toast('Введите сумму');return;}T.st='confirm';}
+    else if(T.st==='confirm'){payT();return;}
+    refreshT();return;
+  }
+  if(T.st==='phone'&&digits(T.ph).length<11)T.ph+=k;
+  else if(T.st==='pin'&&T.pin.length<4)T.pin+=k;
+  else if(T.st==='amt'&&T.amt.length<6&&!(T.amt===''&&k==='0'))T.amt+=k;
+  refreshT();
+}
+function payT(){
+  var ph=normPhone(T.ph),c=client(ph),p=S.partner,a=+T.amt,k=calcT(c,a);
+  if(p.balance<k.cb+k.comm){toast('Недостаточно средств у партнёра — пополните баланс');return;}
+  processing(['Проверяем PIN…','Списываем бонусы…','Оплата картой…'],'Терминал').then(function(){
+    spendLots(c,k.u);addLot(c,k.cb);
+    c.balance=r2(c.balance-k.u+k.cb);c.spent=r2(c.spent+k.u);c.accrued=r2(c.accrued+k.cb);c.last=now();
+    if(k.u>0)c.hist.unshift({t:now(),txt:'Оплата бонусами (терминал)',amount:a,d:-k.u});
+    if(k.cb>0)c.hist.unshift({t:now(),txt:'Кэшбэк (терминал)',amount:k.pay,d:k.cb});
+    p.balance=r2(p.balance-k.cb-k.comm);
+    tx({type:'terminal',phone:ph,amount:a,used:k.u,paid:k.pay,cb:k.cb,comm:k.comm});S.last=ph;
+    T.res={used:k.u,pay:k.pay,cb:k.cb,bal:c.balance};T.st='done';save();render();toast('Оплачено: бонусами '+fmt(k.u));});
+}
+function refreshT(){var s=$('#tscr');if(s)s.innerHTML=tscreen();}
+function b6(){
+  $$('[data-k]').forEach(function(b){b.onclick=function(){tkey(b.dataset.k);};});
+  var t=$('[data-t=to7]');if(t)t.onclick=function(){go(7);};
+}
+document.addEventListener('keydown',function(e){if(S.step!==6||/input|textarea/i.test((e.target||{}).tagName||''))return;if(/^\d$/.test(e.key))tkey(e.key);else if(e.key==='Backspace')tkey('del');else if(e.key==='Enter')tkey('ok');});
+/* ---------- STEP 7: partner cabinet ---------- */
+function stats(){var s={acc:0,used:0,comm:0,top:0,turn:0,burn:0};S.tx.forEach(function(t){if(t.type==='topup')s.top+=t.amount;else if(t.type==='expire')s.burn+=t.amount;else{s.acc+=t.cb||0;s.used+=t.used||0;s.comm+=t.comm||0;s.turn+=t.amount||0;}});for(var k in s)s[k]=r2(s[k]);return s;}
+function typeName(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Терминал':t.type==='expire'?'Сгорание бонусов':'Сайт · '+t.item;}
+function chart(){
+  var act=S.tx.filter(function(t){return t.cb||t.used;}),last=act.length?act[0].ts:vnow(),days=[];
+  for(var i=6;i>=0;i--){var ts=last-i*DAY;days.push({k:dayKey(ts),l:dshort(ts),a:0,u:0});}
+  S.tx.forEach(function(t){var d=days.filter(function(x){return x.k===dayKey(t.ts);})[0];if(d){d.a+=t.cb||0;d.u+=t.used||0;}});
+  var mx=Math.max.apply(null,days.map(function(d){return Math.max(d.a,d.u);}).concat([1])),W=700,H=180,bw=W/7;
+  var g=days.map(function(d,i){var x=i*bw,ha=d.a/mx*(H-40),hu=d.u/mx*(H-40);
+    return '<rect x="'+(x+bw*.2)+'" y="'+(H-22-ha)+'" width="'+(bw*.28)+'" height="'+ha+'" rx="4" fill="#0FAE9E"/><rect x="'+(x+bw*.52)+'" y="'+(H-22-hu)+'" width="'+(bw*.28)+'" height="'+hu+'" rx="4" fill="#E0B254"/><text x="'+(x+bw/2)+'" y="'+(H-5)+'" text-anchor="middle" font-size="12" fill="#86868B">'+d.l+'</text>';}).join('');
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="График по дням"><line x1="0" x2="'+W+'" y1="'+(H-22)+'" y2="'+(H-22)+'" stroke="#E4E7EC"/>'+g+'</svg><div class="legend"><span><i style="background:#0FAE9E"></i>Начислено</span><span><i style="background:#E0B254"></i>Оплачено бонусами</span></div>';
+}
+function v7(){
+  var p=S.partner,cl=Object.keys(S.clients).map(function(k){return S.clients[k];}),s=stats();
+  var notes=S.sms.filter(function(m){return m.k==='rem'||m.k==='exp';});
+  return head('Кабинет партнёра','«'+esc(p.name)+'»','Клиенты, начисления, списания, баланс и правила программы.')+
+  (p.balance<LOW?'<div class="warn">⚠︎ Низкий баланс: '+fmt(p.balance)+'. При нуле кэшбэк перестанет начисляться. <button class="btn" data-t="topup" style="min-height:40px;padding:0 16px;font-size:14px">Пополнить</button></div>':'')+
+  '<div class="kpis"><div class="kpi dk"><div class="k">Баланс</div><div class="v">'+fmt(p.balance)+'</div></div><div class="kpi"><div class="k">Клиентов</div><div class="v">'+cl.length+'</div></div><div class="kpi"><div class="k">Начислено бонусов</div><div class="v">'+fmt(s.acc)+'</div></div><div class="kpi"><div class="k">Оплачено бонусами</div><div class="v">'+fmt(s.used)+'</div></div><div class="kpi"><div class="k">Комиссия платформы</div><div class="v">'+fmt(s.comm)+'</div></div></div>'+
+  '<div class="grid2"><div class="card"><div class="eyebrow">Настройки программы</div><form id="f7">'+
+   '<label class="f"><span>Кэшбэк клиентам, %</span><input class="i" name="cb" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="'+p.cb+'"></label>'+
+   '<label class="f"><span>Максимум чека бонусами, %</span><input class="i" name="ms" type="number" inputmode="numeric" min="0" max="100" value="'+p.maxShare+'"></label>'+
+   '<label class="f"><span>Бонусы сгорают через, дней</span><input class="i" name="ed" type="number" inputmode="numeric" min="1" max="730" value="'+p.expDays+'"></label>'+
+   '<button class="btn wide" data-t="savecfg">Сохранить настройки</button></form></div>'+
+  '<div class="card"><div class="eyebrow">Сгорание бонусов</div><p style="margin:0 0 10px">Правило: бонусы сгорают через <b>'+p.expDays+' дн.</b> после начисления. За 3 дня клиенту приходит SMS-напоминание.</p>'+
+   '<div class="kv"><span>Дата в демо</span><b data-t="vdate">'+dstr(vnow())+(S.off?' (+'+S.off+' дн.)':'')+'</b></div><div class="kv"><span>Сгорело всего</span><b>'+fmt(s.burn)+'</b></div>'+
+   '<button class="btn sec wide next" data-t="ff">⏩ Перемотать время +30 дней</button>'+
+   '<div class="minisms">'+(notes.length?notes.slice(0,2).map(smsHtml).join(''):'<div class="empty">Здесь появятся SMS о сгорании</div>')+'</div></div></div>'+
+  '<div class="card"><div class="row" style="justify-content:space-between"><div class="eyebrow" style="margin:0">По дням</div></div>'+chart()+'</div>'+
+  '<div class="card"><div class="eyebrow">Клиенты</div><div class="tw"><table><tr><th>Телефон</th><th class="n">Баланс</th><th class="n">Начислено</th><th class="n">Потрачено</th><th class="n">Сгорело</th><th>Последняя операция</th></tr>'+
+  (cl.length?cl.map(function(c){return '<tr><td>'+esc(maskPhone(c.phone))+'</td><td class="n"><b>'+fmt(c.balance)+'</b></td><td class="n plus">+'+fmt(c.accrued)+'</td><td class="n minus">−'+fmt(c.spent)+'</td><td class="n">'+fmt(c.burned||0)+'</td><td>'+esc(c.last)+'</td></tr>';}).join(''):'<tr><td colspan="6" class="hint">Клиентов пока нет</td></tr>')+'</table></div></div>'+
+  '<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><div class="eyebrow" style="margin:0">Операции</div><button class="btn sec" data-t="csv" style="min-height:42px;font-size:14px">⤓ Excel</button></div><div class="tw"><table><tr><th>Время</th><th>Тип</th><th>Клиент</th><th class="n">Сумма</th><th class="n">Кэшбэк</th><th class="n">Бонусами</th><th class="n">Комиссия</th></tr>'+
+  (S.tx.length?S.tx.slice(0,40).map(function(t){return '<tr><td>'+t.t+'</td><td>'+esc(typeName(t))+'</td><td>'+(t.phone?esc(maskPhone(t.phone)):'—')+'</td><td class="n">'+fmt(t.amount)+'</td><td class="n">'+(t.cb?'+'+fmt(t.cb):'—')+'</td><td class="n">'+(t.used?'−'+fmt(t.used):'—')+'</td><td class="n">'+(t.comm?fmt(t.comm):'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="hint">Операций пока нет</td></tr>')+'</table></div>'+
+  '<p class="hint">Пополнено всего: '+fmt(s.top)+'. Сгоревшие бонусы возвращаются на баланс партнёра. Комиссия '+p.comm+'% — значение для примера.</p></div>';
+}
+function csv(){
+  var q=function(v){v=String(v==null?'':v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;},n=function(x){return x?String(r2(x)).replace('.',','):'0';};
+  var L=[['ВЕРНЁМ — демо-выгрузка',S.partner.name],[],['Операции'],['Время','Тип','Клиент','Сумма','Кэшбэк','Бонусами','Комиссия']];
+  S.tx.forEach(function(t){L.push([t.t,typeName(t),t.phone?maskPhone(t.phone):'',n(t.amount),n(t.cb),n(t.used),n(t.comm)]);});
+  L.push([],['Клиенты'],['Телефон','Баланс','Начислено','Потрачено','Сгорело']);
+  Object.keys(S.clients).forEach(function(k){var c=S.clients[k];L.push([maskPhone(c.phone),n(c.balance),n(c.accrued),n(c.spent),n(c.burned)]);});
+  L.push([],['Баланс партнёра',n(S.partner.balance)]);
+  var blob=new Blob(['\ufeff'+L.map(function(r){return r.map(q).join(';');}).join('\r\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='verniom-demo-'+S.partner.slug+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);toast('Файл CSV для Excel скачан');
+}
+function b7(){
+  var tp=$('[data-t=topup]');if(tp)tp.onclick=function(){go(2);};
+  $('#f7').onsubmit=function(e){e.preventDefault();var f=e.target,cb=parseFloat(String(f.cb.value).replace(',','.')),ms=parseInt(f.ms.value,10),ed=parseInt(f.ed.value,10);
+    if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}if(!(ms>=0&&ms<=100)){toast('Доля бонусами: 0–100%');return;}if(!(ed>=1&&ed<=730)){toast('Срок: 1–730 дней');return;}
+    var p=S.partner;p.cb=cb;p.maxShare=ms;p.expDays=ed;save();render();toast('Настройки сохранены');};
+  $('[data-t=ff]').onclick=function(){S.off+=30;var b=runExpiry();save();render();toast(b>0?'Прошло 30 дней: сгорело '+fmt(b):'Прошло 30 дней — сгоревших бонусов нет');};
+  $('[data-t=csv]').onclick=csv;bindLk();
+}
+/* ---------- STEP 8: platform admin ---------- */
+function v8(){
+  var p=S.partner,s=stats(),me={name:p.name+' (вы)',cb:p.cb,clients:Object.keys(S.clients).length,turn:s.turn,cbs:s.acc,used:s.used,comm:s.comm,balance:p.balance,me:1};
+  var all=[me].concat(SEED),T0={clients:0,turn:0,cbs:0,used:0,comm:0,balance:0};
+  all.forEach(function(x){for(var k in T0)T0[k]+=x[k];});
+  return head('Владелец платформы','Админка ВЕРНЁМ','Все партнёры, обороты и заработанная комиссия платформы.')+
+  '<div class="kpis"><div class="kpi dk"><div class="k">Комиссия платформы</div><div class="v" data-t="pcomm">'+fmt(T0.comm)+'</div></div><div class="kpi"><div class="k">Партнёров</div><div class="v">'+all.length+'</div></div><div class="kpi"><div class="k">Клиентов</div><div class="v">'+T0.clients.toLocaleString('ru-RU')+'</div></div><div class="kpi"><div class="k">Оборот партнёров</div><div class="v">'+fmt(T0.turn)+'</div></div><div class="kpi"><div class="k">Начислено кэшбэка</div><div class="v">'+fmt(T0.cbs)+'</div></div></div>'+
+  '<div class="card"><div class="eyebrow">Партнёры</div><div class="tw"><table><tr><th>Партнёр</th><th class="n">Кэшбэк</th><th class="n">Клиенты</th><th class="n">Оборот</th><th class="n">Начислено</th><th class="n">Бонусами</th><th class="n">Комиссия</th><th class="n">Баланс</th></tr>'+
+  all.map(function(x){return '<tr'+(x.me?' class="me"':'')+'><td>'+esc(x.name)+'</td><td class="n">'+x.cb+'%</td><td class="n">'+x.clients+'</td><td class="n">'+fmt(x.turn)+'</td><td class="n">'+fmt(x.cbs)+'</td><td class="n">'+fmt(x.used)+'</td><td class="n"><b>'+fmt(x.comm)+'</b></td><td class="n'+(x.balance<LOW?' lowc':'')+'">'+fmt(x.balance)+(x.balance<LOW?' ⚠︎':'')+'</td></tr>';}).join('')+
+  '<tr class="tot"><td>Итого</td><td></td><td class="n">'+T0.clients+'</td><td class="n">'+fmt(T0.turn)+'</td><td class="n">'+fmt(T0.cbs)+'</td><td class="n">'+fmt(T0.used)+'</td><td class="n">'+fmt(T0.comm)+'</td><td class="n">'+fmt(T0.balance)+'</td></tr></table></div>'+
+  '<p class="hint">Три партнёра — выдуманные данные для примера. Ваш партнёр обновляется в реальном времени.</p></div>';
+}
+function b8(){}
+/* ---------- render ---------- */
+var V={1:[v1,b1],2:[v2,b2],3:[v3,b3],4:[v4,b4],5:[v5,b5],6:[v6,b6],7:[v7,b7],8:[v8,b8]};
+function render(){if(!avail(S.step))S.step=1;renderSteps();var v=V[S.step];$('#view').innerHTML=v[0]();v[1]();}
+$('#reset').onclick=function(){if(!confirm('Сбросить демо и начать заново?'))return;S=blank();T={st:'phone',ph:'',pin:'',amt:'',res:null};lastBreak=null;siteMode=null;save();render();toast('Демо сброшено');};
+window.__demo={state:function(){return S;}};
+if(runExpiry())save();
+render();
+})();
+</script>
+<script>
+/* Hidden counter (abacus, namespace "verniom"): demo-visits each load, demo-uniques once per browser */
+(function(){try{var A='https://abacus.jasoncameron.dev/hit/verniom/';function h(k){try{fetch(A+k,{mode:'cors',keepalive:true,cache:'no-store'}).catch(function(){});}catch(e){}}
+h('demo-visits');try{if(!localStorage.getItem('verniom_demo_u')){localStorage.setItem('verniom_demo_u','1');h('demo-uniques');}}catch(e){}}catch(e){}})();
+</script>
+</body>
+</html>
