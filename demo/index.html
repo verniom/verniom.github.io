@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>ВЕРНЁМ — интерактивное демо</title>
-<meta name="description" content="Виртуальное демо кэшбэк-платформы ВЕРНЁМ: регистрация партнёра, сайт, покупка, кэшбэк, ЛК клиента, терминал.">
+<meta name="description" content="Виртуальное демо кэшбэк-платформы ВЕРНЁМ: регистрация партнёра, сайт, покупка, кэшбэк, ЛК клиента, планшет у стойки.">
 <meta property="og:title" content="ВЕРНЁМ — интерактивное демо">
 <meta property="og:image" content="https://verniom.github.io/og.jpg">
 <meta property="og:url" content="https://verniom.github.io/demo/">
@@ -280,6 +280,34 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 .bal .s{font-weight:600}
 
 .stage.s5{grid-template-columns:300px minmax(0,1fr)}.stage.s6{grid-template-columns:320px minmax(0,1fr)}
+.tablet{max-width:1024px;margin:0 auto 10px;background:#1D1D1F;border-radius:30px;padding:14px;box-shadow:0 30px 60px -28px rgba(16,24,40,.45)}
+.tscreen{background:#FAFAFA;border-radius:18px;aspect-ratio:16/10;overflow:hidden;display:flex;flex-direction:column;color:var(--ink)}
+.ttop{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fff;border-bottom:1px solid #EEE;font-size:15px}.tmeta{font-size:13px;color:var(--grey)}
+.tlink{background:none;border:none;color:var(--brand-d);font:inherit;cursor:pointer;padding:0}
+.tphone{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:20px 36px}
+.tph-l h3{font-size:26px;margin:0 0 8px;font-weight:600;letter-spacing:-.01em}.tph-l p{color:var(--grey);margin:0 0 18px;font-size:15px}
+.tdisp{font-size:28px;font-weight:600;letter-spacing:.02em;padding:14px 18px;background:#fff;border-radius:16px;border:1px solid #EAEAEA}.tdisp span{color:#C7C7CC}.tdisp.code{letter-spacing:.3em;text-align:center}
+.tquick{margin-top:12px;border:1px solid var(--brand);background:var(--tint);color:var(--brand-d);border-radius:980px;padding:10px 16px;font:inherit;font-size:14px;cursor:pointer}
+.tpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:330px;margin-left:auto}
+.tk{height:58px;border-radius:16px;border:none;background:#fff;box-shadow:0 1px 0 #E5E5EA;font:inherit;font-size:22px;cursor:pointer}.tk.ok{background:var(--brand);color:#fff}
+.tcab{flex:1;display:grid;grid-template-columns:250px 1fr;min-height:0}
+.tside{background:#fff;border-right:1px solid #EEE;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.thello{font-size:20px;font-weight:600}.tbal{background:var(--tint);border-radius:16px;padding:12px}.tbal small,.thist small{display:block;font-size:12px;color:var(--grey)}.tbal b{display:block;font-size:28px;font-weight:700;color:var(--brand-d);margin:2px 0}.tbal span{font-size:11.5px;color:var(--grey)}
+.thist div{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;padding:6px 0;border-bottom:1px solid #F2F2F2}.thist b{font-weight:600;white-space:nowrap}
+.tmenu{display:flex;flex-direction:column;min-height:0;padding:14px 16px}.tmh{font-size:18px;font-weight:600;margin-bottom:10px}
+.tgrid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;overflow:auto;align-content:start}
+.tcard{background:#fff;border-radius:16px;border:1.5px solid transparent;position:relative}.tcard.on{border-color:var(--brand)}
+.tadd{width:100%;background:none;border:none;font:inherit;text-align:left;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}.tadd .pic{width:56px;height:56px}
+.tn{font-size:14px;font-weight:500;line-height:1.25}.td{font-size:11.5px;color:var(--grey)}.tp{font-size:14px;font-weight:600;margin-top:2px}
+.tq{position:absolute;right:8px;top:8px;display:flex;align-items:center;gap:8px;background:var(--tint);border-radius:980px;padding:3px}.tq button{width:28px;height:28px;border-radius:50%;border:none;background:#fff;font-size:16px;cursor:pointer}.tq b{min-width:12px;text-align:center}
+.tbar{margin-top:10px;display:flex;justify-content:space-between;align-items:center;border:none;border-radius:980px;background:var(--brand);color:#fff;font:inherit;font-size:15px;padding:14px 22px;cursor:pointer}.tbar:disabled{background:#D1D1D6;cursor:default}
+.tco{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:18px 26px;overflow:auto}.tco h3{margin:0 0 8px;font-size:20px;font-weight:600}
+.tuse{background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:8px}.tuse small{font-size:12px;color:var(--grey)}.tuse-row{display:flex;align-items:center;justify-content:space-between;margin:6px 0}.tuse-row b{font-size:24px;font-weight:700;color:var(--brand-d)}
+.tuse-row button,.tuse-q button{border:1px solid #E5E5EA;background:#fff;border-radius:980px;font:inherit;cursor:pointer}.tuse-row button{width:40px;height:40px;font-size:20px}.tuse input{width:100%;accent-color:#0FAE9E}.tuse-q{display:flex;gap:8px}.tuse-q button{padding:6px 12px;font-size:13px}
+.tdone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}.tok{width:64px;height:64px;border-radius:50%;background:var(--tint);color:var(--brand-d);font-size:32px;display:flex;align-items:center;justify-content:center}
+.tdone h3{font-size:26px;margin:12px 0 4px;font-weight:600}.tdone p{color:var(--grey);margin:0 0 14px}.tdone-k{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.tdone-k div{background:#fff;border-radius:14px;padding:10px 14px}.tdone-k small{display:block;font-size:12px;color:var(--grey)}.tdone-k b{font-size:17px}
+@media (max-width:820px){.tablet{padding:6px;border-radius:22px;margin:0 -4px 10px}.tscreen{aspect-ratio:auto;border-radius:16px}.tphone,.tco{grid-template-columns:1fr;padding:16px;gap:14px}.tpad{margin:0 auto;max-width:none}.tph-l h3{font-size:22px}
+ .tcab{grid-template-columns:1fr}.tside{border-right:none;border-bottom:1px solid #EEE}.thist{display:none}.tgrid{grid-template-columns:repeat(2,1fr);overflow:visible}.tdone-k{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:980px){.stage.s5,.stage.s6{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.stage{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:820px){
  .layout{grid-template-columns:1fr;gap:14px;padding:12px 12px 90px}
@@ -314,7 +342,7 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 (function(){
 'use strict';
 var KEY='verniom_demo_v2',DAY=864e5,LOW=1000;
-var STEPS=[[1,'Регистрация'],[2,'Пополнение'],[3,'Сайт'],[4,'Покупка'],[5,'ЛК клиента'],[6,'Терминал'],[7,'Кабинет партнёра']];
+var STEPS=[[1,'Регистрация'],[2,'Пополнение'],[3,'Сайт'],[4,'Покупка'],[5,'ЛК клиента'],[6,'Планшет у стойки'],[7,'Кабинет партнёра']];
 var ADDR='ул. Братиславская, 14, Москва',HOURS='Ежедневно 8:00–22:00';
 var OTHER0={name:'Автомойка «Блеск»',bal:120,exp:'15.12.2026'},OTHER1={name:'kofa',bal:120,exp:'15.12.2026'},OTHER=OTHER0;
 function coffee(n){n=String(n||'').trim()||'kofa';return /кофейн|кафе|cafe|coffee|кофе(?![а-яё])/i.test(n)?n:'кофейня '+n;}
@@ -644,74 +672,94 @@ function v5(){
   '<div class="bal"><div class="t nett">'+logo(26)+esc(p.name)+'</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · только здесь · бессрочно</p></div>'+
   '<div class="bal2"><div class="nett">'+initAva(OTHER.name,30)+'<div><div class="t">'+esc(OTHER.name)+'</div><small>только в этой сети · бессрочно</small></div></div><b>'+fmt(OTHER.bal)+'</b></div>'+
   '<div class="lkc"><h4>История</h4>'+(c.hist.length?c.hist.slice(0,6).map(function(h){return '<div class="hr"><div>'+esc(h.txt)+'<small>'+h.t+' · '+fmt(h.amount)+'</small></div><div class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</div></div>';}).join(''):'<div class="hint">Пока пусто</div>')+'</div>'+
-  '<div class="lkc"><h4>PIN для оплаты в терминале</h4><div class="pinrow"><input id="pin" inputmode="numeric" maxlength="4" value="'+esc(c.pin)+'" aria-label="PIN"><button data-t="pin">Сохранить</button></div><div class="hint">По умолчанию 1234</div></div>'+
+  '<div class="lkc"><h4>PIN для заказа на планшете</h4><div class="pinrow"><input id="pin" inputmode="numeric" maxlength="4" value="'+esc(c.pin)+'" aria-label="PIN"><button data-t="pin">Сохранить</button></div><div class="hint">По умолчанию 1234</div></div>'+
   '</div></div></div></div>'+
   '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(p.name))+'</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(OTHER.name))+'</span><b>'+fmt(OTHER.bal)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div>'+
   '<div class="model"><b>Бонусы — внутри сети.</b> Кэшбэк из '+esc(qn(p.name))+' тратится только в '+esc(qn(p.name))+', бонусы '+esc(qn(OTHER.name))+' — только там. В одном кабинете клиент видит балансы всех сетей.</div>'+'<p class="hint">Вход по ссылке из SMS, без пароля. Бонусами можно оплатить до '+p.maxShare+'% чека в терминале по телефону и PIN.</p>'+
-  '<button class="btn wide next" data-t="to6">Оплатить бонусами в терминале →</button><button class="btn sec wide" style="margin-top:8px" data-t="back4">Купить ещё на сайте</button></div></div>';
+  '<button class="btn wide next" data-t="to6">Заказать на планшете у стойки →</button><button class="btn sec wide" style="margin-top:8px" data-t="back4">Купить ещё на сайте</button></div></div>';
 }
 function b5(){
   $('[data-t=pin]').onclick=function(){var v=digits($('#pin').value);if(v.length!==4){toast('PIN — 4 цифры');return;}client(S.last).pin=v;save();toast('PIN сохранён');};
   $('[data-t=to6]').onclick=function(){go(6);};$('[data-t=back4]').onclick=function(){go(4);};
 }
-/* ---------- STEP 6 ---------- */
-var T={st:'phone',ph:'',pin:'',amt:'',res:null};
-function calcT(c,a){var p=S.partner,cap=r2(a*p.maxShare/100),u=r2(Math.min(c.balance,cap)),pay=r2(a-u);return {cap:cap,u:u,pay:pay,cb:r2(pay*p.cb/100),comm:r2(pay*p.comm/100)};}
-function tscreen(){
-  var c=S.clients[normPhone(T.ph)];
-  if(T.st==='phone')return '<div class="lbl">Телефон клиента</div><div class="val">'+(T.ph?esc(T.ph):'<span style="opacity:.35">+7…</span>')+'</div><div class="sub">'+(S.last?'OK без ввода — клиент '+esc(maskPhone(S.last)):'Введите номер')+'</div>';
-  if(T.st==='pin')return '<div class="lbl">PIN клиента</div><div class="val">'+'•'.repeat(T.pin.length)+'<span style="opacity:.25">'+'•'.repeat(4-T.pin.length)+'</span></div><div class="sub">'+esc(maskPhone(T.ph))+'</div>';
-  if(T.st==='amt')return '<div class="lbl">Сумма покупки</div><div class="val">'+(T.amt||'0')+' ₽</div><div class="sub">Бонусов у клиента: '+fmt(c?c.balance:0)+' · до '+S.partner.maxShare+'% чека</div>';
-  if(T.st==='confirm'){var a=+T.amt,k=calcT(c,a);
-    return '<div class="lbl">Подтверждение</div><div class="kv"><span>Сумма</span><b>'+fmt(a)+'</b></div><div class="kv"><span>Бонусами (макс. '+S.partner.maxShare+'% = '+fmt(k.cap)+')</span><b>−'+fmt(k.u)+'</b></div><div class="kv"><span>Картой к оплате</span><b>'+fmt(k.pay)+'</b></div><div class="kv"><span>Новый кэшбэк</span><b>+'+fmt(k.cb)+'</b></div><div class="sub" style="margin-top:6px">OK — оплатить</div>';}
-  if(T.st==='done'){var r=T.res;return '<div class="lbl">Готово</div><div class="val" style="color:var(--green)">✓ Оплачено</div><div class="sub">Списано бонусов: '+fmt(r.used)+'<br>Картой: '+fmt(r.pay)+'<br>Начислено: +'+fmt(r.cb)+'<br>Баланс клиента: '+fmt(r.bal)+'</div><div class="sub" style="margin-top:8px">OK — новая операция</div>';}
-  return '';
+/* ---------- STEP 6: self-service tablet at the counter ---------- */
+var TB={st:'phone',ph:'',cart:{},use:null,code:'',order:null};
+function tbReset(){TB={st:'phone',ph:'',cart:{},use:null,code:'',order:null};}
+function tItems(){var ty=IN().type;
+  if(ty==='coffee')return MENU.slice(0,6).map(function(m){return {n:m[1],p:m[2],d:'',ic:pic(m[0])};});
+  return IN().items.slice(0,6).map(function(m){return {n:m[0],p:m[1],d:ty==='rent'?'за ночь':(m[2]||''),ic:VI.svg(m[3],m[4],'pic',56)};});}
+function tCart(){var it=tItems(),L=[],sum=0,n=0;Object.keys(TB.cart).forEach(function(i){var q=TB.cart[i];if(q>0&&it[i]){L.push({i:+i,n:it[i].n,p:it[i].p,q:q});sum+=it[i].p*q;n+=q;}});return {L:L,sum:r2(sum),n:n};}
+function tCalc(){var c=S.clients[normPhone(TB.ph)],p=S.partner,k=tCart(),cap=Math.floor(k.sum*p.maxShare/100),mx=Math.floor(Math.min(c?c.balance:0,cap));
+  var u=TB.use==null?mx:Math.max(0,Math.min(mx,TB.use)),pay=r2(k.sum-u);return {sum:k.sum,cap:cap,max:mx,u:u,pay:pay,cb:r2(pay*p.cb/100),comm:r2(pay*p.comm/100)};}
+function tPad(id){return '<div class="tpad">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="tk'+(k==='ok'?' ok':'')+'" data-tk="'+k+'" data-pad="'+id+'">'+(k==='ok'?'→':k==='del'?'⌫':k)+'</button>';}).join('')+'</div>';}
+function tScreen(){
+  var p=S.partner,c=S.clients[normPhone(TB.ph)];
+  var top='<div class="ttop"><span class="nett">'+logo(26)+'<b>'+esc(p.name)+'</b></span><span class="tmeta">'+(TB.st!=='phone'&&c?esc(maskPhone(c.phone))+' · <button class="tlink" data-tb="out">выйти</button>':'Заказ у стойки')+'</span></div>';
+  if(TB.st==='phone')return top+'<div class="tphone"><div class="tph-l"><h3>Введите номер телефона</h3><p>Увидите свои бонусы в '+esc(qn(p.name))+' и сможете сразу сделать заказ</p><div class="tdisp">'+(TB.ph?esc(digits(TB.ph).length===11?fmtPhone(TB.ph):'+'+TB.ph):'<span>+7 (___) ___-__-__</span>')+'</div>'+
+    (S.last?'<button class="tquick" data-tb="me">Это я · '+esc(maskPhone(S.last))+'</button>':'')+'</div><div class="tph-r">'+tPad('ph')+'</div></div>';
+  if(TB.st==='cab'){var it=tItems(),k=tCart();
+    return top+'<div class="tcab"><aside class="tside"><div class="thello">Здравствуйте!</div><div class="tbal"><small>Ваши бонусы в '+esc(qn(p.name))+'</small><b>'+fmt(c.balance)+'</b><span>+'+p.cb+'% с каждого заказа · до '+p.maxShare+'% заказа бонусами</span></div>'+
+      '<div class="thist"><small>История</small>'+(c.hist.length?c.hist.slice(0,3).map(function(h){return '<div><span>'+esc(h.txt)+'</span><b class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</b></div>';}).join(''):'<div><span>Пока пусто</span></div>')+'</div></aside>'+
+      '<section class="tmenu"><div class="tmh">'+(IN().type==='booking'?'Услуги':IN().type==='rent'?'Квартиры':'Меню')+'</div><div class="tgrid">'+it.map(function(x,i){var q=TB.cart[i]||0;return '<div class="tcard'+(q?' on':'')+'"><button class="tadd" data-ti="'+i+'">'+x.ic+'<span class="tn">'+esc(x.n)+'</span>'+(x.d?'<span class="td">'+esc(x.d)+'</span>':'')+'<span class="tp">'+fmt(x.p)+'</span></button>'+(q?'<div class="tq"><button data-tm="'+i+'">−</button><b>'+q+'</b><button data-ti="'+i+'">+</button></div>':'')+'</div>';}).join('')+'</div>'+
+      '<button class="tbar" data-tb="checkout"'+(k.n?'':' disabled')+'><span>'+(k.n?k.n+' поз.':'Добавьте позиции')+'</span><b>'+(k.n?'Оформить · '+fmt(k.sum):'')+'</b></button></section></div>';}
+  if(TB.st==='checkout'){var k=tCart(),t=tCalc();
+    return top+'<div class="tco"><div class="tco-l"><h3>Ваш заказ</h3>'+k.L.map(function(l){return '<div class="kv"><span>'+esc(l.n)+' × '+l.q+'</span><b>'+fmt(l.p*l.q)+'</b></div>';}).join('')+'<div class="kv"><span><b>Итого</b></span><b>'+fmt(t.sum)+'</b></div><button class="tlink" data-tb="back">← изменить заказ</button></div>'+
+      '<div class="tco-r"><div class="tuse"><small>Списать бонусы · доступно '+fmt(c.balance)+', максимум '+p.maxShare+'% заказа = '+fmt(t.cap)+'</small><div class="tuse-row"><button data-tu="-">−</button><b data-t="tuse">'+fmt(t.u)+'</b><button data-tu="+">+</button></div>'+
+      '<input type="range" min="0" max="'+t.max+'" step="1" value="'+t.u+'" data-t="trange" aria-label="Сколько бонусов списать"><div class="tuse-q"><button data-tu="0">Не списывать</button><button data-tu="max">Максимум</button></div></div>'+
+      '<div class="kv"><span>Бонусами</span><b class="minus">−'+fmt(t.u)+'</b></div><div class="kv"><span>К оплате картой</span><b>'+fmt(t.pay)+'</b></div><div class="kv"><span>Новый кэшбэк '+p.cb+'%</span><b class="plus">+'+fmt(t.cb)+'</b></div>'+
+      '<button class="btn wide" data-tb="confirm">Подтвердить · '+fmt(t.pay)+'</button></div></div>';}
+  if(TB.st==='code')return top+'<div class="tphone"><div class="tph-l"><h3>Код из SMS</h3><p>Отправили код на '+esc(maskPhone(c.phone))+'. В демо код — <b>1234</b></p><div class="tdisp code">'+'•'.repeat(TB.code.length)+'<span>'+'•'.repeat(4-TB.code.length)+'</span></div></div><div class="tph-r">'+tPad('code')+'</div></div>';
+  if(TB.st==='done'){var o=TB.order;
+    return top+'<div class="tdone"><div class="tok">✓</div><h3>Заказ № '+o.no+' готовится</h3><p>Позовём, когда будет готово. SMS о кэшбэке отправлено.</p><div class="tdone-k"><div><small>Списано бонусов</small><b class="minus">−'+fmt(o.u)+'</b></div><div><small>Оплачено картой</small><b>'+fmt(o.pay)+'</b></div><div><small>Начислено</small><b class="plus">+'+fmt(o.cb)+'</b></div><div><small>Ваш баланс</small><b>'+fmt(o.bal)+'</b></div></div><button class="btn sec" data-tb="new">Новый заказ</button></div>';}
+  return top;
 }
 function v6(){
-  var c=S.clients[S.last],p=S.partner;
-  return head('Шаг 6','Оплата бонусами в терминале','Клиент называет телефон и PIN — бонусы списываются прямо на кассе (до '+p.maxShare+'% чека).')+
-  '<div class="stage s6"><div><div class="term"><div class="tlogo"><span>● ВЕРНЁМ POS</span><span>'+esc(p.name)+'</span></div><div class="tscr" id="tscr">'+tscreen()+'</div>'+
-  '<div class="keys">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="key'+(k==='ok'?' ok':k==='del'?' del':'')+'" data-k="'+k+'">'+(k==='ok'?'OK':k==='del'?'⌫':k)+'</button>';}).join('')+'</div></div><p class="hint" style="text-align:center">Терминал (макет) · можно печатать с клавиатуры</p></div>'+
-  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Депозит '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="kv"><span>Бонусный долг клиентам</span><b>'+fmt(Object.keys(S.clients).reduce(function(a,k){return a+S.clients[k].balance;},0))+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека · списываются только бонусы сети '+esc(qn(p.name))+'</div></div>'+
-  '<div class="card"><div class="eyebrow">История операций</div>'+(S.tx.filter(function(t){return t.type==='purchase'||t.type==='terminal';}).slice(0,5).map(function(t){return '<div class="kv"><span>'+(t.type==='terminal'?'Терминал'+(t.used?' · бонусами −'+fmt(t.used):''):'Сайт: '+esc(t.item))+' · '+esc(maskPhone(t.phone))+'</span><b>'+fmt(t.amount)+'</b></div>';}).join('')||'<div class="hint">Пока нет</div>')+
-  (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div></div>';
+  var p=S.partner;
+  return head('Шаг 6','Планшет у стойки','Клиент сам заказывает на планшете: вводит телефон, видит свои бонусы, собирает заказ и списывает до '+p.maxShare+'% бонусами.')+
+  '<div class="tablet"><div class="tscreen" id="tscreen">'+tScreen()+'</div></div><p class="hint" style="text-align:center">Планшет самообслуживания (макет) · цифры можно вводить с клавиатуры</p>'+
+  '<div class="grid2"><div class="card" id="tsms"><div class="eyebrow">SMS клиенту</div><div class="minisms">'+(S.sms.length?S.sms.slice(0,1).map(smsHtml).join(''):'<div class="empty">Здесь появится SMS</div>')+'</div></div>'+
+  '<div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Депозит '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="kv"><span>Бонусный долг клиентам</span><b>'+fmt(Object.keys(S.clients).reduce(function(a,k){return a+S.clients[k].balance;},0))+'</b></div><div class="hint">Списываются только бонусы сети '+esc(qn(p.name))+'. С депозита: комиссия '+pcs(p.comm)+'% и SMS '+SMSFEE+' ₽.</div>'+
+  (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div>';
 }
-function tkey(k){
-  if(T.st==='done'){if(k==='ok'){T={st:'phone',ph:'',pin:'',amt:'',res:null};}refreshT();return;}
-  if(k==='del'){if(T.st==='phone')T.ph=T.ph.slice(0,-1);else if(T.st==='pin')T.pin=T.pin.slice(0,-1);else if(T.st==='amt')T.amt=T.amt.slice(0,-1);else if(T.st==='confirm')T.st='amt';refreshT();return;}
-  if(k==='ok'){
-    if(T.st==='phone'){var ph=normPhone(T.ph||S.last||'');if(!S.clients[ph]){toast('Клиент не найден — сначала покупка на сайте');return;}T.ph=fmtPhone(ph);T.st='pin';}
-    else if(T.st==='pin'){var c=S.clients[normPhone(T.ph)];if(T.pin!==c.pin){toast('Неверный PIN');T.pin='';refreshT();return;}T.st='amt';}
-    else if(T.st==='amt'){if(!(+T.amt>0)){toast('Введите сумму');return;}T.st='confirm';}
-    else if(T.st==='confirm'){payT();return;}
-    refreshT();return;
-  }
-  if(T.st==='phone'&&digits(T.ph).length<11)T.ph+=k;
-  else if(T.st==='pin'&&T.pin.length<4)T.pin+=k;
-  else if(T.st==='amt'&&T.amt.length<6&&!(T.amt===''&&k==='0'))T.amt+=k;
-  refreshT();
+function tRefresh(){var s=$('#tscreen');if(s){s.innerHTML=tScreen();bindT();}}
+function tKey(pad,k){
+  if(pad==='ph'){if(k==='del')TB.ph=TB.ph.slice(0,-1);else if(k==='ok'){var ph=normPhone(TB.ph);if(ph.length!==11){toast('Введите номер полностью');return;}if(!S.clients[ph]){toast('Клиент не найден — сначала покупка на сайте');return;}TB.ph=ph;TB.st='cab';TB.cart={};TB.use=null;}
+    else if(digits(TB.ph).length<11)TB.ph=(TB.ph===''&&k!=='7'&&k!=='8'?'7':'')+TB.ph+k;tRefresh();return;}
+  if(pad==='code'){if(k==='del')TB.code=TB.code.slice(0,-1);else if(k==='ok'){var c=S.clients[normPhone(TB.ph)];if(TB.code!=='1234'&&TB.code!==c.pin){toast('Неверный код');TB.code='';tRefresh();return;}payTB();return;}
+    else if(TB.code.length<4)TB.code+=k;tRefresh();if(TB.code.length===4)setTimeout(function(){if(TB.st==='code'&&TB.code.length===4)tKey('code','ok');},250);return;}
 }
-function payT(){
-  var ph=normPhone(T.ph),c=client(ph),p=S.partner,a=+T.amt,k=calcT(c,a);
-  if(p.balance<k.comm){toast('Недостаточно средств на депозите партнёра — пополните');return;}
-  processing(['Проверяем PIN…','Списываем бонусы…','Оплата картой…'],'Терминал').then(function(){
-    spendLots(c,k.u);addLot(c,k.cb);
-    c.balance=r2(c.balance-k.u+k.cb);c.spent=r2(c.spent+k.u);c.accrued=r2(c.accrued+k.cb);c.last=now();
-    if(k.u>0)c.hist.unshift({t:now(),txt:'Оплата бонусами (терминал)',amount:a,d:-k.u});
-    if(k.cb>0)c.hist.unshift({t:now(),txt:'Кэшбэк (терминал)',amount:k.pay,d:k.cb});
-    if(k.comm>0)led('comm','Комиссия '+pcs(p.comm)+'% с покупки '+fmt(k.pay)+' (терминал)',-k.comm);
-    tx({type:'terminal',phone:ph,amount:a,used:k.u,paid:k.pay,cb:k.cb,comm:k.comm});S.last=ph;
-    T.res={used:k.u,pay:k.pay,cb:k.cb,bal:c.balance};T.st='done';save();render();toast('Оплачено: бонусами '+fmt(k.u));});
+function bindT(){
+  $$('[data-tk]').forEach(function(b){b.onclick=function(){tKey(b.dataset.pad,b.dataset.tk);};});
+  $$('[data-ti]').forEach(function(b){b.onclick=function(){var i=b.dataset.ti;TB.cart[i]=(TB.cart[i]||0)+1;tRefresh();};});
+  $$('[data-tm]').forEach(function(b){b.onclick=function(){var i=b.dataset.tm;TB.cart[i]=Math.max(0,(TB.cart[i]||0)-1);tRefresh();};});
+  $$('[data-tu]').forEach(function(b){b.onclick=function(){var t=tCalc(),v=b.dataset.tu;TB.use=v==='max'?t.max:v==='0'?0:Math.max(0,Math.min(t.max,t.u+(v==='+'?10:-10)));tRefresh();};});
+  var rg=$('[data-t=trange]');if(rg)rg.oninput=function(){TB.use=+rg.value;tRefresh();var r=$('[data-t=trange]');if(r)r.focus();};
+  $$('[data-tb]').forEach(function(b){b.onclick=function(){var a=b.dataset.tb;
+    if(a==='me'){TB.ph=S.last;TB.st='cab';TB.cart={};TB.use=null;}
+    else if(a==='out'||a==='new')tbReset();
+    else if(a==='checkout'){if(!tCart().n)return;TB.st='checkout';TB.use=null;}
+    else if(a==='back')TB.st='cab';
+    else if(a==='confirm'){var t=tCalc();if(S.partner.balance<t.comm+SMSFEE){toast('Недостаточно средств на депозите партнёра — пополните');return;}TB.st='code';TB.code='';}
+    tRefresh();};});
 }
-function refreshT(){var s=$('#tscr');if(s)s.innerHTML=tscreen();}
-function b6(){
-  $$('[data-k]').forEach(function(b){b.onclick=function(){tkey(b.dataset.k);};});
-  var t=$('[data-t=to7]');if(t)t.onclick=function(){go(7);};
+function payTB(){
+  var ph=normPhone(TB.ph),c=client(ph),p=S.partner,t=tCalc(),k=tCart(),title=k.L.map(function(l){return l.n+(l.q>1?' ×'+l.q:'');}).join(', ');
+  processing(['Проверяем код…','Списываем бонусы…','Оплата картой…','Передаём заказ на бар…'],'Заказ').then(function(){
+    spendLots(c,t.u);addLot(c,t.cb);
+    c.balance=r2(c.balance-t.u+t.cb);c.spent=r2(c.spent+t.u);c.accrued=r2(c.accrued+t.cb);c.last=now();
+    if(t.u>0)c.hist.unshift({t:now(),txt:'Бонусами · планшет',amount:t.sum,d:-t.u});
+    if(t.cb>0)c.hist.unshift({t:now(),txt:'Кэшбэк · планшет',amount:t.pay,d:t.cb});
+    if(t.comm>0)led('comm','Комиссия '+pcs(p.comm)+'% с покупки '+fmt(t.pay)+' (планшет)',-t.comm);
+    var no=String(100+(S.tx.length*37)%900);
+    tx({type:'terminal',phone:ph,amount:t.sum,used:t.u,paid:t.pay,cb:t.cb,comm:t.comm,item:title,no:no});S.last=ph;
+    sendSms({k:'cb',cb:t.cb,partner:p.name,phone:ph});
+    TB.order={no:no,u:t.u,pay:t.pay,cb:t.cb,bal:c.balance};TB.st='done';save();render();toast('Заказ № '+no+' принят');});
 }
-document.addEventListener('keydown',function(e){if(S.step!==6||/input|textarea/i.test((e.target||{}).tagName||''))return;if(/^\d$/.test(e.key))tkey(e.key);else if(e.key==='Backspace')tkey('del');else if(e.key==='Enter')tkey('ok');});
+function b6(){bindT();var t=$('[data-t=to7]');if(t)t.onclick=function(){go(7);};}
+document.addEventListener('keydown',function(e){if(S.step!==6||/input|textarea/i.test((e.target||{}).tagName||''))return;var pad=TB.st==='phone'?'ph':TB.st==='code'?'code':null;if(!pad)return;if(/^\d$/.test(e.key))tKey(pad,e.key);else if(e.key==='Backspace')tKey(pad,'del');else if(e.key==='Enter')tKey(pad,'ok');});
 /* ---------- STEP 7: partner cabinet ---------- */
 function stats(){var s={acc:0,used:0,comm:0,top:0,turn:0};S.tx.forEach(function(t){if(t.type==='topup')s.top+=t.amount;else if(t.type==='expire')return;else{s.acc+=t.cb||0;s.used+=t.used||0;s.comm+=t.comm||0;s.turn+=t.amount||0;}});for(var k in s)s[k]=r2(s[k]);return s;}
-function typeName(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Терминал':'Сайт · '+t.item;}
+function typeName(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Планшет у стойки'+(t.no?' · № '+t.no:''):'Сайт · '+t.item;}
 function chart(){
   var act=S.tx.filter(function(t){return t.cb||t.used;}),last=act.length?act[0].ts:vnow(),days=[];
   for(var i=6;i>=0;i--){var ts=last-i*DAY;days.push({k:dayKey(ts),l:dshort(ts),a:0,u:0});}
@@ -773,7 +821,7 @@ function b7(){
 /* ---------- render ---------- */
 var V={1:[v1,b1],2:[v2,b2],3:[v3,b3],4:[v4,b4],5:[v5,b5],6:[v6,b6],7:[v7,b7]};
 function render(){if(!avail(S.step))S.step=1;renderSteps();var v=V[S.step];$('#view').innerHTML=v[0]();v[1]();}
-$('#reset').onclick=function(){if(!confirm('Сбросить демо и начать заново?'))return;S=blank();T={st:'phone',ph:'',pin:'',amt:'',res:null};lastBreak=null;siteMode=null;bkReset();save();render();toast('Демо сброшено');};
+$('#reset').onclick=function(){if(!confirm('Сбросить демо и начать заново?'))return;S=blank();tbReset();lastBreak=null;siteMode=null;bkReset();save();render();toast('Демо сброшено');};
 window.__demo={state:function(){return S;},pay:function(t,p){payModal(t,p);}};
 render();
 })();
