@@ -27,6 +27,9 @@ var M={
  bouquet:function(c){return '<path d="M38 56l12 34 12-34z" fill="#9FC9A6"/><path d="M36 60l14 8 14-8-6 10H42z" fill="#F2E3D5"/>'+[[36,40],[50,32],[64,40],[43,52],[57,52],[50,44]].map(function(q){return '<circle cx="'+q[0]+'" cy="'+q[1]+'" r="9" fill="'+c+'"/><circle cx="'+q[0]+'" cy="'+q[1]+'" r="4" fill="#fff" opacity=".35"/>';}).join('');},
  tulip:function(c){return '<path d="M50 50v40" stroke="#5E9E6A" stroke-width="4" stroke-linecap="round"/><path d="M50 74c-10-4-16-12-16-22 8 2 14 10 16 22z" fill="#7BB661"/><path d="M32 22l9 8 9-14 9 14 9-8v16a18 18 0 0 1-36 0z" fill="'+c+'"/>';},
  box:function(c){return '<rect x="22" y="44" width="56" height="42" rx="6" fill="'+c+'"/><rect x="44" y="44" width="12" height="42" fill="#fff" opacity=".7"/>'+[[34,34],[50,28],[66,34]].map(function(q){return '<circle cx="'+q[0]+'" cy="'+q[1]+'" r="10" fill="#F28CA8"/>';}).join('')+'<rect x="18" y="40" width="64" height="8" rx="4" fill="'+c+'"/>';},
+ house:function(c){return '<path d="M16 48L50 20l34 28" stroke="'+c+'" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 46v36h48V46" fill="'+c+'" opacity=".9"/><rect x="43" y="60" width="14" height="22" rx="3" fill="#fff"/><circle cx="54" cy="71" r="1.6" fill="'+c+'"/>';},
+ studio:function(c){return '<rect x="10" y="14" width="80" height="72" rx="8" fill="#FBF7F1"/><rect x="58" y="22" width="24" height="26" rx="3" fill="#BFE0F0"/><path d="M70 22v26M58 35h24" stroke="#fff" stroke-width="2"/><rect x="16" y="56" width="50" height="20" rx="5" fill="'+c+'"/><rect x="16" y="50" width="16" height="10" rx="4" fill="#fff"/><rect x="14" y="74" width="54" height="5" rx="2.5" fill="#8B6A4F"/><circle cx="78" cy="66" r="7" fill="#7BB661"/><rect x="76" y="70" width="4" height="10" fill="#8B6A4F"/>';},
+ room:function(c){return '<rect x="10" y="14" width="80" height="72" rx="8" fill="#F6F3EE"/><rect x="18" y="22" width="22" height="16" rx="2" fill="'+c+'" opacity=".35"/><path d="M16 58q0-10 10-10h48q10 0 10 10v14H16z" fill="'+c+'"/><rect x="16" y="64" width="68" height="10" rx="4" fill="'+c+'" opacity=".75"/><path d="M22 74v6M78 74v6" stroke="#6B5444" stroke-width="3" stroke-linecap="round"/><path d="M70 22v20M64 42h12" stroke="#6B5444" stroke-width="2.5" stroke-linecap="round"/><path d="M62 22h16l-3 8h-10z" fill="#F2C94C"/>';},
  tooth:function(c){return '<path d="M30 20c8-6 14 0 20 0s12-6 20 0c10 8 6 26 2 36-3 8-3 30-10 30-6 0-6-20-12-20s-6 20-12 20c-7 0-7-22-10-30-4-10-8-28 2-36z" fill="#fff" stroke="'+c+'" stroke-width="3.5" stroke-linejoin="round"/><path d="M38 30q4-4 10-2" stroke="'+c+'" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>';},
  sparkle:function(c){return M.tooth(c)+'<path d="M80 12l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill="'+c+'"/>';},
  xray:function(c){return '<rect x="14" y="18" width="72" height="64" rx="10" fill="#2E3A48"/><g transform="translate(25 22) scale(.5)">'+M.tooth('#9FD3E6')+'</g><g transform="translate(50 30) scale(.4)">'+M.tooth('#9FD3E6')+'</g>';}
@@ -68,9 +71,12 @@ var IND={
  dental:{t:'Стоматология',brand:'dentiq',cb:3,type:'booking',mark:'tooth',mc:'#0FAE9E',g:['#0B8E86','#3CC4B4'],addr:'ул. Тверская, 22, Москва',hours:'до 21:00',
   salon:'dentiq · Тверская',title:'Выберите услугу',cats:['Приём','Гигиена'],ml:'Врач',
   items:[['Консультация стоматолога',1000,'30 мин','tooth','#0FAE9E',0],['Диагностика + снимок',2400,'40 мин','xray','#2E3A48',0],['Профгигиена Air Flow',6500,'60 мин','sparkle','#0FAE9E',1],['Отбеливание',18000,'90 мин','sparkle','#5BC0EB',1]],
-  masters:[['Елена Смирнова','терапевт',4.9],['Дмитрий Ким','гигиенист',4.8]]}
+  masters:[['Елена Смирнова','терапевт',4.9],['Дмитрий Ким','гигиенист',4.8]]},
+ rent:{t:'Аренда посуточно',brand:'hotapart',cb:5,type:'rent',mark:'house',mc:'#E2493B',addr:'Москва, апартаменты у метро',hours:'заселение 24/7',line:'квартиры посуточно · бесконтактное заселение',
+  cats:['студии','1-комнатные'],
+  items:[['Студия на Павелецкой',4200,'ул. Кожевническая, 8 · м. Павелецкая','studio','#E2493B',0,{r:1,b:1,a:28,g:2}],['Студия у Белорусской',4600,'ул. Лесная, 43 · м. Белорусская','studio','#5B8DEF',0,{r:1,b:2,a:32,g:3}],['1-комн. на Таганке',5900,'ул. Таганская, 17 · м. Марксистская','room','#E2493B',1,{r:1,b:2,a:42,g:4}],['1-комн. у Курской',6400,'ул. Земляной Вал, 24 · м. Курская','room','#7BB661',1,{r:1,b:3,a:46,g:4}]]}
 };
-var ORDER=['coffee','spa','nails','barber','auto','carwash','fitness','food','flowers','dental'];
+var ORDER=['coffee','spa','nails','barber','auto','carwash','fitness','food','flowers','dental','rent'];
 function mark(k,sz,cls){var I=IND[k]||IND.coffee;return svg(I.mark,I.mc,'ava flat'+(cls?' '+cls:''),sz||40);}
 return {IND:IND,ORDER:ORDER,svg:svg,mark:mark};
 })();

@@ -164,8 +164,21 @@ td.n,th.n{text-align:right}
 .toast.show{opacity:1;transform:translateX(-50%)}
 .vnote{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;font-size:11.5px;color:var(--grey);background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:980px;padding:5px 10px;backdrop-filter:blur(8px)}
 .next{margin-top:18px}
+.rsearch{background:#fff;border-radius:20px;margin:8px 16px 4px;padding:14px 14px 12px}
+.rlab{display:flex;flex-direction:column;margin-bottom:10px}.rlab span{font-size:12px;color:#8A94A6}.rlab b{font-weight:500;font-size:15px}
+.rdays{margin:0 -14px 10px;padding:0 14px}.rdays .mid{background:color-mix(in srgb,var(--a) 14%,#fff);border-color:transparent}
+.rguests{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;border-top:1px solid #F0F1F3;padding-top:10px}
+.rent .ccats{margin-top:8px}.rlist{display:grid;grid-template-columns:1fr;gap:12px;padding:4px 16px 0}
+.apt{display:flex;flex-direction:column;text-align:left;background:#fff;border:1.5px solid transparent;border-radius:20px;padding:10px;cursor:pointer;font-family:inherit;color:#1B2430}
+.apt.on{border-color:var(--a)}.apt:disabled{opacity:.5;cursor:not-allowed}
+.apt .im{display:block;position:relative;aspect-ratio:2/1;border-radius:14px;overflow:hidden}.apt .im svg{position:absolute;left:50%;top:50%;width:46%;height:90%;transform:translate(-50%,-50%)}
+.apt em{position:absolute;right:0;bottom:0;background:var(--a);color:#fff;font-style:normal;font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:14px 0 0 0}
+.apt b{font-weight:500;font-size:15.5px;margin-top:8px}.apt small{color:#6B7585;font-size:12.5px}.ameta{font-size:12px;color:#8A94A6;margin-top:4px}.aoff{font-size:12px;color:var(--red);margin-top:2px}
+.rsum{position:sticky;bottom:12px;margin:14px 16px 0;background:#fff;border-radius:20px;padding:12px;box-shadow:0 10px 30px -12px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:10px;font-size:14.5px}.rsum small{color:#6B7585;font-size:12.5px}
+@media (min-width:1000px){.rlist{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){.itiles{grid-template-columns:repeat(3,1fr)}}
 .flab{font-size:13px;color:var(--grey);font-weight:500;margin-bottom:8px}
-.itiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px}
+.itiles{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}
 .itile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border:1.5px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-family:inherit;min-height:96px;text-align:center}
 .itile span{font-size:12.5px;font-weight:500;line-height:1.2;color:var(--ink)}.itile small{font-size:11px;color:var(--grey2)}
 .itile.on{border-color:var(--brand);box-shadow:0 0 0 3px var(--tint)}
@@ -416,7 +429,7 @@ function v3(){
   var s=S.site;var m=siteMode||(s&&s.mode)||null;
   var h=head('Шаг 3','Сайт с кэшбэком','Подключите виджет к своему сайту или создайте сайт за секунды.')+
   '<div class="grid2"><button class="opt'+(m==='own'?' on':'')+'" data-mode="own"><h3>У меня есть сайт</h3><p>Вставим виджет кэшбэка одной строкой кода</p></button>'+
-  '<button class="opt'+(m==='new'?' on':'')+'" data-mode="new"><h3>Создать сайт</h3><p>'+({coffee:'Готовая страница с меню и кнопками «Купить»',booking:'Онлайн-запись: услуга, мастер, дата и время',catalog:'Каталог с корзиной и оплатой онлайн'})[IN().type]+'</p></button></div>';
+  '<button class="opt'+(m==='new'?' on':'')+'" data-mode="new"><h3>Создать сайт</h3><p>'+({rent:'Поиск по датам и гостям, бронь квартиры онлайн',coffee:'Готовая страница с меню и кнопками «Купить»',booking:'Онлайн-запись: услуга, мастер, дата и время',catalog:'Каталог с корзиной и оплатой онлайн'})[IN().type]+'</p></button></div>';
   if(m==='own'){
     h+='<div class="card" style="margin-top:16px"><form id="f3"><label class="f"><span>Адрес вашего сайта</span><input class="i" name="url" required value="'+esc(s&&s.mode==='own'?s.url:'www.'+S.partner.slug+'.ru')+'"></label><button class="btn wide" data-t="widget">Подключить виджет</button></form>';
     if(s&&s.mode==='own')h+='<pre class="code">&lt;script src="https://verniom.github.io/widget.js"\n        data-partner="'+esc(S.partner.slug)+'" async&gt;&lt;/script&gt;</pre><div class="ok-banner">✓ Виджет установлен на '+esc(s.url)+' (демо)</div><button class="btn wide" data-t="to4">Открыть витрину и купить →</button>';
@@ -433,7 +446,7 @@ function b3(){
   $$('[data-mode]').forEach(function(b){b.onclick=function(){siteMode=b.dataset.mode;render();};});
   var f=$('#f3');if(f)f.onsubmit=function(e){e.preventDefault();var u=e.target.url.value.trim().replace(/^https?:\/\//,'');if(!u){toast('Введите адрес');return;}S.site={mode:'own',url:u};save();toast('Виджет установлен');render();};
   var p=$('[data-t=publish]');if(p)p.onclick=async function(){p.disabled=true;var log=$('#log');log.hidden=false;
-    var L=['$ verniom init '+qn(S.partner.name)+'','→ Шаблон «'+IN().t+'»: '+(IN().type==='booking'?'услуги, мастера, расписание…':IN().type==='catalog'?'каталог и корзина…':'страница и меню…'),'→ Подключаем кэшбэк '+S.partner.cb+'%…','→ Выпускаем SSL-сертификат…','→ Публикуем на '+S.partner.slug+'.verniom.github.io…','✓ Готово! Сайт опубликован'];
+    var L=['$ verniom init '+qn(S.partner.name)+'','→ Шаблон «'+IN().t+'»: '+(IN().type==='rent'?'квартиры, календарь, бронь…':IN().type==='booking'?'услуги, мастера, расписание…':IN().type==='catalog'?'каталог и корзина…':'страница и меню…'),'→ Подключаем кэшбэк '+S.partner.cb+'%…','→ Выпускаем SSL-сертификат…','→ Публикуем на '+S.partner.slug+'.verniom.github.io…','✓ Готово! Сайт опубликован'];
     for(var i=0;i<L.length;i++){await sleep(450);var d=document.createElement('div');d.textContent=L[i];log.appendChild(d);}
     await sleep(400);S.site={mode:'new'};save();toast('Сайт опубликован');go(4);};
   var t=$('[data-t=to4]');if(t)t.onclick=function(){go(4);};
@@ -496,7 +509,7 @@ function smsHtml(m){
 var lastBreak=null;
 function v4(){
   var ty=IN().type;
-  return head('Шаг 4',ty==='booking'?'Онлайн-запись на сайте':'Покупка на сайте',ty==='booking'?'Выберите услугу, мастера и время, оплатите — клиент получит SMS о кэшбэке.':ty==='catalog'?'Соберите заказ в корзину и оплатите — клиент получит SMS о кэшбэке.':'Выберите позицию и оплатите. Клиент получит SMS о кэшбэке.')+
+  return head('Шаг 4',ty==='rent'?'Бронирование на сайте':ty==='booking'?'Онлайн-запись на сайте':'Покупка на сайте',ty==='rent'?'Выберите даты, гостей и квартиру, оплатите — клиент получит SMS о кэшбэке.':ty==='booking'?'Выберите услугу, мастера и время, оплатите — клиент получит SMS о кэшбэке.':ty==='catalog'?'Соберите заказ в корзину и оплатите — клиент получит SMS о кэшбэке.':'Выберите позицию и оплатите. Клиент получит SMS о кэшбэке.')+
   '<div class="stage"><div><div id="site">'+siteHtml()+'</div>'+(lastBreak?breakHtml(lastBreak):'')+'</div><div id="phonecol">'+phoneLock(S.sms)+'<p class="hint" style="text-align:center">Телефон клиента (макет) · нажмите ссылку в SMS</p></div></div>';
 }
 function breakHtml(b){return '<div class="card" style="margin-top:16px"><div class="eyebrow">Расчёт по покупке</div>'+
@@ -532,8 +545,9 @@ function b4(){bindSite();}
 function indKey(){return (S.partner&&VI.IND[S.partner.ind])?S.partner.ind:'coffee';}
 function IN(){return VI.IND[indKey()];}
 var BK={st:0,svc:null,mst:null,day:null,slot:null,car:null,pair:false,cat:-1,q:''},CART={};
-function bkReset(){BK={st:0,svc:null,mst:null,day:null,slot:null,car:null,pair:false,cat:-1,q:''};CART={};}
-function siteHtml(){var t=IN().type;return t==='booking'?bookingSite():t==='catalog'?catalogSite():landing();}
+function bkReset(){BK={st:0,svc:null,mst:null,day:null,slot:null,car:null,pair:false,cat:-1,q:''};CART={};RT={ci:1,co:3,mode:'ci',g:2,cat:-1,apt:null};}
+var RT={ci:1,co:3,mode:'ci',g:2,cat:-1,apt:null};
+function siteHtml(){var t=IN().type;return t==='rent'?rentSite():t==='booking'?bookingSite():t==='catalog'?catalogSite():landing();}
 function refreshSite(){var s=$('#site');if(s){s.innerHTML=siteHtml();bindSite();}}
 function bar(inner){return '<div class="browser"><div class="bbar"><i></i><i></i><i></i><div class="url">🔒 '+esc(siteUrl())+'</div></div>'+inner+'</div>';}
 function bkStages(){var I=IN(),a=[];if(I.car)a.push(['car','Авто']);a.push(['svc','Услуга'],['mst',I.ml||'Мастер'],['date','Дата']);return a;}
@@ -559,6 +573,20 @@ function bookingSite(){
   }
   h+='<div class="bkaddr">📍 '+esc(I.addr)+' · '+esc(I.hours)+'</div></div></div>';
   return bar(h);
+}
+function rentNights(){return RT.co!=null?RT.co-RT.ci:0;}
+function rentSite(){
+  var I=IN(),p=S.partner,n=rentNights();
+  var h='<div class="cat rent" style="--a:'+I.mc+'"><div class="ahead">'+VI.mark(indKey(),36)+'<div class="loc"><b>'+esc(p.name)+' · Москва</b><small>'+esc(I.line)+'</small></div><div class="hbtns"><button class="rb" data-t="prof" aria-label="Личный кабинет и бонусы">'+PERSON+'</button></div></div>'+
+  '<div class="rsearch"><div class="rlab"><span>Заезд — выезд</span><b>'+dshort(dayTs(RT.ci))+' — '+(RT.co!=null?dshort(dayTs(RT.co)):'…')+(n?' · '+n+' '+(n===1?'ночь':n<5?'ночи':'ночей'):'')+'</b></div>'+
+  '<div class="days rdays">'+[0,1,2,3,4,5,6,7,8,9].map(function(i){var d=new Date(dayTs(i)),c=(i===RT.ci||i===RT.co)?' on':(RT.co!=null&&i>RT.ci&&i<RT.co)?' mid':'';return '<button data-rd="'+i+'" class="'+c+'"><small>'+(i===0?'сегодня':DAYS[d.getDay()])+'</small><b>'+d.getDate()+'</b></button>';}).join('')+'</div>'+
+  '<div class="rguests"><span>Гостей</span><span class="stp"><button data-g="-" aria-label="Меньше">−</button>'+RT.g+'<button data-g="+" aria-label="Больше">+</button></span></div></div>'+
+  '<div class="ccats">'+['все'].concat(I.cats).map(function(c,i){return '<button data-rcat="'+(i-1)+'"'+(RT.cat===i-1?' class="on"':'')+'>'+esc(c)+'</button>';}).join('')+'</div><div class="rlist">'+
+  I.items.map(function(it,i){if(RT.cat>=0&&it[5]!==RT.cat)return '';var m=it[6],off=RT.g>m.g;
+    return '<button class="apt'+(RT.apt===i?' on':'')+'" data-apt="'+i+'"'+(off?' disabled':'')+'><span class="im" style="background:linear-gradient(140deg,'+it[4]+'1f,'+it[4]+'44)">'+VI.svg(it[3],it[4])+'<em>от '+fmt(it[1])+' / сутки</em></span><b>'+esc(it[0])+'</b><small>'+esc(it[2])+'</small><span class="ameta">комнат '+m.r+' · кроватей '+m.b+' · '+m.a+' м² · до '+m.g+' гостей</span>'+(off?'<span class="aoff">не подходит по числу гостей</span>':'')+'</button>';}).join('')+'</div>';
+  if(RT.apt!=null&&n){var it=I.items[RT.apt],tot=it[1]*n;h+='<div class="rsum"><div>'+esc(it[0])+'<br><small>'+n+' × '+fmt(it[1])+' · '+RT.g+' гост. · кэшбэк '+p.cb+'% = '+fmt(tot*p.cb/100)+'</small></div><button class="bkpay" data-t="rentpay">Забронировать · '+fmt(tot)+'</button></div>';}
+  else h+='<div class="bkaddr">'+(n?'Выберите квартиру':'Выберите дату выезда')+' · '+esc(I.hours)+'</div>';
+  return bar(h+'</div>');
 }
 function catTotal(){var I=IN(),n=0,s=0;Object.keys(CART).forEach(function(k){n+=CART[k];s+=CART[k]*I.items[k][1];});return {n:n,s:s};}
 function catalogSite(){
@@ -594,6 +622,11 @@ function bindSite(){
   $$('[data-add]').forEach(function(b){b.onclick=function(){var i=b.dataset.add;CART[i]=(CART[i]||0)+1;refreshSite();};});
   $$('[data-dec]').forEach(function(b){b.onclick=function(){var i=b.dataset.dec;CART[i]--;if(CART[i]<=0)delete CART[i];refreshSite();};});
   $$('[data-ccat]').forEach(function(b){b.onclick=function(){var el=$('#csec-'+b.dataset.ccat);$$('[data-ccat]').forEach(function(x){x.classList.toggle('on',x===b);});if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-stk()-60,behavior:'smooth'});};});
+  $$('[data-rd]').forEach(function(b){b.onclick=function(){var i=+b.dataset.rd;if(RT.mode==='ci'||i<=RT.ci){RT.ci=i;RT.co=null;RT.mode='co';}else{RT.co=i;RT.mode='ci';}refreshSite();};});
+  $$('[data-g]').forEach(function(b){b.onclick=function(){RT.g=Math.max(1,Math.min(6,RT.g+(b.dataset.g==='+'?1:-1)));if(RT.apt!=null&&I.items[RT.apt]&&I.items[RT.apt][6]&&RT.g>I.items[RT.apt][6].g)RT.apt=null;refreshSite();};});
+  $$('[data-rcat]').forEach(function(b){b.onclick=function(){RT.cat=+b.dataset.rcat;refreshSite();};});
+  $$('[data-apt]').forEach(function(b){b.onclick=function(){RT.apt=+b.dataset.apt;refreshSite();var r=$('.rsum');if(r&&window.innerWidth<=820)r.scrollIntoView({behavior:'smooth',block:'center'});};});
+  var rp=$('[data-t=rentpay]');if(rp)rp.onclick=function(){var it=I.items[RT.apt],n=rentNights();payModal(it[0]+', '+n+' '+(n===1?'ночь':n<5?'ночи':'ночей'),it[1]*n,dshort(dayTs(RT.ci))+' — '+dshort(dayTs(RT.co))+' · '+RT.g+' гост.');};
   var cb=$('[data-t=cart]');if(cb)cb.onclick=function(){var t=catTotal();payModal(t.n===1?I.items[Object.keys(CART)[0]][0]:'Заказ: '+t.n+' поз.',t.s,Object.keys(CART).map(function(k){return I.items[k][0]+' × '+CART[k];}).join(', '));};
   bindLk();var t=$('[data-t=to5]');if(t)t.onclick=function(){go(5);};
 }
