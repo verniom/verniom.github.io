@@ -299,7 +299,7 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 <header class="top"><div class="in">
   <a class="brand" href="../"><span class="dot"></span>ВЕРНЁМ <span class="badge">демо</span></a>
   <span class="sp"></span>
-  <span class="pill" id="pbal" hidden><span class="lbl">Баланс партнёра: </span><b id="pbalv">0 ₽</b></span>
+  <span class="pill" id="pbal" hidden><span class="lbl">Депозит: </span><b id="pbalv">0 ₽</b></span>
   <button class="ghost" id="reset" data-t="reset">Начать заново</button>
 </div></header>
 <div class="layout">
@@ -323,10 +323,11 @@ function initAva(n,sz,bg){sz=sz||40;var ch=String(n).replace(/^[^«]*«/,'').cha
 function qn(n){n=String(n);return /[«"]/.test(n)?n:'«'+n+'»';}
 
 var MENU=[['cup','Капучино',225],['latte','Латте медовый',275],['iced','Айс латте',295],['raf','Раф ванильный',285],['flat','Флэт уайт',245],['pumpkin','Тыквенный латте',325],['raf2','Раф пряный',315],['cookie','Печенье с шоколадом',145],['cheesecake','Чизкейк',280],['croissant','Круассан',190],['combo','Двойной комбо',375],['combo','Тройной комбо',585],['combo','Парный комбо',650],['gift','Сертификат',3000]];
-function blank(){return {partner:null,site:null,clients:{},tx:[],last:null,step:1,sms:[],off:0};}
+function blank(){return {partner:null,site:null,clients:{},tx:[],last:null,step:1,sms:[],off:0,led:[]};}
 var S;
 try{S=JSON.parse(localStorage.getItem(KEY))||blank();}catch(e){S=blank();}
-if(!S.sms)S.sms=[];if(!S.off)S.off=0;
+if(!S.led)S.led=[];if(S.partner)S.partner.comm=2.5;S.tx=(S.tx||[]).filter(function(t){return t.type!=='expire';});
+if(!S.sms)S.sms=[];S.sms=S.sms.filter(function(m){return m.k==='cb'||(m.k==='rem'&&m.bonus!=null);});if(!S.off)S.off=0;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 var $=function(s,r){return (r||document).querySelector(s);};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
@@ -353,24 +354,18 @@ function processing(lines,title){
 }
 function client(ph){if(!S.clients[ph])S.clients[ph]={phone:ph,balance:0,pin:'1234',accrued:0,spent:0,burned:0,hist:[],last:'',lots:[]};var c=S.clients[ph];if(!c.lots)c.lots=[];if(!c.burned)c.burned=0;return c;}
 function tx(o){o.t=now();o.ts=vnow();S.tx.unshift(o);}
-/* ---------- bonus lots / expiry ---------- */
+/* ---------- deposit ledger: only top-ups, 2.5% commission, SMS 5 ₽ ---------- */
+var COMM=2.5,SMSFEE=5,SMSN={cb:'начисление кэшбэка',rem:'напоминание о бонусах'};
+function pcs(x){return String(x).replace('.',',');}
+function led(kind,txt,d,sk){var p=S.partner;p.balance=r2(p.balance+d);if(!S.led)S.led=[];S.led.unshift({t:now(),ts:vnow(),kind:kind,txt:txt,d:r2(d),bal:p.balance,sk:sk||''});}
+function sendSms(m){S.sms.unshift(m);if(S.partner)led('sms','СМС · '+SMSN[m.k]+' · '+maskPhone(m.phone),-SMSFEE,m.k);}
+function smsStat(){var o={n:0,sum:0,by:{cb:0,rem:0}};(S.led||[]).forEach(function(l){if(l.kind==='sms'){o.n++;o.sum=r2(o.sum-l.d);o.by[l.sk]=(o.by[l.sk]||0)+1;}});return o;}
+/* ---------- bonus lots (bonuses never expire) ---------- */
 function addLot(c,amt){if(amt>0)c.lots.push({left:amt,exp:vnow()+S.partner.expDays*DAY});}
 function spendLots(c,u){c.lots.sort(function(a,b){return a.exp-b.exp;});var r=u;c.lots.forEach(function(l){var d=Math.min(l.left,r);l.left=r2(l.left-d);r=r2(r-d);});c.lots=c.lots.filter(function(l){return l.left>0;});}
-function nextExp(c){var l=c.lots.filter(function(l){return l.left>0;}).sort(function(a,b){return a.exp-b.exp;});if(!l.length)return null;var e=l[0].exp,s=0;l.forEach(function(x){if(dayKey(x.exp)===dayKey(e))s+=x.left;});return {amt:r2(s),exp:e};}
 function lkLink(ph){var h=(S.site&&S.site.mode==='own'&&S.site.url)?String(S.site.url).replace(/^https?:\/\//,'').replace(/\/.*$/,''):((S.partner&&S.partner.slug)||'kofa')+'.ru';return h+'/c/'+ph.slice(-4);}
-function runExpiry(from){
-  if(!S.partner)return 0;var t=vnow(),p=S.partner,burnedTotal=0;
-  Object.keys(S.clients).forEach(function(k){var c=client(k);
-    // reminder 3 days before expiry (simulated as already sent when time jumps)
-    var rem=0,remExp=0;c.lots.forEach(function(l){if(!l.rem&&l.left>0&&l.exp-3*DAY<=t){l.rem=1;rem+=l.left;remExp=l.exp;}});
-    if(rem>0)S.sms.unshift({k:'rem',amt:r2(rem),exp:remExp,partner:p.name,phone:c.phone});
-    var b=0;c.lots.forEach(function(l){if(l.exp<=t){b+=l.left;l.left=0;}});c.lots=c.lots.filter(function(l){return l.left>0;});b=r2(b);
-    if(b>0){c.balance=r2(c.balance-b);c.burned=r2(c.burned+b);c.hist.unshift({t:now(),txt:'Сгорание бонусов',amount:b,d:-b});
-      p.balance=r2(p.balance+b);tx({type:'expire',phone:c.phone,amount:b,ret:b});
-      S.sms.unshift({k:'exp',amt:b,partner:p.name,phone:c.phone,days:p.expDays});burnedTotal+=b;}
-  });
-  return r2(burnedTotal);
-}
+function remindAll(){var p=S.partner,L=Object.keys(S.clients).map(function(k){return S.clients[k];}).filter(function(c){return c.balance>0;});
+  L.forEach(function(c){sendSms({k:'rem',bonus:c.balance,partner:p.name,phone:c.phone});});return L.length;}
 function avail(n){if(n===1)return true;if(!S.partner)return false;if(n===2||n===3||n===7)return true;if(n===4)return !!S.site;if(n===5||n===6)return !!S.last;return false;}
 function has(type){return S.tx.some(function(t){return t.type===type;});}
 function done(n){return n===1?!!S.partner:n===2?has('topup'):n===3?!!S.site:n===4?has('purchase'):n===5?!!S.last:n===6?has('terminal'):false;}
@@ -391,16 +386,16 @@ function v1(){
   '<label class="f"><span>Название бизнеса</span><input class="i" name="name" required maxlength="40" value="'+esc(p?p.name:'kofa')+'"></label>'+
   '<label class="f"><span>Телефон</span><input class="i" name="phone" type="tel" inputmode="tel" required value="'+esc(p?fmtPhone(p.phone):'+7 (900) 123-45-67')+'"></label>'+
   '<div class="grid2"><label class="f"><span>Кэшбэк клиентам, %</span><input class="i" name="cb" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="'+(p?p.cb:5)+'"></label>'+
-  '<label class="f"><span>Комиссия платформы, %</span><input class="i" name="comm" type="number" inputmode="decimal" min="0" max="20" step="0.1" placeholder="2.5" value="'+(p?p.comm:2.5)+'"><div class="hint">Значение для примера — можно изменить</div></label></div>'+
+  '<div class="f" id="commfix"><span>Комиссия платформы</span><div class="i" style="display:flex;align-items:center;background:#F5F5F7;color:var(--ink);font-weight:600">Комиссия платформы 2,5%</div><div class="hint">Фиксированная для всех партнёров · списывается с депозита с каждой покупки</div></div></div>'+
   '<button class="btn wide" data-t="create">'+(p?'Сохранить':'Создать кабинет партнёра')+'</button></form>'+
-  (p?'<div class="ok-banner">✓ Кабинет '+esc(qn(p.name))+' создан</div><button class="btn sec wide" data-t="to2">Дальше: пополнить баланс →</button>':'')+'</div>';
+  (p?'<div class="ok-banner">✓ Кабинет '+esc(qn(p.name))+' создан</div><button class="btn sec wide" data-t="to2">Дальше: пополнить депозит →</button>':'')+'</div>';
 }
 function b1(){
   $$('[data-ind]').forEach(function(b){b.onclick=function(){var k=b.dataset.ind,I=VI.IND[k],f=$('#f1');$$('[data-ind]').forEach(function(x){x.classList.toggle('on',x===b);});f.ind.value=k;f.name.value=I.brand;f.cb.value=I.cb;};});
   $('#f1').onsubmit=function(e){e.preventDefault();var f=e.target;var ph=normPhone(f.phone.value);
     if(ph.length!==11){toast('Введите телефон в формате +7…');return;}
     var cb=parseFloat(String(f.cb.value).replace(',','.'));if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}
-    var cm=f.comm.value===''?2.5:parseFloat(String(f.comm.value).replace(',','.'));if(!(cm>=0&&cm<=20)){toast('Комиссия: от 0 до 20%');return;}
+    var cm=COMM;
     var ind=VI.IND[f.ind.value]?f.ind.value:'coffee',name=f.name.value.trim()||VI.IND[ind].brand;
     if(S.partner){if(S.partner.ind!==ind)bkReset();S.partner.name=name;S.partner.phone=ph;S.partner.cb=cb;S.partner.comm=cm;S.partner.ind=ind;}
     else S.partner={name:name,phone:ph,cb:cb,comm:cm,balance:0,maxShare:30,expDays:30,created:vnow(),ind:ind};
@@ -410,19 +405,19 @@ function b1(){
 /* ---------- STEP 2 ---------- */
 var amt=3000;
 function v2(){
-  return head('Шаг 2','Пополнение баланса','Из баланса платформа начисляет кэшбэк клиентам и удерживает комиссию.')+
+  return head('Шаг 2','Пополнение депозита','Депозит — живые деньги у платформы. С него списываются только комиссия '+pcs(S.partner.comm)+'% с каждой покупки и СМС по '+SMSFEE+' ₽. Бонусы клиентам — это ваша скидка, а не деньги: депозит они не уменьшают.')+
   '<div class="card"><div class="demo-banner">⚠︎ Демо: деньги не списываются, данные карты не нужны</div>'+
   '<div class="chips">'+[1000,3000,5000,10000].map(function(a){return '<button class="chip'+(a===amt?' on':'')+'" data-amt="'+a+'">'+fmt(a)+'</button>';}).join('')+'</div>'+
   '<div class="bankcard"><div class="row" style="justify-content:space-between"><span class="chipi"></span><span style="font-weight:600;letter-spacing:.04em">DEMO PAY</span></div><div class="num">4242 4242 4242 4242</div><div class="meta"><span>'+esc(S.partner.name)+'</span><span>12/29</span></div></div>'+
   '<div class="grid2"><label class="f"><span>Номер карты</span><input class="i" value="4242 4242 4242 4242" readonly></label><div class="grid2" style="gap:10px"><label class="f"><span>Срок</span><input class="i" value="12/29" readonly></label><label class="f"><span>CVC</span><input class="i" value="•••" readonly></label></div></div>'+
   '<button class="btn wide" data-t="pay">Оплатить '+fmt(amt)+' (демо)</button>'+
-  '<div class="hint" style="text-align:center;margin-top:10px">Текущий баланс: <b>'+fmt(S.partner.balance)+'</b></div>'+
+  '<div class="hint" style="text-align:center;margin-top:10px">Текущий депозит: <b>'+fmt(S.partner.balance)+'</b><br>Пример: депозит 1 000 ₽, покупка на 10 000 ₽ → кэшбэк 500 бонусов (скидка), с депозита −250 ₽ комиссии и −5 ₽ за СМС = 745 ₽</div>'+
   (done(2)?'<button class="btn sec wide next" data-t="to3">Дальше: сайт →</button>':'')+'</div>';
 }
 function b2(){
   $$('[data-amt]').forEach(function(b){b.onclick=function(){amt=+b.dataset.amt;render();};});
   $('[data-t=pay]').onclick=function(){processing(['Связываемся с банком…','Подтверждение 3-D Secure…','Зачисляем на баланс…'],'Оплата '+fmt(amt)).then(function(){
-    S.partner.balance=r2(S.partner.balance+amt);tx({type:'topup',amount:amt});save();toast('Баланс пополнен на '+fmt(amt));render();});};
+    led('top','Пополнение депозита',amt);tx({type:'topup',amount:amt});save();toast('Депозит пополнен на '+fmt(amt));render();});};
   var t=$('[data-t=to3]');if(t)t.onclick=function(){go(3);};
 }
 /* ---------- STEP 3 ---------- */
@@ -504,8 +499,7 @@ function phoneLock(list,id){
   (list.length?list.slice(0,4).map(smsHtml).join(''):'<div class="empty">Здесь появится SMS клиенту</div>')+'</div></div></div></div>';
 }
 function smsHtml(m){
-  var b;if(m.k==='rem')b='Напоминание: '+fmt(m.amt)+' бонусов в '+esc(qn(m.partner))+' сгорят '+dshort(m.exp)+'. Успейте потратить! Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
-  else if(m.k==='exp')b='Сгорели '+fmt(m.amt)+' бонусов в '+esc(qn(m.partner))+' — срок действия '+m.days+' дн. истёк. Новые покупки — новый кэшбэк!';
+  var b;if(m.k==='rem')b='У вас '+String(r2(m.bonus)).replace('.',',')+' бонусов в '+esc(m.partner)+', ждём вас! <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
   else b='Вам начислен кэшбэк '+fmt(m.cb)+' в '+esc(qn(m.partner))+'. Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
   return '<div class="sms show"><div class="h"><b>ВЕРНЁМ</b><span>SMS · сейчас</span></div>'+b+'</div>';}
 var lastBreak=null;
@@ -517,9 +511,11 @@ function v4(){
 function breakHtml(b){return '<div class="card" style="margin-top:16px"><div class="eyebrow">Расчёт по покупке</div>'+
   '<div class="kv"><span>Покупка '+esc(qn(b.item))+'</span><b>'+fmt(b.amount)+'</b></div>'+
   '<div class="kv"><span>Кэшбэк клиенту ('+b.cbp+'%)</span><b class="plus">+'+fmt(b.cb)+'</b></div>'+
-  '<div class="kv"><span>Комиссия платформы ('+b.cp+'%)</span><b>'+fmt(b.comm)+'</b></div>'+
-  '<div class="kv"><span>Списано с баланса партнёра</span><b class="minus">−'+fmt(b.cb+b.comm)+'</b></div>'+
-  '<div class="kv"><span>Баланс партнёра</span><b>'+fmt(S.partner.balance)+'</b></div>'+
+  '<div class="hint" style="margin:-2px 0 6px">Бонусы — скидка у партнёра, с депозита не списываются</div>'+
+  '<div class="kv"><span>Комиссия платформы ('+pcs(b.cp)+'%)</span><b class="minus">−'+fmt(b.comm)+'</b></div>'+
+  '<div class="kv"><span>СМС клиенту</span><b class="minus">−'+fmt(SMSFEE)+'</b></div>'+
+  '<div class="kv"><span>Списано с депозита</span><b class="minus">−'+fmt(b.comm+SMSFEE)+'</b></div>'+
+  '<div class="kv"><span>Депозит партнёра</span><b>'+fmt(S.partner.balance)+'</b></div>'+
   '<button class="btn wide next" data-t="to5">Открыть ЛК клиента →</button></div>';}
 function payModal(title,price,note){
   var m=[null,title,price];var ov=document.createElement('div');ov.className='ov';
@@ -530,13 +526,13 @@ function payModal(title,price,note){
   $('[data-x]',ov).onclick=function(){ov.remove();};
   $('#fb',ov).onsubmit=function(e){e.preventDefault();var ph=normPhone(e.target.phone.value);if(ph.length!==11){toast('Введите телефон +7…');return;}
     var p=S.partner,cb=r2(m[2]*p.cb/100),comm=r2(m[2]*p.comm/100);
-    if(p.balance<cb+comm){ov.remove();toast('Недостаточно средств на балансе партнёра — пополните');go(2);return;}
+    if(p.balance<comm+SMSFEE){ov.remove();toast('Недостаточно средств на депозите партнёра — пополните');go(2);return;}
     ov.remove();
     processing(['Оплата картой…','Начисляем кэшбэк…','Отправляем SMS…'],'Покупка').then(function(){
-      p.balance=r2(p.balance-cb-comm);var c=client(ph);c.balance=r2(c.balance+cb);c.accrued=r2(c.accrued+cb);c.last=now();addLot(c,cb);
+      led('comm','Комиссия '+pcs(p.comm)+'% с покупки '+fmt(m[2]),-comm);var c=client(ph);c.balance=r2(c.balance+cb);c.accrued=r2(c.accrued+cb);c.last=now();addLot(c,cb);
       c.hist.unshift({t:now(),txt:m[1]+' (сайт)',amount:m[2],d:cb});
       tx({type:'purchase',phone:ph,amount:m[2],cb:cb,comm:comm,item:m[1]});
-      S.last=ph;S.sms.unshift({k:'cb',cb:cb,partner:p.name,phone:ph});
+      S.last=ph;sendSms({k:'cb',cb:cb,partner:p.name,phone:ph});
       CART={};bkReset();lastBreak={item:m[1],amount:m[2],cb:cb,comm:comm,cbp:p.cb,cp:p.comm};save();render();
       var box=$('#smsbox');if(box){var f=box.firstElementChild;if(f){f.classList.remove('show');requestAnimationFrame(function(){requestAnimationFrame(function(){f.classList.add('show');});});}}
       var pc=$('#phonecol');if(pc&&window.innerWidth<=980)pc.scrollIntoView({behavior:'smooth',block:'center'});
@@ -640,18 +636,17 @@ function bindLk(){$$('[data-lk]').forEach(function(a){a.onclick=function(e){e.pr
 /* ---------- STEP 5 ---------- */
 function v5(){
   OTHER=indKey()==='coffee'?OTHER0:OTHER1;
-  var c=client(S.last),p=S.partner,ne=nextExp(c);
-  return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс, история, срок бонусов и PIN для терминала.')+
+  var c=client(S.last),p=S.partner;
+  return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс по сетям, история и PIN для терминала. Бонусы бессрочные.')+
   '<div class="stage s5"><div><div class="phone"><div class="screen"><div class="isl"></div><div class="sbar"><span>9:41</span><span>●●● ▮</span></div><div class="lk">'+
   '<div class="hd"><span class="nett">'+logo(24)+esc(p.name)+'</span><span style="font-size:12px;color:var(--grey)">'+esc(maskPhone(c.phone))+'</span></div>'+
   '<div class="nets-t">Мои бонусы по сетям</div>'+
-  '<div class="bal"><div class="t nett">'+logo(26)+esc(p.name)+'</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · тратятся только здесь</p></div>'+
-  '<div class="bal2"><div class="nett">'+initAva(OTHER.name,30)+'<div><div class="t">'+esc(OTHER.name)+'</div><small>только в этой сети · до '+OTHER.exp+'</small></div></div><b>'+fmt(OTHER.bal)+'</b></div>'+
-  '<div class="lkc exp"><h4>Срок действия</h4>'+(ne?'<div class="hr"><div>Сгорят '+dstr(ne.exp)+'<small>Бонусы действуют '+p.expDays+' дн.</small></div><div class="minus">'+fmt(ne.amt)+'</div></div>':'<div class="hint">Нет бонусов со сроком · действуют '+p.expDays+' дн.</div>')+'</div>'+
+  '<div class="bal"><div class="t nett">'+logo(26)+esc(p.name)+'</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · только здесь · бессрочно</p></div>'+
+  '<div class="bal2"><div class="nett">'+initAva(OTHER.name,30)+'<div><div class="t">'+esc(OTHER.name)+'</div><small>только в этой сети · бессрочно</small></div></div><b>'+fmt(OTHER.bal)+'</b></div>'+
   '<div class="lkc"><h4>История</h4>'+(c.hist.length?c.hist.slice(0,6).map(function(h){return '<div class="hr"><div>'+esc(h.txt)+'<small>'+h.t+' · '+fmt(h.amount)+'</small></div><div class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</div></div>';}).join(''):'<div class="hint">Пока пусто</div>')+'</div>'+
   '<div class="lkc"><h4>PIN для оплаты в терминале</h4><div class="pinrow"><input id="pin" inputmode="numeric" maxlength="4" value="'+esc(c.pin)+'" aria-label="PIN"><button data-t="pin">Сохранить</button></div><div class="hint">По умолчанию 1234</div></div>'+
   '</div></div></div></div>'+
-  '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(p.name))+'</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(OTHER.name))+'</span><b>'+fmt(OTHER.bal)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div><div class="kv"><span>Сгорело</span><b>'+fmt(c.burned)+'</b></div>'+
+  '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(p.name))+'</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(OTHER.name))+'</span><b>'+fmt(OTHER.bal)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div>'+
   '<div class="model"><b>Бонусы — внутри сети.</b> Кэшбэк из '+esc(qn(p.name))+' тратится только в '+esc(qn(p.name))+', бонусы '+esc(qn(OTHER.name))+' — только там. В одном кабинете клиент видит балансы всех сетей.</div>'+'<p class="hint">Вход по ссылке из SMS, без пароля. Бонусами можно оплатить до '+p.maxShare+'% чека в терминале по телефону и PIN.</p>'+
   '<button class="btn wide next" data-t="to6">Оплатить бонусами в терминале →</button><button class="btn sec wide" style="margin-top:8px" data-t="back4">Купить ещё на сайте</button></div></div>';
 }
@@ -677,7 +672,7 @@ function v6(){
   return head('Шаг 6','Оплата бонусами в терминале','Клиент называет телефон и PIN — бонусы списываются прямо на кассе (до '+p.maxShare+'% чека).')+
   '<div class="stage s6"><div><div class="term"><div class="tlogo"><span>● ВЕРНЁМ POS</span><span>'+esc(p.name)+'</span></div><div class="tscr" id="tscr">'+tscreen()+'</div>'+
   '<div class="keys">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="key'+(k==='ok'?' ok':k==='del'?' del':'')+'" data-k="'+k+'">'+(k==='ok'?'OK':k==='del'?'⌫':k)+'</button>';}).join('')+'</div></div><p class="hint" style="text-align:center">Терминал (макет) · можно печатать с клавиатуры</p></div>'+
-  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Партнёр '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека · списываются только бонусы сети '+esc(qn(p.name))+'</div></div>'+
+  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Депозит '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="kv"><span>Бонусный долг клиентам</span><b>'+fmt(Object.keys(S.clients).reduce(function(a,k){return a+S.clients[k].balance;},0))+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека · списываются только бонусы сети '+esc(qn(p.name))+'</div></div>'+
   '<div class="card"><div class="eyebrow">История операций</div>'+(S.tx.filter(function(t){return t.type==='purchase'||t.type==='terminal';}).slice(0,5).map(function(t){return '<div class="kv"><span>'+(t.type==='terminal'?'Терминал'+(t.used?' · бонусами −'+fmt(t.used):''):'Сайт: '+esc(t.item))+' · '+esc(maskPhone(t.phone))+'</span><b>'+fmt(t.amount)+'</b></div>';}).join('')||'<div class="hint">Пока нет</div>')+
   (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div></div>';
 }
@@ -698,13 +693,13 @@ function tkey(k){
 }
 function payT(){
   var ph=normPhone(T.ph),c=client(ph),p=S.partner,a=+T.amt,k=calcT(c,a);
-  if(p.balance<k.cb+k.comm){toast('Недостаточно средств у партнёра — пополните баланс');return;}
+  if(p.balance<k.comm){toast('Недостаточно средств на депозите партнёра — пополните');return;}
   processing(['Проверяем PIN…','Списываем бонусы…','Оплата картой…'],'Терминал').then(function(){
     spendLots(c,k.u);addLot(c,k.cb);
     c.balance=r2(c.balance-k.u+k.cb);c.spent=r2(c.spent+k.u);c.accrued=r2(c.accrued+k.cb);c.last=now();
     if(k.u>0)c.hist.unshift({t:now(),txt:'Оплата бонусами (терминал)',amount:a,d:-k.u});
     if(k.cb>0)c.hist.unshift({t:now(),txt:'Кэшбэк (терминал)',amount:k.pay,d:k.cb});
-    p.balance=r2(p.balance-k.cb-k.comm);
+    if(k.comm>0)led('comm','Комиссия '+pcs(p.comm)+'% с покупки '+fmt(k.pay)+' (терминал)',-k.comm);
     tx({type:'terminal',phone:ph,amount:a,used:k.u,paid:k.pay,cb:k.cb,comm:k.comm});S.last=ph;
     T.res={used:k.u,pay:k.pay,cb:k.cb,bal:c.balance};T.st='done';save();render();toast('Оплачено: бонусами '+fmt(k.u));});
 }
@@ -715,8 +710,8 @@ function b6(){
 }
 document.addEventListener('keydown',function(e){if(S.step!==6||/input|textarea/i.test((e.target||{}).tagName||''))return;if(/^\d$/.test(e.key))tkey(e.key);else if(e.key==='Backspace')tkey('del');else if(e.key==='Enter')tkey('ok');});
 /* ---------- STEP 7: partner cabinet ---------- */
-function stats(){var s={acc:0,used:0,comm:0,top:0,turn:0,burn:0};S.tx.forEach(function(t){if(t.type==='topup')s.top+=t.amount;else if(t.type==='expire')s.burn+=t.amount;else{s.acc+=t.cb||0;s.used+=t.used||0;s.comm+=t.comm||0;s.turn+=t.amount||0;}});for(var k in s)s[k]=r2(s[k]);return s;}
-function typeName(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Терминал':t.type==='expire'?'Сгорание бонусов':'Сайт · '+t.item;}
+function stats(){var s={acc:0,used:0,comm:0,top:0,turn:0};S.tx.forEach(function(t){if(t.type==='topup')s.top+=t.amount;else if(t.type==='expire')return;else{s.acc+=t.cb||0;s.used+=t.used||0;s.comm+=t.comm||0;s.turn+=t.amount||0;}});for(var k in s)s[k]=r2(s[k]);return s;}
+function typeName(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Терминал':'Сайт · '+t.item;}
 function chart(){
   var act=S.tx.filter(function(t){return t.cb||t.used;}),last=act.length?act[0].ts:vnow(),days=[];
   for(var i=6;i>=0;i--){var ts=last-i*DAY;days.push({k:dayKey(ts),l:dshort(ts),a:0,u:0});}
@@ -728,50 +723,58 @@ function chart(){
 }
 function v7(){
   var p=S.partner,cl=Object.keys(S.clients).map(function(k){return S.clients[k];}),s=stats();
-  var notes=S.sms.filter(function(m){return m.k==='rem'||m.k==='exp';});
-  return head('Кабинет партнёра','<span class="hlogo">'+logo(44)+esc(p.name)+'</span>','Клиенты, начисления, списания, баланс и правила программы.')+
-  (p.balance<LOW?'<div class="warn">⚠︎ Низкий баланс: '+fmt(p.balance)+'. При нуле кэшбэк перестанет начисляться. <button class="btn" data-t="topup" style="min-height:40px;padding:0 16px;font-size:14px">Пополнить</button></div>':'')+
-  '<div class="kpis"><div class="kpi dk"><div class="k">Баланс</div><div class="v">'+fmt(p.balance)+'</div></div><div class="kpi"><div class="k">Клиентов</div><div class="v">'+cl.length+'</div></div><div class="kpi"><div class="k">Начислено бонусов</div><div class="v">'+fmt(s.acc)+'</div></div><div class="kpi"><div class="k">Оплачено бонусами</div><div class="v">'+fmt(s.used)+'</div></div><div class="kpi"><div class="k">Комиссия платформы</div><div class="v">'+fmt(s.comm)+'</div></div></div>'+
+  var notes=S.sms.filter(function(m){return m.k==='rem';}),rl=cl.filter(function(c){return c.balance>0;}),ss=smsStat(),owe=r2(cl.reduce(function(a,c){return a+c.balance;},0));
+  return head('Кабинет партнёра','<span class="hlogo">'+logo(44)+esc(p.name)+'</span>','Депозит (деньги) и бонусы клиентам (скидки) — отдельно. Клиенты, история списаний, СМС и правила.')+
+  (p.balance<LOW?'<div class="warn">⚠︎ Низкий депозит: '+fmt(p.balance)+'. При нуле перестанут начисляться кэшбэк и уходить СМС. <button class="btn" data-t="topup" style="min-height:40px;padding:0 16px;font-size:14px">Пополнить</button></div>':'')+
+  '<div class="kpis"><div class="kpi dk"><div class="k">Депозит (деньги)</div><div class="v">'+fmt(p.balance)+'</div></div><div class="kpi"><div class="k">Комиссия '+pcs(p.comm)+'%</div><div class="v">'+fmt(s.comm)+'</div></div><div class="kpi"><div class="k">СМС</div><div class="v">'+fmt(ss.sum)+'</div></div><div class="kpi"><div class="k">Бонусный долг клиентам</div><div class="v">'+fmt(owe)+'</div></div><div class="kpi"><div class="k">Клиентов</div><div class="v">'+cl.length+'</div></div></div>'+
+  '<div class="grid2"><div class="card" id="ledger"><div class="eyebrow">💰 Депозит · история списаний</div><p class="hint" style="margin:0 0 8px">Живые деньги у платформы. Списываются только комиссия '+pcs(p.comm)+'% с покупки и СМС по '+SMSFEE+' ₽.</p><div class="tw" style="max-height:360px;overflow:auto;margin-bottom:12px;border-bottom:1px solid var(--border)"><table><tr><th>Время</th><th>Операция</th><th class="n">Сумма</th><th class="n">Остаток</th></tr>'+
+   ((S.led||[]).length?S.led.slice(0,60).map(function(l){return '<tr><td>'+l.t+'</td><td>'+esc(l.txt)+'</td><td class="n '+(l.d>0?'plus':'minus')+'">'+(l.d>0?'+':'−')+fmt(Math.abs(l.d))+'</td><td class="n"><b>'+fmt(l.bal)+'</b></td></tr>';}).join(''):'<tr><td colspan="4" class="hint">Списаний пока нет</td></tr>')+'</table></div>'+
+   '<div class="kv"><span>Пополнено</span><b class="plus">+'+fmt(s.top)+'</b></div><div class="kv"><span>Комиссия платформы</span><b class="minus">−'+fmt(s.comm)+'</b></div><div class="kv"><span>СМС</span><b class="minus">−'+fmt(ss.sum)+'</b></div><div class="kv"><span>Остаток депозита</span><b>'+fmt(p.balance)+'</b></div></div>'+
+  '<div><div class="card" id="smsstat"><div class="eyebrow">✉︎ СМС</div><div style="font-size:22px;font-weight:600;margin:2px 0 8px">'+ss.n+' СМС × '+SMSFEE+' ₽ = '+fmt(ss.sum)+'</div>'+
+   ['cb','rem'].map(function(k){return '<div class="kv"><span>'+SMSN[k].charAt(0).toUpperCase()+SMSN[k].slice(1)+'</span><b>'+(ss.by[k]||0)+' × '+SMSFEE+' ₽ = '+fmt((ss.by[k]||0)*SMSFEE)+'</b></div>';}).join('')+'</div>'+
+  '<div class="card" id="bonusdebt"><div class="eyebrow">🎁 Бонусы клиентам · обязательства</div><p class="hint" style="margin:0 0 8px">Это не деньги, а скидки, которые вы должны клиентам. Депозит они не трогают.</p>'+
+   '<div class="kv"><span>Начислено</span><b>'+fmt(s.acc)+'</b></div><div class="kv"><span>Списано на кассе</span><b class="minus">−'+fmt(s.used)+'</b></div><div class="kv"><span>Остаток долга клиентам</span><b>'+fmt(owe)+'</b></div></div></div></div>'+
   '<div class="grid2"><div class="card"><div class="eyebrow">Настройки программы</div><form id="f7">'+
    '<label class="f"><span>Кэшбэк клиентам, %</span><input class="i" name="cb" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="'+p.cb+'"></label>'+
    '<label class="f"><span>Максимум чека бонусами, %</span><input class="i" name="ms" type="number" inputmode="numeric" min="0" max="100" value="'+p.maxShare+'"></label>'+
-   '<label class="f"><span>Бонусы сгорают через, дней</span><input class="i" name="ed" type="number" inputmode="numeric" min="1" max="730" value="'+p.expDays+'"></label>'+
    '<button class="btn wide" data-t="savecfg">Сохранить настройки</button></form></div>'+
-  '<div class="card"><div class="eyebrow">Сгорание бонусов</div><p style="margin:0 0 10px">Правило: бонусы сгорают через <b>'+p.expDays+' дн.</b> после начисления. За 3 дня клиенту приходит SMS-напоминание.</p>'+
-   '<div class="kv"><span>Дата в демо</span><b data-t="vdate">'+dstr(vnow())+(S.off?' (+'+S.off+' дн.)':'')+'</b></div><div class="kv"><span>Сгорело всего</span><b>'+fmt(s.burn)+'</b></div>'+
-   '<button class="btn sec wide next" data-t="ff">⏩ Перемотать время +30 дней</button>'+
-   '<div class="minisms">'+(notes.length?notes.slice(0,2).map(smsHtml).join(''):'<div class="empty">Здесь появятся SMS о сгорании</div>')+'</div></div></div>'+
+  '<div class="card" id="remind"><div class="eyebrow">✉︎ Напомнить о бонусах</div><p style="margin:0 0 10px">Бонусы бессрочные. Напомните клиентам о неистраченных бонусах — СМС уйдёт всем, у кого баланс больше 0.</p>'+
+   '<div class="kv"><span>Получателей</span><b>'+rl.length+'</b></div><div class="kv"><span>Стоимость</span><b>'+rl.length+' СМС × '+SMSFEE+' ₽ = '+fmt(rl.length*SMSFEE)+'</b></div>'+
+   '<button class="btn wide next" data-t="remind"'+(rl.length?'':' disabled')+'>Напомнить о бонусах · '+fmt(rl.length*SMSFEE)+'</button>'+
+   '<div class="minisms" id="remsms">'+(notes.length?notes.slice(0,2).map(smsHtml).join(''):'<div class="empty">Здесь появится СМС-напоминание клиенту</div>')+'</div></div></div>'+
   '<div class="card"><div class="row" style="justify-content:space-between"><div class="eyebrow" style="margin:0">По дням</div></div>'+chart()+'</div>'+
-  '<div class="card"><div class="eyebrow">Клиенты</div><div class="tw"><table><tr><th>Телефон</th><th class="n">Баланс</th><th class="n">Начислено</th><th class="n">Потрачено</th><th class="n">Сгорело</th><th>Последняя операция</th></tr>'+
-  (cl.length?cl.map(function(c){return '<tr><td>'+esc(maskPhone(c.phone))+'</td><td class="n"><b>'+fmt(c.balance)+'</b></td><td class="n plus">+'+fmt(c.accrued)+'</td><td class="n minus">−'+fmt(c.spent)+'</td><td class="n">'+fmt(c.burned||0)+'</td><td>'+esc(c.last)+'</td></tr>';}).join(''):'<tr><td colspan="6" class="hint">Клиентов пока нет</td></tr>')+'</table></div></div>'+
+  '<div class="card"><div class="eyebrow">Клиенты</div><div class="tw"><table><tr><th>Телефон</th><th class="n">Баланс</th><th class="n">Начислено</th><th class="n">Потрачено</th><th>Последняя операция</th></tr>'+
+  (cl.length?cl.map(function(c){return '<tr><td>'+esc(maskPhone(c.phone))+'</td><td class="n"><b>'+fmt(c.balance)+'</b></td><td class="n plus">+'+fmt(c.accrued)+'</td><td class="n minus">−'+fmt(c.spent)+'</td><td>'+esc(c.last)+'</td></tr>';}).join(''):'<tr><td colspan="5" class="hint">Клиентов пока нет</td></tr>')+'</table></div></div>'+
   '<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><div class="eyebrow" style="margin:0">Операции</div><button class="btn sec" data-t="csv" style="min-height:42px;font-size:14px">⤓ Excel</button></div><div class="tw"><table><tr><th>Время</th><th>Тип</th><th>Клиент</th><th class="n">Сумма</th><th class="n">Кэшбэк</th><th class="n">Бонусами</th><th class="n">Комиссия</th></tr>'+
   (S.tx.length?S.tx.slice(0,40).map(function(t){return '<tr><td>'+t.t+'</td><td>'+esc(typeName(t))+'</td><td>'+(t.phone?esc(maskPhone(t.phone)):'—')+'</td><td class="n">'+fmt(t.amount)+'</td><td class="n">'+(t.cb?'+'+fmt(t.cb):'—')+'</td><td class="n">'+(t.used?'−'+fmt(t.used):'—')+'</td><td class="n">'+(t.comm?fmt(t.comm):'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="hint">Операций пока нет</td></tr>')+'</table></div>'+
-  '<p class="hint">Пополнено всего: '+fmt(s.top)+'. Сгоревшие бонусы возвращаются на баланс партнёра. Комиссия платформы '+p.comm+'% сверх кэшбэка клиенту.</p></div>';
+  '<p class="hint">Пополнено всего: '+fmt(s.top)+'. Комиссия платформы '+pcs(p.comm)+'% с покупки и СМС '+SMSFEE+' ₽ списываются с депозита. Кэшбэк — скидка партнёра, депозит не уменьшает Бонусы бессрочные: долг клиентам = начислено − списано на кассе.</p></div>';
 }
 function csv(){
   var q=function(v){v=String(v==null?'':v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;},n=function(x){return x?String(r2(x)).replace('.',','):'0';};
   var L=[['ВЕРНЁМ — демо-выгрузка',S.partner.name],[],['Операции'],['Время','Тип','Клиент','Сумма','Кэшбэк','Бонусами','Комиссия']];
   S.tx.forEach(function(t){L.push([t.t,typeName(t),t.phone?maskPhone(t.phone):'',n(t.amount),n(t.cb),n(t.used),n(t.comm)]);});
-  L.push([],['Клиенты'],['Телефон','Баланс','Начислено','Потрачено','Сгорело']);
-  Object.keys(S.clients).forEach(function(k){var c=S.clients[k];L.push([maskPhone(c.phone),n(c.balance),n(c.accrued),n(c.spent),n(c.burned)]);});
-  L.push([],['Баланс партнёра',n(S.partner.balance)]);
+  L.push([],['Клиенты'],['Телефон','Баланс','Начислено','Потрачено']);
+  Object.keys(S.clients).forEach(function(k){var c=S.clients[k];L.push([maskPhone(c.phone),n(c.balance),n(c.accrued),n(c.spent)]);});
+  L.push([],['История списаний депозита'],['Время','Операция','Сумма','Остаток']);(S.led||[]).forEach(function(l){L.push([l.t,l.txt,n(l.d),n(l.bal)]);});
+  L.push([],['Депозит партнёра',n(S.partner.balance)]);
   var blob=new Blob(['\ufeff'+L.map(function(r){return r.map(q).join(';');}).join('\r\n')],{type:'text/csv;charset=utf-8'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='verniom-demo-'+S.partner.slug+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);toast('Файл CSV для Excel скачан');
 }
 function b7(){
   var tp=$('[data-t=topup]');if(tp)tp.onclick=function(){go(2);};
-  $('#f7').onsubmit=function(e){e.preventDefault();var f=e.target,cb=parseFloat(String(f.cb.value).replace(',','.')),ms=parseInt(f.ms.value,10),ed=parseInt(f.ed.value,10);
-    if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}if(!(ms>=0&&ms<=100)){toast('Доля бонусами: 0–100%');return;}if(!(ed>=1&&ed<=730)){toast('Срок: 1–730 дней');return;}
-    var p=S.partner;p.cb=cb;p.maxShare=ms;p.expDays=ed;save();render();toast('Настройки сохранены');};
-  $('[data-t=ff]').onclick=function(){S.off+=30;var b=runExpiry();save();render();toast(b>0?'Прошло 30 дней: сгорело '+fmt(b):'Прошло 30 дней — сгоревших бонусов нет');};
+  $('#f7').onsubmit=function(e){e.preventDefault();var f=e.target,cb=parseFloat(String(f.cb.value).replace(',','.')),ms=parseInt(f.ms.value,10);
+    if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}if(!(ms>=0&&ms<=100)){toast('Доля бонусами: 0–100%');return;}
+    var p=S.partner;p.cb=cb;p.maxShare=ms;save();render();toast('Настройки сохранены');};
+  var rb=$('[data-t=remind]');if(rb)rb.onclick=function(){var n=Object.keys(S.clients).filter(function(k){return S.clients[k].balance>0;}).length;if(!n)return;
+    if(S.partner.balance<n*SMSFEE){toast('Недостаточно средств на депозите — пополните');return;}
+    processing(['Готовим '+n+' СМС…','Отправляем…'],'Напоминание').then(function(){var k=remindAll();save();render();var el=$('#remsms');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});toast('Отправлено '+k+' СМС · −'+fmt(k*SMSFEE));});};
   $('[data-t=csv]').onclick=csv;bindLk();
 }
 /* ---------- render ---------- */
 var V={1:[v1,b1],2:[v2,b2],3:[v3,b3],4:[v4,b4],5:[v5,b5],6:[v6,b6],7:[v7,b7]};
 function render(){if(!avail(S.step))S.step=1;renderSteps();var v=V[S.step];$('#view').innerHTML=v[0]();v[1]();}
 $('#reset').onclick=function(){if(!confirm('Сбросить демо и начать заново?'))return;S=blank();T={st:'phone',ph:'',pin:'',amt:'',res:null};lastBreak=null;siteMode=null;bkReset();save();render();toast('Демо сброшено');};
-window.__demo={state:function(){return S;}};
-if(runExpiry())save();
+window.__demo={state:function(){return S;},pay:function(t,p){payModal(t,p);}};
 render();
 })();
 </script>
