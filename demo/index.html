@@ -164,6 +164,8 @@ td.n,th.n{text-align:right}
 .toast.show{opacity:1;transform:translateX(-50%)}
 .vnote{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;font-size:11.5px;color:var(--grey);background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:980px;padding:5px 10px;backdrop-filter:blur(8px)}
 .next{margin-top:18px}
+.ava{flex-shrink:0;display:block}.lbrand,.hlogo,.nett{display:inline-flex;align-items:center;gap:8px}.hlogo{gap:12px}.nett .ava{border-radius:50%}
+.land .hero .hero-ava{margin-bottom:10px;filter:drop-shadow(0 8px 14px rgba(122,74,42,.25))}
 .visit{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 20px}
 .map{position:relative;min-height:140px;border-radius:16px;overflow:hidden;background:#EAE6DF}
 .map .rd{position:absolute;background:#fff}.map .h1{left:0;right:0;top:38%;height:12px}.map .h2{left:0;right:0;top:75%;height:7px}.map .v1{top:0;bottom:0;left:30%;width:9px}.map .v2{top:0;bottom:0;left:72%;width:14px;transform:skewX(-12deg)}
@@ -172,7 +174,7 @@ td.n,th.n{text-align:right}
 .vinfo{background:#fff;border-radius:16px;padding:14px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;color:#4a372a}.vinfo b{font-weight:600;color:#2b1d14}
 .nets-t{font-size:12px;font-weight:600;color:var(--grey);margin:0 2px 6px}
 .bal2{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;border:1px solid var(--border)}
-.bal2 .t{font-size:13px;font-weight:600}.bal2 small{font-size:11px;color:var(--grey2)}.bal2 b{font-weight:600}
+.bal2 .t{font-size:13px;font-weight:600}.bal2 small{font-size:11px;color:var(--grey2)}.bal2 b{font-weight:600;white-space:nowrap;margin-left:8px}
 .model{background:var(--tint);color:#0b5f56;border-radius:12px;padding:12px 14px;font-size:14px;margin:14px 0 4px}.model b{font-weight:600}
 @media (max-width:560px){.visit{grid-template-columns:1fr}}
 .pill.low{border-color:#F3C7C1;color:var(--red)}
@@ -221,7 +223,11 @@ var KEY='verniom_demo_v2',DAY=864e5,LOW=1000;
 var STEPS=[[1,'Регистрация'],[2,'Пополнение'],[3,'Сайт'],[4,'Покупка'],[5,'ЛК клиента'],[6,'Терминал'],[7,'Кабинет партнёра']];
 var ADDR='ул. Братиславская, 14, Москва',HOURS='Ежедневно 8:00–22:00';
 var OTHER={name:'Автомойка «Блеск»',bal:120,exp:'15.12.2026'};
-function coffee(n){n=String(n||'').trim()||'Зерно';return /коф|cafe|coffee|кафе/i.test(n)?n:'Кофейня '+n;}
+function coffee(n){n=String(n||'').trim();if(!n)return 'Кофейня «Кофа»';return /кофейн|кафе|cafe|coffee|кофе(?![а-яё])/i.test(n)?n:'Кофейня '+qn(n);}
+function logo(sz,cls){sz=sz||40;return '<svg class="ava'+(cls?' '+cls:'')+'" width="'+sz+'" height="'+sz+'" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30.5" fill="#FBF3EA" stroke="#0FAE9E" stroke-width="3"/><path d="M25 10c-3 3.5 3 5.5 0 9.5M32 8c-3 3.5 3 5.5 0 9.5M39 10c-3 3.5 3 5.5 0 9.5" stroke="#0FAE9E" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M47 30h2.5a5.5 5.5 0 0 1 0 11H45" stroke="#7A4A2A" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M16 27h31v8a13 13 0 0 1-13 13h-5a13 13 0 0 1-13-13z" fill="#7A4A2A"/><ellipse cx="31.5" cy="27" rx="15.5" ry="2.8" fill="#B07B52"/><circle cx="26" cy="35" r="1.7" fill="#FBF3EA"/><circle cx="37" cy="35" r="1.7" fill="#FBF3EA"/><path d="M28.5 39.5c1.6 1.8 4.4 1.8 6 0" stroke="#FBF3EA" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="22.5" cy="38.5" r="1.8" fill="#E9A38B" opacity=".8"/><circle cx="40.5" cy="38.5" r="1.8" fill="#E9A38B" opacity=".8"/><path d="M13 52h37" stroke="#D2B08F" stroke-width="3" stroke-linecap="round"/></svg>';}
+function initAva(n,sz,bg){sz=sz||40;var ch=String(n).replace(/^[^«]*«/,'').charAt(0).toUpperCase();return '<svg class="ava" width="'+sz+'" height="'+sz+'" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="'+(bg||'#E6F7F5')+'"/><text x="32" y="41" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="600" fill="#0A8A7D">'+ch+'</text></svg>';}
+function qn(n){n=String(n);return /[«"]/.test(n)?n:'«'+n+'»';}
+
 var MENU=[['☕','Капучино',290],['🥛','Латте',320],['☕','Флэт уайт',340],['🥐','Круассан',250],['🍰','Чизкейк',380],['🎁','Сертификат',3000]];
 function blank(){return {partner:null,site:null,clients:{},tx:[],last:null,step:1,sms:[],off:0};}
 var S;
@@ -288,19 +294,19 @@ function v1(){
   var p=S.partner;
   return head('Шаг 1','Регистрация партнёра','Подключите любой бизнес за минуту. В демо — кофейня: название можно поменять.')+
   '<div class="card"><form id="f1" autocomplete="off">'+
-  '<label class="f"><span>Название бизнеса</span><input class="i" name="name" required maxlength="40" value="'+esc(p?p.name:'Кофейня Зерно')+'"></label>'+
+  '<label class="f"><span>Название бизнеса</span><input class="i" name="name" required maxlength="40" value="'+esc(p?p.name:'Кофейня «Кофа»')+'"></label>'+
   '<label class="f"><span>Телефон</span><input class="i" name="phone" type="tel" inputmode="tel" required value="'+esc(p?fmtPhone(p.phone):'+7 (900) 123-45-67')+'"></label>'+
   '<div class="grid2"><label class="f"><span>Кэшбэк клиентам, %</span><input class="i" name="cb" type="number" inputmode="decimal" min="1" max="30" step="0.5" value="'+(p?p.cb:5)+'"></label>'+
   '<label class="f"><span>Комиссия платформы, %</span><input class="i" name="comm" type="number" inputmode="decimal" min="0" max="20" step="0.1" placeholder="1" value="'+(p?p.comm:1)+'"><div class="hint">Значение для примера — можно изменить</div></label></div>'+
   '<button class="btn wide" data-t="create">'+(p?'Сохранить':'Создать кабинет партнёра')+'</button></form>'+
-  (p?'<div class="ok-banner">✓ Кабинет «'+esc(p.name)+'» создан</div><button class="btn sec wide" data-t="to2">Дальше: пополнить баланс →</button>':'')+'</div>';
+  (p?'<div class="ok-banner">✓ Кабинет '+esc(qn(p.name))+' создан</div><button class="btn sec wide" data-t="to2">Дальше: пополнить баланс →</button>':'')+'</div>';
 }
 function b1(){
   $('#f1').onsubmit=function(e){e.preventDefault();var f=e.target;var ph=normPhone(f.phone.value);
     if(ph.length!==11){toast('Введите телефон в формате +7…');return;}
     var cb=parseFloat(String(f.cb.value).replace(',','.'));if(!(cb>=1&&cb<=30)){toast('Кэшбэк: от 1 до 30%');return;}
     var cm=f.comm.value===''?1:parseFloat(String(f.comm.value).replace(',','.'));if(!(cm>=0&&cm<=20)){toast('Комиссия: от 0 до 20%');return;}
-    var name=f.name.value.trim()||'Кофейня Зерно';
+    var name=f.name.value.trim()||'Кофейня «Кофа»';
     if(S.partner){S.partner.name=name;S.partner.phone=ph;S.partner.cb=cb;S.partner.comm=cm;}
     else S.partner={name:name,phone:ph,cb:cb,comm:cm,balance:0,maxShare:30,expDays:30,created:vnow()};
     S.partner.slug=slug(name);save();toast('Кабинет партнёра создан');go(2);};
@@ -347,7 +353,7 @@ function b3(){
   $$('[data-mode]').forEach(function(b){b.onclick=function(){siteMode=b.dataset.mode;render();};});
   var f=$('#f3');if(f)f.onsubmit=function(e){e.preventDefault();var u=e.target.url.value.trim().replace(/^https?:\/\//,'');if(!u){toast('Введите адрес');return;}S.site={mode:'own',url:u};save();toast('Виджет установлен');render();};
   var p=$('[data-t=publish]');if(p)p.onclick=async function(){p.disabled=true;var log=$('#log');log.hidden=false;
-    var L=['$ verniom init «'+S.partner.name+'»','→ Генерируем страницу и меню…','→ Подключаем кэшбэк '+S.partner.cb+'%…','→ Выпускаем SSL-сертификат…','→ Публикуем на '+S.partner.slug+'.verniom.github.io…','✓ Готово! Сайт опубликован'];
+    var L=['$ verniom init '+qn(S.partner.name)+'','→ Генерируем страницу и меню…','→ Подключаем кэшбэк '+S.partner.cb+'%…','→ Выпускаем SSL-сертификат…','→ Публикуем на '+S.partner.slug+'.verniom.github.io…','✓ Готово! Сайт опубликован'];
     for(var i=0;i<L.length;i++){await sleep(450);var d=document.createElement('div');d.textContent=L[i];log.appendChild(d);}
     await sleep(400);S.site={mode:'new'};save();toast('Сайт опубликован');go(4);};
   var t=$('[data-t=to4]');if(t)t.onclick=function(){go(4);};
@@ -356,8 +362,8 @@ function b3(){
 function landing(){
   var p=S.partner,cn=coffee(p.name);
   return '<div class="browser"><div class="bbar"><i></i><i></i><i></i><div class="url">🔒 '+esc(siteUrl())+'</div></div><div class="land">'+
-  '<div class="nav"><span>☕ '+esc(cn)+'</span><small>📍 '+ADDR+'</small></div>'+
-  '<div class="hero"><h2>'+esc(cn)+'</h2><p>Кофе, который хочется повторить. Свежая обжарка и выпечка каждый день.</p><div class="cbk"><span class="dot"></span>Кэшбэк '+p.cb+'% с каждой покупки</div></div>'+
+  '<div class="nav"><span class="lbrand">'+logo(34)+esc(cn)+'</span><small>📍 '+ADDR+'</small></div>'+
+  '<div class="hero">'+logo(64,'hero-ava')+'<h2>'+esc(cn)+'</h2><p>Кофе, который хочется повторить. Свежая обжарка и выпечка каждый день.</p><div class="cbk"><span class="dot"></span>Кэшбэк '+p.cb+'% с каждой покупки</div></div>'+
   '<div class="menu">'+MENU.map(function(m,i){return '<div class="mi"><div class="em">'+m[0]+'</div><b>'+m[1]+'</b><span class="pr">'+fmt(m[2])+'</span><button data-buy="'+i+'">Купить</button></div>';}).join('')+'</div>'+
   '<div class="visit"><div class="map" aria-hidden="true"><i class="rd h1"></i><i class="rd h2"></i><i class="rd v1"></i><i class="rd v2"></i><span class="pin"><i>☕</i></span><span class="mlbl">Братиславская</span></div>'+
   '<div class="vinfo"><b>Как нас найти</b><div>📍 '+ADDR+'</div><div>🚇 м. Братиславская, 3 мин пешком</div><div>🕗 '+HOURS+'</div><div>☎ '+esc(fmtPhone(p.phone))+'</div></div></div>'+
@@ -369,9 +375,9 @@ function phoneLock(list,id){
   (list.length?list.slice(0,4).map(smsHtml).join(''):'<div class="empty">Здесь появится SMS клиенту</div>')+'</div></div></div></div>';
 }
 function smsHtml(m){
-  var b;if(m.k==='rem')b='Напоминание: '+fmt(m.amt)+' бонусов в «'+esc(m.partner)+'» сгорят '+dshort(m.exp)+'. Успейте потратить! Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
-  else if(m.k==='exp')b='Сгорели '+fmt(m.amt)+' бонусов в «'+esc(m.partner)+'» — срок действия '+m.days+' дн. истёк. Новые покупки — новый кэшбэк!';
-  else b='Вам начислен кэшбэк '+fmt(m.cb)+' в «'+esc(m.partner)+'». Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
+  var b;if(m.k==='rem')b='Напоминание: '+fmt(m.amt)+' бонусов в '+esc(qn(m.partner))+' сгорят '+dshort(m.exp)+'. Успейте потратить! Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
+  else if(m.k==='exp')b='Сгорели '+fmt(m.amt)+' бонусов в '+esc(qn(m.partner))+' — срок действия '+m.days+' дн. истёк. Новые покупки — новый кэшбэк!';
+  else b='Вам начислен кэшбэк '+fmt(m.cb)+' в '+esc(qn(m.partner))+'. Личный кабинет: <a data-lk="'+m.phone+'">'+lkLink(m.phone)+'</a>';
   return '<div class="sms show"><div class="h"><b>ВЕРНЁМ</b><span>SMS · сейчас</span></div>'+b+'</div>';}
 var lastBreak=null;
 function v4(){
@@ -379,7 +385,7 @@ function v4(){
   '<div class="stage"><div>'+landing()+(lastBreak?breakHtml(lastBreak):'')+'</div><div id="phonecol">'+phoneLock(S.sms)+'<p class="hint" style="text-align:center">Телефон клиента (макет) · нажмите ссылку в SMS</p></div></div>';
 }
 function breakHtml(b){return '<div class="card" style="margin-top:16px"><div class="eyebrow">Расчёт по покупке</div>'+
-  '<div class="kv"><span>Покупка «'+esc(b.item)+'»</span><b>'+fmt(b.amount)+'</b></div>'+
+  '<div class="kv"><span>Покупка '+esc(qn(b.item))+'</span><b>'+fmt(b.amount)+'</b></div>'+
   '<div class="kv"><span>Кэшбэк клиенту ('+b.cbp+'%)</span><b class="plus">+'+fmt(b.cb)+'</b></div>'+
   '<div class="kv"><span>Комиссия платформы ('+b.cp+'%)</span><b>'+fmt(b.comm)+'</b></div>'+
   '<div class="kv"><span>Списано с баланса партнёра</span><b class="minus">−'+fmt(b.cb+b.comm)+'</b></div>'+
@@ -416,16 +422,16 @@ function v5(){
   var c=client(S.last),p=S.partner,ne=nextExp(c);
   return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс, история, срок бонусов и PIN для терминала.')+
   '<div class="stage s5"><div><div class="phone"><div class="screen"><div class="isl"></div><div class="sbar"><span>9:41</span><span>●●● ▮</span></div><div class="lk">'+
-  '<div class="hd"><span><span class="dot"></span> '+esc(p.name)+'</span><span style="font-size:12px;color:var(--grey)">'+esc(maskPhone(c.phone))+'</span></div>'+
+  '<div class="hd"><span class="nett">'+logo(24)+esc(p.name)+'</span><span style="font-size:12px;color:var(--grey)">'+esc(maskPhone(c.phone))+'</span></div>'+
   '<div class="nets-t">Мои бонусы по сетям</div>'+
-  '<div class="bal"><div class="t">'+esc(coffee(p.name).toUpperCase())+'</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · тратятся только здесь</p></div>'+
-  '<div class="bal2"><div><div class="t">'+esc(OTHER.name)+'</div><small>только в этой сети · до '+OTHER.exp+'</small></div><b>'+fmt(OTHER.bal)+'</b></div>'+
+  '<div class="bal"><div class="t nett">'+logo(26)+esc(coffee(p.name).toUpperCase())+'</div><div class="s" data-t="cbal">'+fmt(c.balance)+'</div><p>+'+p.cb+'% с покупки · тратятся только здесь</p></div>'+
+  '<div class="bal2"><div class="nett">'+initAva(OTHER.name,30)+'<div><div class="t">'+esc(OTHER.name)+'</div><small>только в этой сети · до '+OTHER.exp+'</small></div></div><b>'+fmt(OTHER.bal)+'</b></div>'+
   '<div class="lkc exp"><h4>Срок действия</h4>'+(ne?'<div class="hr"><div>Сгорят '+dstr(ne.exp)+'<small>Бонусы действуют '+p.expDays+' дн.</small></div><div class="minus">'+fmt(ne.amt)+'</div></div>':'<div class="hint">Нет бонусов со сроком · действуют '+p.expDays+' дн.</div>')+'</div>'+
   '<div class="lkc"><h4>История</h4>'+(c.hist.length?c.hist.slice(0,6).map(function(h){return '<div class="hr"><div>'+esc(h.txt)+'<small>'+h.t+' · '+fmt(h.amount)+'</small></div><div class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</div></div>';}).join(''):'<div class="hint">Пока пусто</div>')+'</div>'+
   '<div class="lkc"><h4>PIN для оплаты в терминале</h4><div class="pinrow"><input id="pin" inputmode="numeric" maxlength="4" value="'+esc(c.pin)+'" aria-label="PIN"><button data-t="pin">Сохранить</button></div><div class="hint">По умолчанию 1234</div></div>'+
   '</div></div></div></div>'+
-  '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов в «'+esc(p.name)+'»</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Бонусов в «'+esc(OTHER.name)+'»</span><b>'+fmt(OTHER.bal)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div><div class="kv"><span>Сгорело</span><b>'+fmt(c.burned)+'</b></div>'+
-  '<div class="model"><b>Бонусы — внутри сети.</b> Кэшбэк из «'+esc(p.name)+'» тратится только в «'+esc(p.name)+'», бонусы «'+esc(OTHER.name)+'» — только там. В одном кабинете клиент видит балансы всех сетей.</div>'+'<p class="hint">Вход по ссылке из SMS, без пароля. Бонусами можно оплатить до '+p.maxShare+'% чека в терминале по телефону и PIN.</p>'+
+  '<div class="card"><div class="eyebrow">Что видит клиент</div><div class="kv"><span>Телефон</span><b>'+esc(fmtPhone(c.phone))+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(p.name))+'</span><b>'+fmt(c.balance)+'</b></div><div class="kv"><span>Бонусов в '+esc(qn(OTHER.name))+'</span><b>'+fmt(OTHER.bal)+'</b></div><div class="kv"><span>Всего начислено</span><b>'+fmt(c.accrued)+'</b></div><div class="kv"><span>Потрачено</span><b>'+fmt(c.spent)+'</b></div><div class="kv"><span>Сгорело</span><b>'+fmt(c.burned)+'</b></div>'+
+  '<div class="model"><b>Бонусы — внутри сети.</b> Кэшбэк из '+esc(qn(p.name))+' тратится только в '+esc(qn(p.name))+', бонусы '+esc(qn(OTHER.name))+' — только там. В одном кабинете клиент видит балансы всех сетей.</div>'+'<p class="hint">Вход по ссылке из SMS, без пароля. Бонусами можно оплатить до '+p.maxShare+'% чека в терминале по телефону и PIN.</p>'+
   '<button class="btn wide next" data-t="to6">Оплатить бонусами в терминале →</button><button class="btn sec wide" style="margin-top:8px" data-t="back4">Купить ещё на сайте</button></div></div>';
 }
 function b5(){
@@ -450,7 +456,7 @@ function v6(){
   return head('Шаг 6','Оплата бонусами в терминале','Клиент называет телефон и PIN — бонусы списываются прямо на кассе (до '+p.maxShare+'% чека).')+
   '<div class="stage s6"><div><div class="term"><div class="tlogo"><span>● ВЕРНЁМ POS</span><span>'+esc(p.name)+'</span></div><div class="tscr" id="tscr">'+tscreen()+'</div>'+
   '<div class="keys">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="key'+(k==='ok'?' ok':k==='del'?' del':'')+'" data-k="'+k+'">'+(k==='ok'?'OK':k==='del'?'⌫':k)+'</button>';}).join('')+'</div></div><p class="hint" style="text-align:center">Терминал (макет) · можно печатать с клавиатуры</p></div>'+
-  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Партнёр «'+esc(p.name)+'»</span><b>'+fmt(p.balance)+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека · списываются только бонусы сети «'+esc(p.name)+'»</div></div>'+
+  '<div><div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Клиент '+esc(maskPhone(S.last))+'</span><b data-t="tcb">'+fmt(c?c.balance:0)+'</b></div><div class="kv"><span>Партнёр '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="hint">PIN клиента: '+esc(c?c.pin:'1234')+' (подсказка для демо) · правило: бонусами не более '+p.maxShare+'% чека · списываются только бонусы сети '+esc(qn(p.name))+'</div></div>'+
   '<div class="card"><div class="eyebrow">История операций</div>'+(S.tx.filter(function(t){return t.type==='purchase'||t.type==='terminal';}).slice(0,5).map(function(t){return '<div class="kv"><span>'+(t.type==='terminal'?'Терминал'+(t.used?' · бонусами −'+fmt(t.used):''):'Сайт: '+esc(t.item))+' · '+esc(maskPhone(t.phone))+'</span><b>'+fmt(t.amount)+'</b></div>';}).join('')||'<div class="hint">Пока нет</div>')+
   (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div></div>';
 }
@@ -502,7 +508,7 @@ function chart(){
 function v7(){
   var p=S.partner,cl=Object.keys(S.clients).map(function(k){return S.clients[k];}),s=stats();
   var notes=S.sms.filter(function(m){return m.k==='rem'||m.k==='exp';});
-  return head('Кабинет партнёра','«'+esc(p.name)+'»','Клиенты, начисления, списания, баланс и правила программы.')+
+  return head('Кабинет партнёра','<span class="hlogo">'+logo(44)+esc(p.name)+'</span>','Клиенты, начисления, списания, баланс и правила программы.')+
   (p.balance<LOW?'<div class="warn">⚠︎ Низкий баланс: '+fmt(p.balance)+'. При нуле кэшбэк перестанет начисляться. <button class="btn" data-t="topup" style="min-height:40px;padding:0 16px;font-size:14px">Пополнить</button></div>':'')+
   '<div class="kpis"><div class="kpi dk"><div class="k">Баланс</div><div class="v">'+fmt(p.balance)+'</div></div><div class="kpi"><div class="k">Клиентов</div><div class="v">'+cl.length+'</div></div><div class="kpi"><div class="k">Начислено бонусов</div><div class="v">'+fmt(s.acc)+'</div></div><div class="kpi"><div class="k">Оплачено бонусами</div><div class="v">'+fmt(s.used)+'</div></div><div class="kpi"><div class="k">Комиссия платформы</div><div class="v">'+fmt(s.comm)+'</div></div></div>'+
   '<div class="grid2"><div class="card"><div class="eyebrow">Настройки программы</div><form id="f7">'+

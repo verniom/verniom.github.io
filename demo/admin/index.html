@@ -207,6 +207,7 @@ td.go{color:var(--grey2);font-size:20px}
 .sheet .warn{margin:10px 0 0;font-size:13.5px}
 .roll{border:1.5px solid var(--brand)}
 @media (max-width:820px){.dgrid{grid-template-columns:1fr}.ov{padding:0}.sheet{margin:0;border-radius:0;min-height:100%;padding:16px 12px 40px}.vnote{position:static;display:table;margin:-60px auto 24px}.kv{font-size:14px;gap:10px}.kv b{text-align:right}}
+.ava{flex-shrink:0;display:block}.nett{display:flex;align-items:center;gap:12px}
 </style>
 </head>
 <body>
@@ -244,13 +245,16 @@ var SEED=[
    [['79161112233',2450],['79267776655',1980],['79035554433',1720],['79857771122',1510],['79998880011',1240]],
    [['03.10, 07:10','Покупка','79161112233',6900,690,0,69],['02.10, 21:30','Терминал','79267776655',4500,450,900,36],['15.09, 10:00','Пополнение','',30000,0,0,0]])
 ];
+function logo(sz,cls){sz=sz||40;return '<svg class="ava'+(cls?' '+cls:'')+'" width="'+sz+'" height="'+sz+'" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30.5" fill="#FBF3EA" stroke="#0FAE9E" stroke-width="3"/><path d="M25 10c-3 3.5 3 5.5 0 9.5M32 8c-3 3.5 3 5.5 0 9.5M39 10c-3 3.5 3 5.5 0 9.5" stroke="#0FAE9E" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M47 30h2.5a5.5 5.5 0 0 1 0 11H45" stroke="#7A4A2A" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M16 27h31v8a13 13 0 0 1-13 13h-5a13 13 0 0 1-13-13z" fill="#7A4A2A"/><ellipse cx="31.5" cy="27" rx="15.5" ry="2.8" fill="#B07B52"/><circle cx="26" cy="35" r="1.7" fill="#FBF3EA"/><circle cx="37" cy="35" r="1.7" fill="#FBF3EA"/><path d="M28.5 39.5c1.6 1.8 4.4 1.8 6 0" stroke="#FBF3EA" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="22.5" cy="38.5" r="1.8" fill="#E9A38B" opacity=".8"/><circle cx="40.5" cy="38.5" r="1.8" fill="#E9A38B" opacity=".8"/><path d="M13 52h37" stroke="#D2B08F" stroke-width="3" stroke-linecap="round"/></svg>';}
+function initAva(n,sz,bg){sz=sz||40;var ch=String(n).replace(/^[^«]*«/,'').charAt(0).toUpperCase();return '<svg class="ava" width="'+sz+'" height="'+sz+'" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="'+(bg||'#E6F7F5')+'"/><text x="32" y="41" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="600" fill="#0A8A7D">'+ch+'</text></svg>';}
+function qn(n){n=String(n);return /[«"]/.test(n)?n:'«'+n+'»';}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;}}
 function mine(S){
   if(!S||!S.partner)return null;var p=S.partner,x={top:0,issued:0,comm:0,redeemed:0,expired:0,turn:0};
   (S.tx||[]).forEach(function(t){if(t.type==='topup')x.top+=t.amount;else if(t.type==='expire')x.expired+=t.amount;else{x.issued+=t.cb||0;x.redeemed+=t.used||0;x.comm+=t.comm||0;x.turn+=t.amount||0;}});
   var cl=Object.keys(S.clients||{}).map(function(k){return S.clients[k];}),out=cl.reduce(function(a,c){return a+(c.balance||0);},0);
   var tn=function(t){return t.type==='topup'?'Пополнение':t.type==='terminal'?'Терминал':t.type==='expire'?'Сгорание бонусов':'Покупка · '+t.item;};
-  return {id:'me',me:1,name:p.name,kind:'Ваш демо-партнёр',cb:p.cb,ms:p.maxShare,ed:p.expDays,clients:cl.length,top:r2(x.top),issued:r2(x.issued),comm:r2(x.comm),redeemed:r2(x.redeemed),expired:r2(x.expired),
+  return {id:'me',me:1,name:p.name,kind:'Кофейня · ваш демо-партнёр',cb:p.cb,ms:p.maxShare,ed:p.expDays,clients:cl.length,top:r2(x.top),issued:r2(x.issued),comm:r2(x.comm),redeemed:r2(x.redeemed),expired:r2(x.expired),
     remaining:r2(p.balance),outstanding:r2(out),turn:r2(x.turn),commPct:p.comm,
     topc:cl.slice().sort(function(a,b){return b.balance-a.balance;}).slice(0,5).map(function(c){return [c.phone,c.balance];}),
     ops:(S.tx||[]).slice(0,12).map(function(t){return [t.t,tn(t),t.phone||'',t.amount,t.cb||0,t.used||0,t.comm||0];})};
@@ -258,6 +262,7 @@ function mine(S){
 var NETS=[],TOT={};
 function compute(){var m=mine(load());NETS=(m?[m]:[]).concat(SEED);TOT={top:0,remaining:0,outstanding:0,comm:0,issued:0,redeemed:0,expired:0,clients:0,turn:0};
   NETS.forEach(function(n){for(var k in TOT)TOT[k]=r2(TOT[k]+n[k]);});return m;}
+function ava(n,sz){return n.me?logo(sz):initAva(n.name,sz);}
 function kpi(k,v,dk){return '<div class="kpi'+(dk?' dk':'')+'"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';}
 function render(){
   var m=compute();
@@ -266,7 +271,7 @@ function render(){
   '<div class="kpis">'+kpi('Комиссия платформы (заработано)',fmt(TOT.comm),1)+kpi('Депозиты сетей (остаток)',fmt(TOT.remaining))+kpi('Бонусы у клиентов (обязательства)',fmt(TOT.outstanding))+kpi('Сетей',NETS.length)+kpi('Клиентов',num(TOT.clients))+'</div>'+
   '<div class="card model"><b>Модель.</b> Каждая сеть пополняет свой <b>денежный депозит</b> в платформе; из него оплачиваются кэшбэк клиентам и комиссия платформы. <b>Бонусы — внутри сети:</b> бонусы, начисленные в кофейне, тратятся только в этой кофейне. Клиент видит в одном кабинете балансы всех сетей, но не может перенести бонусы из одной сети в другую. Сгоревшие бонусы возвращаются на депозит сети.</div>'+
   '<div class="card"><div class="eyebrow">Сети-партнёры · нажмите для деталей</div><div class="tw"><table class="nets"><tr><th>Сеть</th><th class="n">Кэшбэк</th><th class="n">Клиенты</th><th class="n">Депозит (остаток)</th><th class="n">Бонусы у клиентов</th><th class="n">Комиссия</th><th></th></tr>'+
-  NETS.map(function(n){return '<tr data-net="'+n.id+'"'+(n.me?' class="me"':'')+' tabindex="0"><td><b>'+esc(n.name)+'</b>'+(n.me?' <span class="badge">вы</span>':'')+'<small>'+esc(n.kind)+'</small></td><td class="n">'+n.cb+'%</td><td class="n">'+num(n.clients)+'</td><td class="n'+(n.remaining<LOW?' lowc':'')+'">'+fmt(n.remaining)+(n.remaining<LOW?' ⚠︎':'')+'</td><td class="n">'+fmt(n.outstanding)+'</td><td class="n"><b>'+fmt(n.comm)+'</b></td><td class="n go">›</td></tr>';}).join('')+
+  NETS.map(function(n){return '<tr data-net="'+n.id+'"'+(n.me?' class="me"':'')+' tabindex="0"><td><div class="nett">'+ava(n,36)+'<div><b>'+esc(n.name)+'</b>'+(n.me?' <span class="badge">вы</span>':'')+'<small>'+esc(n.kind)+'</small></div></div></td><td class="n">'+n.cb+'%</td><td class="n">'+num(n.clients)+'</td><td class="n'+(n.remaining<LOW?' lowc':'')+'">'+fmt(n.remaining)+(n.remaining<LOW?' ⚠︎':'')+'</td><td class="n">'+fmt(n.outstanding)+'</td><td class="n"><b>'+fmt(n.comm)+'</b></td><td class="n go">›</td></tr>';}).join('')+
   '<tr class="tot"><td>Платформа, итого</td><td></td><td class="n">'+num(TOT.clients)+'</td><td class="n">'+fmt(TOT.remaining)+'</td><td class="n">'+fmt(TOT.outstanding)+'</td><td class="n">'+fmt(TOT.comm)+'</td><td></td></tr></table></div>'+
   '<p class="hint">Три сети — выдуманные данные для примера. Ваш демо-партнёр берётся из того же браузера и обновляется в реальном времени.</p></div>';
   $$('[data-net]').forEach(function(r){r.onclick=function(){open(r.dataset.net);};r.onkeydown=function(e){if(e.key==='Enter')open(r.dataset.net);};});
@@ -278,7 +283,7 @@ function share(a,b){return b?Math.round(a/b*100)+'%':'—';}
 function open(id,keep){
   var n=NETS.filter(function(x){return x.id===id;})[0];if(!n){close();return;}cur=id;
   var low=n.remaining<LOW,cover=n.outstanding?r2(n.remaining/n.outstanding*100):100;
-  $('#dd').innerHTML='<div class="ddh"><div><div class="eyebrow">'+esc(n.kind)+'</div><h2>'+esc(n.name)+'</h2></div><button class="ghost" data-x>Закрыть ✕</button></div>'+
+  $('#dd').innerHTML='<div class="ddh"><div class="nett">'+ava(n,52)+'<div><div class="eyebrow">'+esc(n.kind)+'</div><h2>'+esc(n.name)+'</h2></div></div><button class="ghost" data-x>Закрыть ✕</button></div>'+
   '<div class="dgrid">'+
   '<div class="card"><div class="eyebrow">💰 Деньги · депозит сети</div>'+row('Пополнено',fmt(n.top))+row('Потрачено на кэшбэк','−'+fmt(n.issued),'minus')+row('Комиссия платформы','−'+fmt(n.comm),'minus')+row('Возвращено (сгоревшие бонусы)','+'+fmt(n.expired),'plus')+row('Остаток депозита',fmt(n.remaining))+
    '<div class="'+(low?'warn':'okb')+'">'+(low?'⚠︎ Низкий баланс — кэшбэк скоро перестанет начисляться, нужно пополнение':'✓ Баланс в норме (порог '+fmt(LOW)+')')+'</div></div>'+
