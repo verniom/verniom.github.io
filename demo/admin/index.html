@@ -327,8 +327,12 @@ render();
 })();
 </script>
 <script>
+/* Owner opt-out: ?me=1 disables counters on this device (localStorage 'verniom-me'), ?me=0 re-enables */
+function vMe(){var on=false;try{var q=new URLSearchParams(location.search).get('me');if(q==='1'){localStorage.setItem('verniom-me','1');vToast('Счётчик для этого устройства отключён');}else if(q==='0'){localStorage.removeItem('verniom-me');}on=localStorage.getItem('verniom-me')==='1';}catch(e){}return on;}
+function vToast(t){function s(){var d=document.createElement('div');d.textContent=t;d.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1D1D1F;color:#fff;padding:10px 16px;border-radius:999px;font:500 14px/1.3 system-ui,-apple-system,sans-serif;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:opacity .4s';document.body.appendChild(d);setTimeout(function(){d.style.opacity='0';},2600);setTimeout(function(){d.remove();},3100);}if(document.body)s();else document.addEventListener('DOMContentLoaded',s);}
+
 /* Hidden counter (abacus, namespace "verniom"): admin-visits each load */
-(function(){try{fetch('https://abacus.jasoncameron.dev/hit/verniom/admin-visits',{mode:'cors',keepalive:true,cache:'no-store'}).catch(function(){});}catch(e){}})();
+(function(){try{if(vMe())return;fetch('https://abacus.jasoncameron.dev/hit/verniom/admin-visits',{mode:'cors',keepalive:true,cache:'no-store'}).catch(function(){});}catch(e){}})();
 </script>
 </body>
 </html>
