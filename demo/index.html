@@ -21,7 +21,7 @@ body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,Blink
 button,input,select{font-family:inherit;font-size:inherit}
 a{color:var(--brand-d)}
 .top{position:sticky;top:0;z-index:30;background:rgba(245,245,247,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
-.top .in{max-width:1240px;margin:0 auto;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
+.top .in{max-width:1240px;margin:0 auto;padding:10px 32px;padding-top:max(10px,env(safe-area-inset-top));display:flex;align-items:center;gap:10px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--brand);display:inline-block}
 .badge{font-size:11px;font-weight:600;color:var(--brand-d);background:var(--tint);padding:3px 8px;border-radius:20px}
@@ -30,7 +30,7 @@ a{color:var(--brand-d)}
 .pill b{font-weight:600}
 .ghost{background:none;border:1px solid var(--border);border-radius:980px;padding:7px 12px;font-size:13px;font-weight:500;color:var(--grey);cursor:pointer;white-space:nowrap}
 .ghost:hover{color:var(--ink)}
-.layout{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:28px;padding:24px 16px 80px}
+.layout{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:250px 1fr;gap:36px;padding:32px 32px 80px}
 .steps{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:4px}
 .st{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:none;background:none;text-align:left;cursor:pointer;color:var(--grey);font-weight:500;font-size:15px;min-height:48px}
 .st .n{width:28px;height:28px;border-radius:50%;border:1.5px solid #D2D2D7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;background:#fff}
@@ -287,6 +287,14 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 .bkpill{margin-left:auto;display:flex;gap:8px;align-items:center}.bkpill .tpill{background:rgba(255,255,255,.9)}.bkpill .rb{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4)}
 .tcab1{flex:1;overflow:auto;padding:18px 26px;display:flex;flex-direction:column;gap:12px;max-width:560px;width:100%;margin:0 auto}
 @media (min-width:821px){.tshop,.tshop .land.app{--stk:0px}}
+.tlk{padding:16px 18px 6px;background:#fff;border-bottom:1px solid #EEE}.tlk-h{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.tlk-hi{font-size:22px;font-weight:600;margin:12px 0 10px;letter-spacing:-.01em}.tlk-hi small{display:block;font-size:12.5px;font-weight:400;color:var(--grey)}
+.tlk-b{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}.tlk-main{background:var(--tint);border-radius:18px;padding:14px 16px}.tlk-main small,.tlk-oth small{display:block;font-size:12px;color:var(--grey)}
+.tlk-main b{display:block;font-size:30px;font-weight:700;color:var(--brand-d);margin:2px 0}.tlk-main span{font-size:12px;color:var(--grey)}
+.tlk-oth{background:#F5F5F7;border-radius:18px;padding:14px 16px;font-size:13px}.tlk-oth div{display:flex;align-items:center;gap:8px;margin:6px 0 2px}.tlk-oth b{margin-left:auto;font-weight:600}.tlk-oth em{font-style:normal;font-size:11.5px;color:var(--grey2)}
+.tseg{display:flex;gap:4px;background:#F2F2F4;border-radius:12px;padding:3px;margin:14px 0 10px;max-width:320px}.tseg button{flex:1;border:none;background:none;border-radius:10px;padding:8px 0;font:inherit;font-size:14px;font-weight:500;color:var(--grey);cursor:pointer}.tseg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.thist2{padding:8px 18px 18px}.thist2 .hr{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #EEE;font-size:14px}.thist2 small{display:block;color:var(--grey);font-size:12px}.thist2 b{white-space:nowrap}
+@media (max-width:820px){.tlk-b{grid-template-columns:1fr}.tlk{padding:16px 16px 4px}}
 .tablet{max-width:1024px;margin:0 auto 10px;background:#1D1D1F;border-radius:30px;padding:14px;box-shadow:0 30px 60px -28px rgba(16,24,40,.45)}
 .tscreen{background:#FAFAFA;border-radius:18px;aspect-ratio:16/10;overflow:hidden;display:flex;flex-direction:column;color:var(--ink)}
 .ttop{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fff;border-bottom:1px solid #EEE;font-size:15px}.tmeta{font-size:13px;color:var(--grey)}
@@ -313,17 +321,18 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 .tuse-row button,.tuse-q button{border:1px solid #E5E5EA;background:#fff;border-radius:980px;font:inherit;cursor:pointer}.tuse-row button{width:40px;height:40px;font-size:20px}.tuse input{width:100%;accent-color:#0FAE9E}.tuse-q{display:flex;gap:8px}.tuse-q button{padding:6px 12px;font-size:13px}
 .tdone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}.tok{width:64px;height:64px;border-radius:50%;background:var(--tint);color:var(--brand-d);font-size:32px;display:flex;align-items:center;justify-content:center}
 .tdone h3{font-size:26px;margin:12px 0 4px;font-weight:600}.tdone p{color:var(--grey);margin:0 0 14px}.tdone-k{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.tdone-k div{background:#fff;border-radius:14px;padding:10px 14px}.tdone-k small{display:block;font-size:12px;color:var(--grey)}.tdone-k b{font-size:17px}
-@media (max-width:820px){.tablet{padding:6px;border-radius:22px;margin:0 -4px 10px}.tscreen{aspect-ratio:auto;border-radius:16px}.tphone,.tco{grid-template-columns:1fr;padding:16px;gap:14px}.tpad{margin:0 auto;max-width:none}.tph-l h3{font-size:22px}
+@media (max-width:820px){.tablet{padding:6px;border-radius:22px;margin:0 0 10px}.tscreen{aspect-ratio:auto;border-radius:16px}.tphone,.tco{grid-template-columns:1fr;padding:16px;gap:14px}.tpad{margin:0 auto;max-width:none}.tph-l h3{font-size:22px}
  .tcab{grid-template-columns:1fr}.tside{border-right:none;border-bottom:1px solid #EEE}.thist{display:none}.tgrid{grid-template-columns:repeat(2,1fr);overflow:visible}.tdone-k{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:980px){.stage.s5,.stage.s6{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.stage{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:820px){
- .layout{grid-template-columns:1fr;gap:14px;padding:12px 12px 90px}
- .steps{position:sticky;top:57px;z-index:20;flex-direction:row;overflow-x:auto;gap:6px;padding:8px 0;margin:0 -12px;padding-left:12px;padding-right:12px;background:var(--bg);scrollbar-width:none}
+ .layout{grid-template-columns:1fr;gap:18px;padding:16px 24px 90px}
+ .top .in{padding-left:24px;padding-right:24px}
+ .steps{position:sticky;top:57px;z-index:20;flex-direction:row;overflow-x:auto;gap:6px;padding:8px 0;margin:0 -24px;padding-left:24px;padding-right:24px;background:var(--bg);scrollbar-width:none}
  .steps::-webkit-scrollbar{display:none}
  .st{flex-shrink:0;padding:8px 12px 8px 8px;min-height:44px;font-size:14px;gap:8px}
  .st .n{width:26px;height:26px}
  .grid2{grid-template-columns:1fr}
- .card{padding:18px}
+ .card{padding:20px}
  .pill .lbl{display:none}
 }
 @media (max-width:820px){.vnote{position:static;display:table;margin:-70px auto 24px}}
@@ -676,7 +685,7 @@ function bindLk(){$$('[data-lk]').forEach(function(a){a.onclick=function(e){e.pr
 function v5(){
   OTHER=indKey()==='coffee'?OTHER0:OTHER1;
   var c=client(S.last),p=S.partner;
-  return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс по сетям, история и PIN для терминала. Бонусы бессрочные.')+
+  return head('Шаг 5','Личный кабинет клиента','Клиент открыл ссылку из SMS: баланс по сетям, история и PIN для планшета. Бонусы бессрочные.')+
   '<div class="stage s5"><div><div class="phone"><div class="screen"><div class="isl"></div><div class="sbar"><span>9:41</span><span>●●● ▮</span></div><div class="lk">'+
   '<div class="hd"><span class="nett">'+logo(24)+esc(p.name)+'</span><span style="font-size:12px;color:var(--grey)">'+esc(maskPhone(c.phone))+'</span></div>'+
   '<div class="nets-t">Мои бонусы по сетям</div>'+
@@ -700,15 +709,19 @@ function tCart(){var q=TB.pend;return q?{L:[{n:q.t,p:q.p,q:1,note:q.note}],sum:r
 function tCalc(){var c=S.clients[normPhone(TB.ph)],p=S.partner,k=tCart(),cap=Math.floor(k.sum*p.maxShare/100),mx=Math.floor(Math.min(c?c.balance:0,cap));
   var u=TB.use==null?mx:Math.max(0,Math.min(mx,TB.use)),pay=r2(k.sum-u);return {sum:k.sum,cap:cap,max:mx,u:u,pay:pay,cb:r2(pay*p.cb/100),comm:r2(pay*p.comm/100)};}
 function tPad(id){return '<div class="tpad">'+['1','2','3','4','5','6','7','8','9','del','0','ok'].map(function(k){return '<button class="tk'+(k==='ok'?' ok':'')+'" data-tk="'+k+'" data-pad="'+id+'">'+(k==='ok'?'→':k==='del'?'⌫':k)+'</button>';}).join('')+'</div>';}
-function tScreen(){
+function tScreen(){OTHER=indKey()==='coffee'?OTHER0:OTHER1;
   var p=S.partner,c=S.clients[normPhone(TB.ph)];
   var top='<div class="ttop"><span class="nett">'+logo(26)+'<b>'+esc(p.name)+'</b></span><span class="tmeta">'+(TB.st!=='phone'&&c?esc(maskPhone(c.phone))+' · <button class="tlink" data-tb="out">выйти</button>':'Заказ у стойки')+'</span></div>';
   if(TB.st==='phone')return top+'<div class="tphone"><div class="tph-l"><h3>Введите номер телефона</h3><p>Увидите свои бонусы в '+esc(qn(p.name))+' и сможете сразу сделать заказ</p><div class="tdisp">'+(TB.ph?esc(digits(TB.ph).length===11?fmtPhone(TB.ph):'+'+TB.ph):'<span>+7 (___) ___-__-__</span>')+'</div>'+
     (S.last?'<button class="tquick" data-tb="me">Это я · '+esc(maskPhone(S.last))+'</button>':'')+'</div><div class="tph-r">'+tPad('ph')+'</div></div>';
-  if(TB.st==='shop')return '<div class="tshop" id="site">'+siteHtml()+'</div>';
-  if(TB.st==='cab')return top+'<div class="tcab1"><div class="tbal"><small>Ваши бонусы в '+esc(qn(p.name))+'</small><b>'+fmt(c.balance)+'</b><span>+'+p.cb+'% с каждого заказа · до '+p.maxShare+'% заказа бонусами</span></div>'+
-    '<div class="thist"><small>История</small>'+(c.hist.length?c.hist.slice(0,6).map(function(h){return '<div><span>'+esc(h.txt)+' · '+h.t+'</span><b class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</b></div>';}).join(''):'<div><span>Пока пусто</span></div>')+'</div>'+
-    '<button class="btn wide" data-tb="shop">← К покупкам</button></div>';
+  if(TB.st==='shop'||TB.st==='cab'){var tab=TB.tab||'buy',fn=String(c.name||'');
+    var lk='<div class="tlk"><div class="tlk-h"><span class="nett">'+logo(28)+'<b>'+esc(p.name)+'</b></span><button class="tlink" data-tb="out">Выйти</button></div>'+
+      '<div class="tlk-hi">Здравствуйте!<small>'+esc(maskPhone(c.phone))+'</small></div>'+
+      '<div class="tlk-b"><div class="tlk-main"><small>Ваши бонусы в '+esc(qn(p.name))+'</small><b data-t="tlkbal">'+fmt(c.balance)+'</b><span>+'+p.cb+'% с каждой покупки · оплата бонусами до '+p.maxShare+'%</span></div>'+
+      '<div class="tlk-oth"><small>Другие сети</small><div>'+initAva(OTHER.name,22)+'<span>'+esc(OTHER.name)+'</span><b>'+fmt(OTHER.bal)+'</b></div><em>тратятся только там</em></div></div>'+
+      '<div class="tseg"><button data-tab="buy"'+(tab==='buy'?' class="on"':'')+'>Покупки</button><button data-tab="hist"'+(tab==='hist'?' class="on"':'')+'>История</button></div></div>';
+    if(tab==='hist')return '<div class="tshop">'+lk+'<div class="thist2">'+(c.hist.length?c.hist.slice(0,12).map(function(h){return '<div class="hr"><div>'+esc(h.txt)+'<small>'+h.t+' · '+fmt(h.amount)+'</small></div><b class="'+(h.d>=0?'plus':'minus')+'">'+(h.d>=0?'+':'−')+fmt(Math.abs(h.d))+'</b></div>';}).join(''):'<div class="hint">Пока пусто</div>')+'</div></div>';
+    return '<div class="tshop">'+lk+'<div id="site">'+siteHtml()+'</div></div>';}
   if(TB.st==='checkout'){var k=tCart(),t=tCalc();
     return top+'<div class="tco"><div class="tco-l"><h3>Ваш заказ</h3>'+k.L.map(function(l){return '<div class="kv"><span>'+esc(l.n)+' × '+l.q+'</span><b>'+fmt(l.p*l.q)+'</b></div>';}).join('')+'<div class="kv"><span><b>Итого</b></span><b>'+fmt(t.sum)+'</b></div>'+(k.L[0]&&k.L[0].note?'<div class="hint">'+esc(k.L[0].note)+'</div>':'')+'<button class="tlink" data-tb="back">← вернуться к покупкам</button></div>'+
       '<div class="tco-r"><div class="tuse"><small>Списать бонусы · доступно '+fmt(c.balance)+', максимум '+p.maxShare+'% заказа = '+fmt(t.cap)+'</small><div class="tuse-row"><button data-tu="-">−</button><b data-t="tuse">'+fmt(t.u)+'</b><button data-tu="+">+</button></div>'+
@@ -725,14 +738,15 @@ function tScreen(){
 }
 function v6(){
   var p=S.partner;
-  return head('Шаг 6','Планшет у стойки','Клиент вводит телефон и сразу попадает в магазин '+esc(qn(p.name))+' — бонусы видны в шапке, при оплате можно списать до '+p.maxShare+'%.')+
+  return head('Шаг 6','Планшет у стойки','Клиент входит по телефону и PIN в свой кабинет на планшете: бонусы, покупки в '+esc(qn(p.name))+' с оплатой бонусами до '+p.maxShare+'% и история.')+
   '<div class="tablet"><div class="tscreen" id="tscreen">'+tScreen()+'</div></div><p class="hint" style="text-align:center">Планшет самообслуживания (макет) · цифры можно вводить с клавиатуры</p>'+
   '<div class="grid2"><div class="card" id="tsms"><div class="eyebrow">Телефон клиента · SMS</div><div class="minisms" id="tsmsbox">'+(S.sms.length?S.sms.slice(0,2).map(smsHtml).join(''):'<div class="empty">Здесь появится SMS</div>')+'</div></div>'+
   '<div class="card"><div class="eyebrow">Балансы</div><div class="kv"><span>Депозит '+esc(qn(p.name))+'</span><b>'+fmt(p.balance)+'</b></div><div class="kv"><span>Бонусный долг клиентам</span><b>'+fmt(Object.keys(S.clients).reduce(function(a,k){return a+S.clients[k].balance;},0))+'</b></div><div class="hint">Списываются только бонусы сети '+esc(qn(p.name))+'. С депозита: комиссия '+pcs(p.comm)+'% и SMS '+SMSFEE+' ₽.</div>'+
   (done(6)?'<button class="btn wide next" data-t="to7">Открыть кабинет партнёра →</button>':'')+'</div></div>';
 }
 function tRefresh(){var s=$('#tscreen');if(s){s.innerHTML=tScreen();bindT();}}
-function tDecorate(){if(TB.st!=='shop')return;var c=S.clients[normPhone(TB.ph)];if(!c)return;
+function tDecorate(){if(TB.st!=='shop'||(TB.tab||'buy')!=='buy')return;
+  $$('#site [data-t=prof]').forEach(function(b){b.onclick=function(){TB.tab='hist';tRefresh();};});return;var c=S.clients[normPhone(TB.ph)];if(!c)return;
   var pill='<button class="tpill" data-tb2="cab" aria-label="Мои бонусы">у вас '+String(r2(c.balance)).replace('.',',')+' бонусов</button>';
   var hb=$('#site .hbtns');
   if(hb){hb.insertAdjacentHTML('afterbegin',pill);var ah=hb.closest('.ahead');if(ah)ah.insertAdjacentHTML('afterend','<div class="tpillrow">'+pill+'</div>');}
@@ -752,16 +766,18 @@ function tAuth(){var c=S.clients[TB.ph],v=TB.code;if(v.length!==4)return;TB.code
   if(TB.st==='regcode'||TB.st==='rcode'){if(v!==TB.sent){toast('Неверный код из SMS');tRefresh();return;}TB.st='newpin';tRefresh();return;}
   if(TB.st==='newpin'){TB.np=v;TB.st='newpin2';tRefresh();return;}
   if(TB.st==='newpin2'){if(v!==TB.np){toast('PIN не совпал — придумайте ещё раз');TB.st='newpin';tRefresh();return;}var nc=client(TB.ph);nc.pin=v;if(!nc.last)nc.last=now();save();toast('PIN сохранён');tEnter();return;}}
-function tEnter(){TB.st='shop';TB.pend=null;TB.use=null;bkReset();S.last=TB.ph;save();render();}
+function tEnter(){TB.st='shop';TB.tab='buy';TB.pend=null;TB.use=null;bkReset();S.last=TB.ph;save();render();tTop();}
+function tTop(){var tb=$('.tablet');if(tb){window.scrollTo({top:Math.max(0,tb.getBoundingClientRect().top+window.scrollY-stk()-12)});var sh=$('#tscreen .tshop');if(sh)sh.scrollTop=0;}}
 function bindT(){
-  if(TB.st==='shop'){bindSite();tDecorate();}
+  if(TB.st==='shop'&&(TB.tab||'buy')==='buy'){bindSite();tDecorate();}
+  $$('[data-tab]').forEach(function(b){b.onclick=function(){TB.tab=b.dataset.tab;tRefresh();};});
   $$('[data-tk]').forEach(function(b){b.onclick=function(){tKey(b.dataset.pad,b.dataset.tk);};});
   $$('[data-tu]').forEach(function(b){b.onclick=function(){var t=tCalc(),v=b.dataset.tu;TB.use=v==='max'?t.max:v==='0'?0:Math.max(0,Math.min(t.max,t.u+(v==='+'?10:-10)));tRefresh();};});
   var rg=$('[data-t=trange]');if(rg)rg.oninput=function(){TB.use=+rg.value;tRefresh();var r=$('[data-t=trange]');if(r)r.focus();};
   $$('[data-tb]').forEach(function(b){b.onclick=function(){var a=b.dataset.tb;
     if(a==='me'){if(!tLogin(S.last))return;}
     else if(a==='out'){tbReset();bkReset();}
-    else if(a==='new'||a==='shop'||a==='back'){TB.st='shop';TB.pend=null;TB.use=null;if(a==='new')bkReset();}
+    else if(a==='new'||a==='shop'||a==='back'){TB.st='shop';TB.tab='buy';TB.pend=null;TB.use=null;if(a==='new')bkReset();}
     else if(a==='confirm'){var t=tCalc();if(S.partner.balance<t.comm+SMSFEE){toast('Оплата временно недоступна — обратитесь к сотруднику');return;}payTB();return;}
     else if(a==='forgot'){if(!tSendCode('pinr'))return;TB.st='rcode';TB.code='';render();return;}
     else if(a==='resend'){if(!tSendCode(TB.st==='rcode'?'pinr':'reg'))return;render();return;}
@@ -778,7 +794,7 @@ function payTB(){
     var no=String(100+(S.tx.length*37)%900);
     tx({type:'terminal',phone:ph,amount:t.sum,used:t.u,paid:t.pay,cb:t.cb,comm:t.comm,item:title,no:no});S.last=ph;
     sendSms({k:'cb',cb:t.cb,partner:p.name,phone:ph});
-    TB.order={no:no,u:t.u,pay:t.pay,cb:t.cb,bal:c.balance};TB.st='done';TB.pend=null;bkReset();save();render();toast('Заказ № '+no+' принят');});
+    TB.order={no:no,u:t.u,pay:t.pay,cb:t.cb,bal:c.balance};TB.st='done';TB.pend=null;bkReset();save();render();tTop();toast('Заказ № '+no+' принят');});
 }
 function b6(){bindT();var t=$('[data-t=to7]');if(t)t.onclick=function(){go(7);};}
 document.addEventListener('keydown',function(e){if(S.step!==6||/input|textarea/i.test((e.target||{}).tagName||''))return;var pad=TB.st==='phone'?'ph':/^(pin|regcode|rcode|newpin|newpin2)$/.test(TB.st)?'au':null;if(!pad)return;if(/^\d$/.test(e.key))tKey(pad,e.key);else if(e.key==='Backspace')tKey(pad,'del');else if(e.key==='Enter')tKey(pad,'ok');});
