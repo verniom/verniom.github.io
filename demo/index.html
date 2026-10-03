@@ -292,7 +292,7 @@ function tx(o){o.t=now();o.ts=vnow();S.tx.unshift(o);}
 function addLot(c,amt){if(amt>0)c.lots.push({left:amt,exp:vnow()+S.partner.expDays*DAY});}
 function spendLots(c,u){c.lots.sort(function(a,b){return a.exp-b.exp;});var r=u;c.lots.forEach(function(l){var d=Math.min(l.left,r);l.left=r2(l.left-d);r=r2(r-d);});c.lots=c.lots.filter(function(l){return l.left>0;});}
 function nextExp(c){var l=c.lots.filter(function(l){return l.left>0;}).sort(function(a,b){return a.exp-b.exp;});if(!l.length)return null;var e=l[0].exp,s=0;l.forEach(function(x){if(dayKey(x.exp)===dayKey(e))s+=x.left;});return {amt:r2(s),exp:e};}
-function lkLink(ph){return 'verniom.github.io/c/'+ph.slice(-4);}
+function lkLink(ph){var h=(S.site&&S.site.mode==='own'&&S.site.url)?String(S.site.url).replace(/^https?:\/\//,'').replace(/\/.*$/,''):((S.partner&&S.partner.slug)||'kofa')+'.ru';return h+'/c/'+ph.slice(-4);}
 function runExpiry(from){
   if(!S.partner)return 0;var t=vnow(),p=S.partner,burnedTotal=0;
   Object.keys(S.clients).forEach(function(k){var c=client(k);
