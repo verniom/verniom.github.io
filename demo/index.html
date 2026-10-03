@@ -367,6 +367,12 @@ tr.me td{background:var(--tint)}tr.tot td{font-weight:600;border-top:1.5px solid
 }
 @media (max-width:820px){.vnote{position:static;display:table;margin:-70px auto 24px}}
 @media (max-width:420px){.brand .badge{display:none}.top .in{gap:8px}}
+
+/* mobile: single column, no horizontal overflow, stacked tables */
+.grid2>*,.grid3>*,.card,.kpi{min-width:0}
+.grid2+.grid2,.grid2+.card,.card+.grid2{margin-top:16px}
+@media (max-width:820px){.kpis{grid-template-columns:1fr 1fr!important}.kpis>.kpi:last-child:nth-child(odd){grid-column:1/-1}table{min-width:0}.card{max-width:100%}.kpi .v{overflow-wrap:anywhere}}
+@media (max-width:600px){table.stk,table.stk tbody,table.stk tr,table.stk td{display:block;width:100%}table.stk tr:has(>th){display:none}table.stk tr{padding:10px 0;border-bottom:1px solid var(--border)}table.stk tr:last-child{border-bottom:0}table.stk td{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:3px 0!important;border:0!important;text-align:right!important;white-space:normal!important;min-height:0}table.stk td::before{content:attr(data-l);color:var(--grey);text-align:left;flex-shrink:0;font-size:13px;font-weight:400}table.stk td:first-child{font-weight:600}table.stk td[data-l=""]::before{display:none}table.stk td[data-l=""]{justify-content:flex-start;text-align:left!important}}
 </style>
 </head>
 <body>
@@ -893,7 +899,7 @@ function v7(){
   (cl.length?cl.map(function(c){return '<tr><td>'+esc(maskPhone(c.phone))+'</td><td class="n"><b>'+fmt(c.balance)+'</b></td><td class="n plus">+'+fmt(c.accrued)+'</td><td class="n minus">−'+fmt(c.spent)+'</td><td>'+esc(c.last)+'</td></tr>';}).join(''):'<tr><td colspan="5" class="hint">Клиентов пока нет</td></tr>')+'</table></div></div>'+
   '<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:8px"><div class="eyebrow" style="margin:0">Операции</div><button class="btn sec" data-t="csv" style="min-height:42px;font-size:14px">⤓ Excel</button></div><div class="tw"><table><tr><th>Время</th><th>Тип</th><th>Клиент</th><th class="n">Сумма</th><th class="n">Кэшбэк</th><th class="n">Бонусами</th><th class="n">Комиссия</th></tr>'+
   (S.tx.length?S.tx.slice(0,40).map(function(t){return '<tr><td>'+t.t+'</td><td>'+esc(typeName(t))+'</td><td>'+(t.phone?esc(maskPhone(t.phone)):'—')+'</td><td class="n">'+fmt(t.amount)+'</td><td class="n">'+(t.cb?'+'+fmt(t.cb):'—')+'</td><td class="n">'+(t.used?'−'+fmt(t.used):'—')+'</td><td class="n">'+(t.comm?fmt(t.comm):'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="hint">Операций пока нет</td></tr>')+'</table></div>'+
-  '<p class="hint">Пополнено всего: '+fmt(s.top)+'. Комиссия платформы '+pcs(p.comm)+'% с покупки и СМС '+SMSFEE+' ₽ списываются с депозита. Кэшбэк — скидка партнёра, депозит не уменьшает Бонусы бессрочные: долг клиентам = начислено − списано на кассе.</p></div>';
+  '<p class="hint">Пополнено всего: '+fmt(s.top)+'. Комиссия платформы '+pcs(p.comm)+'% с покупки и СМС '+SMSFEE+' ₽ списываются с депозита. Кэшбэк — скидка партнёра, депозит не уменьшает. Бонусы бессрочные: долг клиентам = начислено − списано на кассе.</p></div>';
 }
 function csv(){
   var q=function(v){v=String(v==null?'':v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;},n=function(x){return x?String(r2(x)).replace('.',','):'0';};
@@ -932,6 +938,11 @@ function vToast(t){function s(){var d=document.createElement('div');d.textConten
 /* Hidden counter (abacus, namespace "verniom"): demo-visits each load, demo-uniques once per browser */
 (function(){try{if(vMe())return;var A='https://abacus.jasoncameron.dev/hit/verniom/';function h(k){try{fetch(A+k,{mode:'cors',keepalive:true,cache:'no-store'}).catch(function(){});}catch(e){}}
 h('demo-visits');try{if(!localStorage.getItem('verniom_demo_u')){localStorage.setItem('verniom_demo_u','1');h('demo-uniques');}}catch(e){}}catch(e){}})();
+</script>
+<script>
+/* label table cells for stacked mobile tables */
+(function(){function stk(){var ts=document.querySelectorAll('table:not(.stk)');for(var i=0;i<ts.length;i++){var t=ts[i],hr=t.querySelector('tr');if(!hr||!hr.querySelector('th'))continue;var h=[].map.call(hr.children,function(x){return x.textContent.trim();});t.classList.add('stk');var rs=t.querySelectorAll('tr');for(var j=0;j<rs.length;j++){var cs=rs[j].children;for(var k=0;k<cs.length;k++)if(cs[k].tagName==='TD'&&cs[k].getAttribute('data-l')===null)cs[k].setAttribute('data-l',h[k]||'');}}}
+stk();new MutationObserver(stk).observe(document.body,{childList:true,subtree:true});})();
 </script>
 </body>
 </html>
